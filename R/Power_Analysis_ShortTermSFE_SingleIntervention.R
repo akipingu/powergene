@@ -1,0 +1,27 @@
+# set libraries
+library(lme4) # for glmer
+
+# helps to give same result every time one run the code. You can choose to disable it
+set.seed(123)
+
+# Simulation of data sets consists of different experimental design scenarios intended to be test.
+#In this case study, we considered number of chambers per treatment (“n.ch.per.trt”), which can be 4;
+#number of recaptured mosquitoes (“lambda”), which can be 50; proportion of mosquitoes remains due to ITN alone “itn.effect”, which is 0.2;
+#inter-chamber variance (“chamber.var”), which can be 0.1807; and total number of simulations (“nsim”), which is 100 for this tutorial.
+
+# function simulate.scenarios gives the setting of experimental design scenarios and parameter choices
+
+simulate.scenarios <- function(n.ch.per.trt, treatment.lev){
+  # design choices
+  n.ch.per.trt <- n.ch.per.trt #4 # number of chambers per treatment
+  treatment.lev <- treatment.lev #0:1 # ITN levels: 0 means no ITN and 1 means there is ITN
+  # make template data set representing design
+  dat <-expand.grid(replicates = 1:n.ch.per.trt, itn = itn.lev)
+  # create chambers/replicates id
+  dat$chamber <- factor(paste(dat$itn, dat$replicates, sep="-"))
+  # rearranging data set in a useful order
+  dat <- dat[, c("replicates", "treatment", "chamber")]
+  # output dat table
+  dat
+}
+
