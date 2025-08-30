@@ -3,11 +3,7 @@
 %   R/Power_Analysis_ShortTermSFE_SingleIntervention.R
 \name{sim.pval.shortsfe.sinint}
 \alias{sim.pval.shortsfe.sinint}
-\title{Extract p-value from Simulated GLMM for Short-Term Semi-Field Intervention
-output parameters the p-values from the simulation function sim.pval.shortsfe.sinint
-Simulates mosquito count data under a short-term semi-field experimental design
-and fits a Poisson generalized linear mixed model (GLMM) to estimate the effect
-of ITN treatment. Returns the p-value associated with the treatment effect.}
+\title{Extract p-value from Simulated GLMM for Short-Term Semi-Field Intervention}
 \usage{
 sim.pval.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
 }
@@ -16,24 +12,22 @@ sim.pval.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
-\item{interv.effect}{Numeric. Proportion reduction due to ITN (e.g., 0.8 for 80% mortality).}
+\item{interv.effect}{Numeric. Proportion reduction due to ITN.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
 }
 \value{
-A named numeric vector with:
+A named numeric vector:
 \describe{
-  \item{p}{P-value for the treatment effect from the GLMM}
+  \item{pvalue}{P-value for the treatment effect from the GLMM}
 }
 }
 \description{
-Extract p-value from Simulated GLMM for Short-Term Semi-Field Intervention
-output parameters the p-values from the simulation function sim.pval.shortsfe.sinint
-Simulates mosquito count data under a short-term semi-field experimental design
-and fits a Poisson generalized linear mixed model (GLMM) to estimate the effect
+Simulates mosquito count data and fits a Poisson GLMM to estimate the effect
 of ITN treatment. Returns the p-value associated with the treatment effect.
 }
 \examples{
-sim.pval.shortsfe.sinint(n.ch.per.trt = 4, lambda = 50, interv.effect = 0.8, chamber.var = 0.1807)
+sim.pval.shortsfe.sinint(4, 50, 0.8, 0.1807)
+
 
 }

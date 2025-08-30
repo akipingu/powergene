@@ -12,12 +12,12 @@ sim.mosq.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
-\item{interv.effect}{Numeric. Proportion reduction due to ITN (e.g., 0.8 for 80% mortality).}
+\item{interv.effect}{Numeric. Proportion reduction due to ITN.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
 }
 \value{
-A data frame with columns:
+A data frame with the following columns:
 \describe{
   \item{replicates}{Replicate number within each treatment group}
   \item{treatment}{Treatment level (0 = no ITN, 1 = ITN)}
@@ -30,10 +30,9 @@ A data frame with columns:
 }
 \description{
 Generates simulated mosquito count data under a short-term semi-field experimental design
-with two ITN treatment levels. The function incorporates fixed effects for treatment,
-random effects for chamber variability, and Poisson-distributed outcomes.
+with fixed effects for treatment, random effects for chamber variability, and Poisson-distributed outcomes.
 }
 \examples{
-sim.mosq.shortsfe.sinint(n.ch.per.trt = 4, lambda = 50, interv.effect = 0.8, chamber.var = 0.1807)
+sim.mosq.shortsfe.sinint(4, 50, 0.8, 0.1807)
 
 }

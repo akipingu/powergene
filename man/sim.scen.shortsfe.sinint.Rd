@@ -14,12 +14,14 @@ sim.scen.shortsfe.sinint(n.ch.per.trt)
 A data frame with columns:
 \describe{
   \item{replicates}{Replicate number within each treatment group}
-  \item{treatment}{Treatment level, e.g., for ITN, (0 = no ITN, 1 = ITN)}
+  \item{treatment}{Treatment level (0 = no ITN, 1 = ITN)}
   \item{chamber}{Unique chamber identifier as a factor}
 }
 }
 \description{
-Simulate Experimental Design for Short-Term Semi-Field Intervention
+Constructs a template dataset representing a short-term semi-field experiment
+with two ITN treatment levels and a specified number of chambers per treatment.
+Each chamber is uniquely identified by its treatment and replicate combination.
 }
 \details{
 This case study considers various design parameters including:
@@ -28,10 +30,6 @@ This case study considers various design parameters including:
 - Proportion remaining due to ITN (`interv.effect`), e.g., 0.2
 - Inter-chamber variance (`chamber.var`), e.g., 0.1807
 - Number of simulations (`nsim`), e.g., 100
-
-Constructs a template data set representing a short-term semi-field experiment
-with two ITN treatment levels and a specified number of chambers per treatment.
-Each chamber is uniquely identified by its treatment and replicate combination.
 }
 \examples{
 sim.scen.shortsfe.sinint(4)

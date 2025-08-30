@@ -21,19 +21,23 @@ sim.power.shortsfe.sinint(
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
-\item{interv.effect}{Numeric. (e.g., 0.8 for 80% mortality).}
+\item{interv.effect}{Numeric. Proportion reduction due to ITN.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
+
+\item{n.cores}{Integer. Number of cores to use for parallel processing.}
 }
 \value{
-Numeric. Estimated empirical power (rounded to two decimal places).
+A named numeric vector:
+\describe{
+  \item{power}{Estimated empirical power (rounded to two decimal places)}
+}
 }
 \description{
-Runs repeated simulations of mosquito count data under a short-term semi-field design,
-fits a GLMM to each dataset, and estimates empirical power as the proportion of
-simulations with p-values below 0.05.
+Runs repeated simulations and GLMM fits to estimate empirical power
+as the proportion of simulations with p-values below 0.05.
 }
 \examples{
-sim.power.shortsfe.sinint(nsim = 100, n.ch.per.trt = 4, lambda = 50, interv.effect = 0.8, chamber.var = 0.1807)
+sim.power.shortsfe.sinint(100, 4, 50, 0.8, 0.1807)
 
 }
