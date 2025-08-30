@@ -1,0 +1,10 @@
+* installing *source* package ‘powergene’ ...
+** using staged installation
+** R
+** byte-compile and prepare package for lazy loading
+Error in sim.shortsfe.sinint(4, 0:1) : 
+  could not find function "sim.shortsfe.sinint"
+Error: unable to load R code in package ‘powergene’
+Execution halted
+ERROR: lazy loading failed for package ‘powergene’
+* removing ‘/Users/kipingu/Library/CloudStorage/OneDrive-UniversityofGlasgow/Ifakara/Manuscripts/2025/Interactive_power_framework/R_Package/powergene/..Rcheck/powergene’

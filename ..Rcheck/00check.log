@@ -1,0 +1,43 @@
+* using log directory ‘/Users/kipingu/Library/CloudStorage/OneDrive-UniversityofGlasgow/Ifakara/Manuscripts/2025/Interactive_power_framework/R_Package/powergene/..Rcheck’
+* using R version 4.3.3 (2024-02-29)
+* using platform: aarch64-apple-darwin20 (64-bit)
+* R was compiled by
+    Apple clang version 14.0.0 (clang-1400.0.29.202)
+    GNU Fortran (GCC) 12.2.0
+* running under: macOS 15.5
+* using session charset: UTF-8
+* checking for file ‘./DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘powergene’ version ‘0.1.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  .Rhistory
+  .gitignore
+  ..Rcheck
+  .Rproj.user
+  .git
+These were most likely included in error. See section ‘Package
+structure’ in the ‘Writing R Extensions’ manual.
+* checking for portable file names ... NOTE
+Found the following non-portable file paths:
+  powergene/.Rproj.user/shared/notebooks/620FF3BA-Power_Analysis_ShortTermSFE_SingleIntervention_R_tutorial/1/1BA8DCC5a73e6220/chunks.json
+  powergene/.Rproj.user/shared/notebooks/620FF3BA-Power_Analysis_ShortTermSFE_SingleIntervention_R_tutorial/1/s/chunks.json
+  powergene/.Rproj.user/shared/notebooks/620FF3BA-Power_Analysis_ShortTermSFE_SingleIntervention_R_tutorial/1/1BA8DCC5a73e6220
+  powergene/.Rproj.user/shared/notebooks/620FF3BA-Power_Analysis_ShortTermSFE_SingleIntervention_R_tutorial/1/s
+
+Tarballs are only required to store paths of up to 100 bytes and cannot
+store those of more than 256 bytes, with restrictions including to 100
+bytes for the final component.
+See section ‘Package structure’ in the ‘Writing R Extensions’ manual.
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘powergene’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/kipingu/Library/CloudStorage/OneDrive-UniversityofGlasgow/Ifakara/Manuscripts/2025/Interactive_power_framework/R_Package/powergene/..Rcheck/00install.out’ for details.
+* DONE
+Status: 1 ERROR, 2 NOTEs
