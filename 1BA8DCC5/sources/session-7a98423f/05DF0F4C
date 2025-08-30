@@ -3,7 +3,7 @@
     "path": "~/Library/CloudStorage/OneDrive-UniversityofGlasgow/Ifakara/Manuscripts/2025/Interactive_power_framework/R_Package/powergene/R/Power_Analysis_ShortTermSFE_SingleIntervention.R",
     "project_path": "R/Power_Analysis_ShortTermSFE_SingleIntervention.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "1320272761",
     "contents": "",
     "dirty": false,
     "created": 1756571655963.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "20,13",
+        "cursorPosition": "15,32",
         "scrollLine": "9"
     },
     "folds": "",
-    "lastKnownWriteTime": 1756573532,
+    "lastKnownWriteTime": 1756574167,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1756573532572,
+    "last_content_update": 1756574167258,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -13,7 +13,7 @@ set.seed(123)
 
 sim.scen.shortsfe.sinint <- function(n.ch.per.trt){
   # design choices
-  n.ch.per.trt <- 4 # number of chambers per treatment
+  n.ch.per.trt <- n.ch.per.trt #4 # number of chambers per treatment
   treatment.lev <- 0:1 # ITN levels: 0 means no ITN and 1 means there is ITN
   # make template data set representing design
   dat <-expand.grid(replicates = 1:n.ch.per.trt, treatment = treatment.lev)
