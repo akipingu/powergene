@@ -20,8 +20,9 @@ simulate.scenarios <- function(n.ch.per.trt, treatment.lev){
   # create chambers/replicates id
   dat$chamber <- factor(paste(dat$itn, dat$replicates, sep="-"))
   # rearranging data set in a useful order
-  dat <- dat[, c("replicates", "treatment", "chamber")]
+  dat <- dat[, c("replicates", "treatment", "chamber.id")]
   # output dat table
   dat
 }
+
 
