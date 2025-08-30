@@ -20,7 +20,7 @@ sim.scen.shortsfe.sinint <- function(n.ch.per.trt){
   # create chambers/replicates id
   dat$chamber <- factor(paste(dat$treatment, dat$replicates, sep="-"))
   # rearranging data set in a useful order
-  dat <- dat[, c("replicates", "treatment", "chamber.id")]
+  dat <- dat[, c("replicates", "treatment", "chamber")]
   # output dat table
   dat
 }
