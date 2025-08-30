@@ -16,9 +16,9 @@ sim.scen.shortsfe.sinint <- function(n.ch.per.trt, treatment.lev){
   n.ch.per.trt <- n.ch.per.trt #4 # number of chambers per treatment
   treatment.lev <- treatment.lev #0:1 # ITN levels: 0 means no ITN and 1 means there is ITN
   # make template data set representing design
-  dat <-expand.grid(replicates = 1:n.ch.per.trt, itn = itn.lev)
+  dat <-expand.grid(replicates = 1:n.ch.per.trt, treatment = treatment.lev)
   # create chambers/replicates id
-  dat$chamber <- factor(paste(dat$itn, dat$replicates, sep="-"))
+  dat$chamber <- factor(paste(dat$treatment, dat$replicates, sep="-"))
   # rearranging data set in a useful order
   dat <- dat[, c("replicates", "treatment", "chamber.id")]
   # output dat table
