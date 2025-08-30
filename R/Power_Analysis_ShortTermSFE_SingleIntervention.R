@@ -11,7 +11,7 @@ set.seed(123)
 
 # function simulate.scenarios gives the setting of experimental design scenarios and parameter choices
 
-simulate.scenarios <- function(n.ch.per.trt, treatment.lev){
+sim.scen.shortsfe.sinint <- function(n.ch.per.trt, treatment.lev){
   # design choices
   n.ch.per.trt <- n.ch.per.trt #4 # number of chambers per treatment
   treatment.lev <- treatment.lev #0:1 # ITN levels: 0 means no ITN and 1 means there is ITN
