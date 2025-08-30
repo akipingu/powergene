@@ -1,0 +1,65 @@
+#instal package
+devtools::install_github('akipingu/powergene')
+#library
+library(powergene)
+# hello is the is the square function. any number you input, you will get its square.
+hello(3)
+#library
+library(powergene)
+# hello is the is the square function. any number you input, you will get its square.
+square(3)
+# hello is the is the square function. any number you input, you will get its square.
+square(3)
+#library
+library(powergene)
+# hello is the is the square function. any number you input, you will get its square.
+square(3)
+#library
+library(powergene)
+# hello is the is the square function. any number you input, you will get its square.
+square(3)
+#instal package
+#devtools::install_github('akipingu/powergene')
+#library
+#library(powergene)
+# hello is the is the square function. any number you input, you will get its square.
+square(3)
+square(3)
+sim.shortsfe.sinint(4,0:1)
+sim.shortsfe.sinint(4,0:1)
+install.packages("pkgload")
+install.packages("pkgload")
+#instal package
+#devtools::install_github('akipingu/powergene')
+#library: do not use this inside your package
+#library(powergene)
+#Use this when preparing vignettes or testing installation
+# devtools::install()
+# refresh your package to test the function.
+devtools::load_all()
+install.packages("pkgload")
+#instal package
+#devtools::install_github('akipingu/powergene')
+#library: do not use this inside your package
+#library(powergene)
+#Use this when preparing vignettes or testing installation
+# devtools::install()
+# refresh your package to test the function.
+devtools::load_all()
+#instal package
+#devtools::install_github('akipingu/powergene')
+#library: do not use this inside your package
+#library(powergene)
+#Use this when preparing vignettes or testing installation
+# devtools::install()
+# refresh your package to test the function.
+devtools::load_all()
+setwd("~/Library/CloudStorage/OneDrive-UniversityofGlasgow/Ifakara/Manuscripts/2025/Interactive_power_framework/R_Package/powergene")
+sim.shortsfe.sinint(4,0:1)
+sim.scen.shortsfe.sinint(4, 0:1)
+devtools::load_all()
+devtools::load_all()
+devtools::load_all()
+sim.scen.shortsfe.sinint(4)
+sim.scen.shortsfe.sinint(4)
+sim.scen.shortsfe.sinint(2)
