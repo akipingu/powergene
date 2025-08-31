@@ -1,0 +1,15 @@
+#instal package
+devtools::install_github('akipingu/powergene')
+#library: do not use this inside your package
+library(powergene)
+#Use this when preparing vignettes or testing installation
+# devtools::install()
+# refresh your package to test the function.
+# devtools::load_all()
+
+# hello is the is the square function. any number you input, you will get its square.
+square(3)
+#[9]
+
+# simulate table of scenarios
+sim.scen.shortsfe.sinint(5)

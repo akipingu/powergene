@@ -1,5 +1,18 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
 
 # powergene: A simulation-based power analysis R Package to aid the design of robust semi-field vector control experiments
 
@@ -7,17 +20,15 @@
 
 <!-- badges: end -->
 
-This R package simulates mosquito count data under short-term semi-field
-experimental designs, incorporating fixed treatment effects and random
-chamber variability. It’s built for pragmatic trial planning, MSc-level
-teaching, and reproducible research workflows.
+This R package simulates mosquito count data under short-term semi-field experimental designs, incorporating fixed treatment effects and random chamber variability. It’s built for pragmatic trial planning, MSc-level teaching, and reproducible research workflows.
 
 ## Installation
 
 You can install the development version of powergene directly from
 [GitHub](https://github.com/) with:
 
-``` r
+
+  ```r
 # install.packages("devtools") if not already installed
 install.packages("devtools")
 devtools::install_github("akipingu/powergene")
@@ -25,14 +36,13 @@ devtools::install_github("akipingu/powergene")
 library(powergene)
 ```
 
+
 ## Example: Estimating power of a short-term SFE testing single intervention
 
-This is a basic example which shows you how to apply the powergene
-package to estimate power of a short-term SFE
+This is a basic example which shows you how to apply the powergene package to estimate power of a short-term SFE
 
 Simulate mosquitoes
-
-``` r
+```r
 # Simulate mosquito counts with:
 # - 4 chambers per treatment group
 # - Baseline lambda = 50
