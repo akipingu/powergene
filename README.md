@@ -33,7 +33,7 @@ library(powergene)
 This is a basic example which shows you how to apply the powergene
 package to estimate power of a short-term SFE
 
-1)  simulate a table of scenarios based on number of chamber per
+1)  Simulate a table of scenarios based on number of chamber per
     treatment provided, e.g., n.ch.per.trt=4. After specifying number of
     chamber per each treatment (control vs. intervention), the function
     sim.scen.shortsfe.sinint will output three columns including number
@@ -55,15 +55,15 @@ sce.table
 #> 8          4         1     1-4
 ```
 
-Simulate mosquitoes
+Simulate mosquitoes counts/abundance by specifying the number of
+chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to
+be recaptured from a control chamber, e.g., lambda=50, intervention
+effect, e.g., interv.effect = 0.8 for 80% effect, and chamber-level
+variance, e.g., chamber.var = 0.1807. The resultant number of mosquitoes
+will be either with random effect included or without including the
+random effect.
 
 ``` r
-# Simulate mosquito counts with:
-# - 4 chambers per treatment group
-# - Baseline lambda = 50
-# - 80% intervention effect (e.g., ITN)
-# - Chamber-level variance = 0.1807
-
 sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
@@ -72,4 +72,18 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 )
 
 head(sim.mosquitoes)
+#>   replicates treatment chamber lin.pred.fixed mosquito.count.fixed
+#> 1          1         0     0-1           3.91                   45
+#> 2          2         0     0-2           3.91                   51
+#> 3          3         0     0-3           3.91                   54
+#> 4          4         0     0-4           3.91                   59
+#> 5          1         1     1-1           2.30                    7
+#> 6          2         1     1-2           2.30                    8
+#>   lin.pred.random mosquito.count.rondom
+#> 1            4.15                    66
+#> 2            3.68                    40
+#> 3            4.23                    71
+#> 4            4.62                    88
+#> 5            1.82                     7
+#> 6            1.88                     8
 ```

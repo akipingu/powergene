@@ -43,7 +43,7 @@ library(powergene)
 
 This is a basic example which shows you how to apply the powergene package to estimate power of a short-term SFE
 
-(i) simulate a table of scenarios based on number of chamber per treatment provided, e.g., n.ch.per.trt=4. After specifying number of chamber per each treatment (control vs. intervention), the function sim.scen.shortsfe.sinint will output three columns including number of chambers per each treatment (replicates), treatment status (0 for control and 1 for intervention) and id for each individual chamber/replicate.
+(i) Simulate a table of scenarios based on number of chamber per treatment provided, e.g., n.ch.per.trt=4. After specifying number of chamber per each treatment (control vs. intervention), the function sim.scen.shortsfe.sinint will output three columns including number of chambers per each treatment (replicates), treatment status (0 for control and 1 for intervention) and id for each individual chamber/replicate.
 
 ```{r}
 sce.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
@@ -51,14 +51,9 @@ sce.table
 ```
 
 
-Simulate mosquitoes
-```r
-# Simulate mosquito counts with:
-# - 4 chambers per treatment group
-# - Baseline lambda = 50
-# - 80% intervention effect (e.g., ITN)
-# - Chamber-level variance = 0.1807
+Simulate mosquitoes counts/abundance by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for 80% effect, and chamber-level variance, e.g., chamber.var = 0.1807. The resultant number of mosquitoes will be either with random effect included or without including the random effect.
 
+```{r}
 sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
