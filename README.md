@@ -12,13 +12,13 @@ experimental designs, incorporating fixed treatment effects and random
 chamber variability. It’s built for pragmatic trial planning, MSc-level
 teaching, and reproducible research workflows.
 
-This package is the extention of a simulation based power analysis
-framework from [Kipingu et. al
+This package is an extention of a simulation based power analysis
+framework developed by [Kipingu et. al
 2025](https://doi.org/10.1186/s12936-025-05454-y). Therefore, all
 parameter values for the examples below are taken directily from the
 same study. Visit [Kipingu et. al
 2025](https://doi.org/10.1186/s12936-025-05454-y) for more information
-and description regarding simulation-based power analysis.
+and descriptions regarding simulation-based power analysis.
 
 ## Installation
 
@@ -88,14 +88,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates treatment chamber mosquito.count.rondom
-#> 1          1         0     0-1                    23
-#> 2          2         0     0-2                    38
-#> 3          3         0     0-3                    42
-#> 4          4         0     0-4                    48
-#> 5          1         1     1-1                     8
-#> 6          2         1     1-2                    10
-#> 7          3         1     1-3                     8
-#> 8          4         1     1-4                    11
+#> 1          1         0     0-1                   113
+#> 2          2         0     0-2                    81
+#> 3          3         0     0-3                    45
+#> 4          4         0     0-4                    95
+#> 5          1         1     1-1                     7
+#> 6          2         1     1-2                     9
+#> 7          3         1     1-3                    11
+#> 8          4         1     1-4                     3
 ```
 
 3)  Estimate p-value using sim.pval.shortsfe.sinint function by
@@ -116,8 +116,8 @@ pvalue <- sim.pval.shortsfe.sinint(
 
 #output the p-values
 pvalue
-#>      pvalue 
-#> 2.20241e-07
+#>       pvalue 
+#> 1.242045e-17
 ```
 
 4)  Since power cannot be estimated from a single simulation, there is a
