@@ -21,14 +21,39 @@ You can install the development version of powergene directly from
 # install.packages("devtools") if not already installed
 install.packages("devtools")
 devtools::install_github("akipingu/powergene")
+```
+
+``` r
 #load library
 library(powergene)
 ```
 
-## Example: Estimating power of a short-term SFE testing single intervention
+## Example 1: Estimating power of a short-term SFE testing single intervention
 
 This is a basic example which shows you how to apply the powergene
 package to estimate power of a short-term SFE
+
+1)  simulate a table of scenarios based on number of chamber per
+    treatment provided, e.g., n.ch.per.trt=4. After specifying number of
+    chamber per each treatment (control vs. intervention), the function
+    sim.scen.shortsfe.sinint will output three columns including number
+    of chambers per each treatment (replicates), treatment status (0 for
+    control and 1 for intervention) and id for each individual
+    chamber/replicate.
+
+``` r
+sce.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
+sce.table
+#>   replicates treatment chamber
+#> 1          1         0     0-1
+#> 2          2         0     0-2
+#> 3          3         0     0-3
+#> 4          4         0     0-4
+#> 5          1         1     1-1
+#> 6          2         1     1-2
+#> 7          3         1     1-3
+#> 8          4         1     1-4
+```
 
 Simulate mosquitoes
 
