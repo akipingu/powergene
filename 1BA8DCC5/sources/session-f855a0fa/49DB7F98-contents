@@ -22,6 +22,10 @@ knitr::opts_chunk$set(
 
 This R package simulates mosquito count data under short-term semi-field experimental designs, incorporating fixed treatment effects and random chamber variability. It’s built for pragmatic trial planning, MSc-level teaching, and reproducible research workflows.
 
+This package is the extention of a simulation based power analysis framework from [Kipingu et. al 2025](https://doi.org/10.1186/s12936-025-05454-y
+). Therefore, all parameter values for the examples below are taken directily from the same study. Visit [Kipingu et. al 2025](https://doi.org/10.1186/s12936-025-05454-y
+) for more information and description regarding simulation-based power analysis.
+
 ## Installation
 
 You can install the development version of powergene directly from
@@ -43,22 +47,19 @@ library(powergene)
 
 This is a basic example which shows you how to apply the powergene package to estimate power of a short-term SFE
 
-(i) simulate a table of scenarios based on number of chamber per treatment provided, e.g., n.ch.per.trt=4. After specifying number of chamber per each treatment (control vs. intervention), the function sim.scen.shortsfe.sinint will output three columns including number of chambers per each treatment (replicates), treatment status (0 for control and 1 for intervention) and id for each individual chamber/replicate.
+(i) Simulate a table of scenarios based on number of chamber per treatment provided, e.g., n.ch.per.trt=4. After specifying number of chamber per each treatment (control vs. intervention), the function sim.scen.shortsfe.sinint will output three columns including number of chambers per each treatment (replicates), treatment status (0 for control and 1 for intervention) and id for each individual chamber/replicate.
 
 ```{r}
 sce.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
+
+#print the scenario table
 sce.table
 ```
 
 
-Simulate mosquitoes
-```r
-# Simulate mosquito counts with:
-# - 4 chambers per treatment group
-# - Baseline lambda = 50
-# - 80% intervention effect (e.g., ITN)
-# - Chamber-level variance = 0.1807
+(ii) Simulate mosquitoes counts/abundance by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for 80% effect, and chamber-level variance, e.g., chamber.var = 0.1807. The resultant number of mosquitoes will be either with random effect included or without including the random effect. Below, columns 4, 5 and 6 because they are optional but you can print them if you want. Remember our main target is the mosquito abundance that account for chamber random effect.
 
+```{r}
 sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
@@ -66,5 +67,39 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   chamber.var = 0.1807
 )
 
-head(sim.mosquitoes)
+#output mosquito counts per each chamber
+sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
+sim.mosquitoes
 ```
+
+(iii) Estimate p-value using sim.pval.shortsfe.sinint function by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for 80% effect, and chamber-level variance, e.g., chamber.var = 0.1807. The p-value estimation is based on mosquito abundance that accounted for random chamber effect.
+
+```{r}
+pvalue <- sim.pval.shortsfe.sinint(
+    n.ch.per.trt = 4,
+  lambda = 50,
+  interv.effect = 0.8,
+  chamber.var = 0.1807
+)
+
+#output the p-values
+pvalue
+```
+
+(iv) Since power cannot be estimated from a single simulation, there is a need to simulate multiple data sets and estimate power. Now you can estimate power by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for 80% effect, chamber-level variance, e.g., chamber.var = 0.1807, and the total simulations, e.g., nsim=100. A 100 simulations are just for illustration purpose, but it is recommended to run at least 1000 simulations if you are estimating power for a real experiment. The power estimation is based on mosquito abundance that accounted for random chamber effect.
+
+```{r}
+power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
+  lambda = 50,
+  interv.effect = 0.8,
+  chamber.var = 0.1807, nsim = 100
+  )
+
+#print estimated power
+power.estimate
+```
+
+
+
+
+
