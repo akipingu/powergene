@@ -26,21 +26,22 @@ This package is an extension of a simulation based power analysis framework deve
 ). Therefore, all parameter values for the examples below are taken directily from the same study. Visit [Kipingu et. al 2025](https://doi.org/10.1186/s12936-025-05454-y
 ) for more information and description regarding simulation-based power analysis.
 
-## Installation
+## Installation of powergene package
 
-You can install the development version of powergene directly from
+You can install the development version of powergene package directly from
 [GitHub](https://github.com/) with:
 
 
 ```r
-# install.packages("devtools") if not already installed
+# First, install.packages("devtools") if not already installed
 install.packages("devtools")
+# Then, instal the powergene package from github
 devtools::install_github("akipingu/powergene")
 ```
 
 ```{r}
-#load library
-library(powergene)
+#load package library
+library("powergene")
 ```
 
 ## Example 1: Estimating power of a short-term SFE testing single intervention

@@ -20,20 +20,21 @@ same study. Visit [Kipingu et. al
 2025](https://doi.org/10.1186/s12936-025-05454-y) for more information
 and description regarding simulation-based power analysis.
 
-## Installation
+## Installation of powergene package
 
-You can install the development version of powergene directly from
-[GitHub](https://github.com/) with:
+You can install the development version of powergene package directly
+from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools") if not already installed
+# First, install.packages("devtools") if not already installed
 install.packages("devtools")
+# Then, instal the powergene package from github
 devtools::install_github("akipingu/powergene")
 ```
 
 ``` r
-#load library
-library(powergene)
+#load package library
+library("powergene")
 ```
 
 ## Example 1: Estimating power of a short-term SFE testing single intervention
@@ -88,14 +89,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates treatment chamber mosquito.count.rondom
-#> 1          1         0     0-1                    27
-#> 2          2         0     0-2                    31
-#> 3          3         0     0-3                   167
-#> 4          4         0     0-4                    64
-#> 5          1         1     1-1                    10
-#> 6          2         1     1-2                    22
-#> 7          3         1     1-3                    12
-#> 8          4         1     1-4                     8
+#> 1          1         0     0-1                    39
+#> 2          2         0     0-2                    43
+#> 3          3         0     0-3                    74
+#> 4          4         0     0-4                   111
+#> 5          1         1     1-1                    11
+#> 6          2         1     1-2                    16
+#> 7          3         1     1-3                    11
+#> 8          4         1     1-4                    10
 ```
 
 3)  Estimate p-value using sim.pval.shortsfe.sinint function by
@@ -117,7 +118,7 @@ pvalue <- sim.pval.shortsfe.sinint(
 #output the p-values
 pvalue
 #>       pvalue 
-#> 0.0005837676
+#> 1.264587e-07
 ```
 
 4)  Since power cannot be estimated from a single simulation, there is a
