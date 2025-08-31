@@ -125,7 +125,7 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #' @importFrom parallel makeCluster parLapply stopCluster clusterExport detectCores
 #'
 #' @export
-sim.power.shortsfe.sinint <- function(nsim, n.ch.per.trt, lambda, interv.effect, chamber.var,
+sim.power.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var, nsim,
                                       n.cores = parallel::detectCores() - 1) {
   cl <- parallel::makeCluster(n.cores)
   on.exit(parallel::stopCluster(cl))

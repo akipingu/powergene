@@ -43,6 +43,8 @@ package to estimate power of a short-term SFE
 
 ``` r
 sce.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
+
+#print the scenario table
 sce.table
 #>   replicates treatment chamber
 #> 1          1         0     0-1
@@ -71,19 +73,58 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   chamber.var = 0.1807
 )
 
-head(sim.mosquitoes)
-#>   replicates treatment chamber lin.pred.fixed mosquito.count.fixed
-#> 1          1         0     0-1           3.91                   45
-#> 2          2         0     0-2           3.91                   51
-#> 3          3         0     0-3           3.91                   54
-#> 4          4         0     0-4           3.91                   59
-#> 5          1         1     1-1           2.30                    7
-#> 6          2         1     1-2           2.30                    8
-#>   lin.pred.random mosquito.count.rondom
-#> 1            4.15                    66
-#> 2            3.68                    40
-#> 3            4.23                    71
-#> 4            4.62                    88
-#> 5            1.82                     7
-#> 6            1.88                     8
+#output mosquito counts per each chamber. I drop columns 4 and 6 because they are optional but you can print them if you want.
+sim.mosquitoes <- sim.mosquitoes[, c(-4,-6)]
+sim.mosquitoes
+#>   replicates treatment chamber mosquito.count.fixed mosquito.count.rondom
+#> 1          1         0     0-1                   58                    28
+#> 2          2         0     0-2                   46                    66
+#> 3          3         0     0-3                   55                    65
+#> 4          4         0     0-4                   54                   100
+#> 5          1         1     1-1                   10                    16
+#> 6          2         1     1-2                   17                    11
+#> 7          3         1     1-3                   14                     5
+#> 8          4         1     1-4                    6                     5
+```
+
+3)  Estimate p-value using sim.pval.shortsfe.sinint function by
+    specifying the number of chambers per treatment, e.g., n.ch.per.trt
+    = 4, expected mosquitoes to be recaptured from a control chamber,
+    e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for
+    80% effect, and chamber-level variance, e.g., chamber.var = 0.1807.
+
+``` r
+pvalue <- sim.pval.shortsfe.sinint(
+    n.ch.per.trt = 4,
+  lambda = 50,
+  interv.effect = 0.8,
+  chamber.var = 0.1807
+)
+
+#output the p-values
+pvalue
+#>       pvalue 
+#> 0.0001555556
+```
+
+4)  Now you can estimate power by specifying the number of chambers per
+    treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be
+    recaptured from a control chamber, e.g., lambda=50, intervention
+    effect, e.g., interv.effect = 0.8 for 80% effect, chamber-level
+    variance, e.g., chamber.var = 0.1807, and the total simulations,
+    e.g., nsim=100. A 100 simulations are just for practise, but it is
+    recommended to run at least 1000 simulations if you are estimating
+    power for a real experiment.
+
+``` r
+power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
+  lambda = 50,
+  interv.effect = 0.8,
+  chamber.var = 0.1807, nsim = 100
+  )
+
+#print estimated power
+power.estimate
+#> power 
+#>     1
 ```
