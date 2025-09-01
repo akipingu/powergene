@@ -51,10 +51,10 @@ package to estimate power of a short-term SFE
     chamber/replicate.
 
 ``` r
-sce.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
+scen.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
 
 #print the scenario table
-sce.table
+scen.table
 #>   replicates treatment chamber
 #> 1          1         0     0-1
 #> 2          2         0     0-2
@@ -89,13 +89,13 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates treatment chamber mosquito.count.rondom
-#> 1          1         0     0-1                    14
-#> 2          2         0     0-2                    41
-#> 3          3         0     0-3                    52
-#> 4          4         0     0-4                   164
+#> 1          1         0     0-1                   116
+#> 2          2         0     0-2                    39
+#> 3          3         0     0-3                    81
+#> 4          4         0     0-4                    21
 #> 5          1         1     1-1                    13
-#> 6          2         1     1-2                     8
-#> 7          3         1     1-3                     6
+#> 6          2         1     1-2                    16
+#> 7          3         1     1-3                     8
 #> 8          4         1     1-4                    11
 ```
 
@@ -118,7 +118,7 @@ pvalue <- sim.pval.shortsfe.sinint(
 #output the p-values
 pvalue
 #>       pvalue 
-#> 1.580384e-14
+#> 3.673234e-12
 ```
 
 4)  Since power cannot be estimated from a single simulation, there is a

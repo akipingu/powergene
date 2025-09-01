@@ -51,10 +51,10 @@ This is a basic example which shows you how to apply the powergene package to es
 (i) Simulate a table of scenarios based on number of chamber per treatment provided, e.g., n.ch.per.trt=4. After specifying number of chamber per each treatment (control vs. intervention), the function sim.scen.shortsfe.sinint will output three columns including number of chambers per each treatment (replicates), treatment status (0 for control and 1 for intervention) and id for each individual chamber/replicate.
 
 ```{r}
-sce.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
+scen.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
 
 #print the scenario table
-sce.table
+scen.table
 ```
 
 

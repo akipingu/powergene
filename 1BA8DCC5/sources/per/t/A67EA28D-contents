@@ -1,0 +1,294 @@
+library(shiny)
+library(dplyr) # case_when function
+library(lattice) # for graphics
+library(lme4) # for glmer
+library(ggplot2) # for ggplot
+library(glmmTMB) # for glmm with TMB
+
+library(shiny)
+library(bslib)
+
+nchambers <- numericInput(
+  "n.ch.per.trt", # inputID (for server)
+  "Number of chambers per treatment:", # label
+  min = 1,
+  max = 16,
+  value = 4,
+  step = 1
+) 
+lambda <- numericInput(
+  "lamb", 
+  "Mean recaptured mosquito count in the control group:", # label
+  min = 0,
+  max = 200,
+  value = 100,  
+  step = 10
+)
+itn_effect <- numericInput(
+  "itn.eff", 
+  "Proportion* remaining in ITN chambers relative to control chambers:", # label
+  min = 0,
+  max = 1,
+  value = .2,
+  step = .1
+)
+ppf_effect <- numericInput(
+  "ppf.eff", 
+  "Proportion* remaining in PPFa chambers relative to control chambers:", # label
+  min = 0,
+  max = 1,
+  value = .3,
+  step = .1
+)
+ixn_effect <- numericInput(
+  "ixn.eff", 
+  "Proportion* remaining in interaction due to between ITN and PPFa", # label
+  min = 0,
+  max = 1,
+  value = .5,
+  step = .1
+)
+chamb_var <-numericInput(
+  "chamb.var", 
+  "Assign chamber variance:", # label
+  min = 0,
+  max = 1,
+  value = 0.1807,
+  step = 0.01
+)
+n_sim <- numericInput(
+  "nsim", 
+  "Number of simulations:", # label
+  min = 10,
+  max = 10000,
+  value = 100)
+
+# Define UI for application that draws a histogram
+ui <- page_sidebar(
+  
+  # Application title
+  title = h4("A power analysis framework to aid the design of robust semi-field vector control experiments"),
+  
+  # Sidebar with a number input for numeric options
+  sidebar = sidebar(
+    title = p(strong("Design Choices for a short-term SFE testing combined interventions")),
+    helpText("After setting experimental design scenarios and parameter choices, 
+    the inter-chamber variance, a single data set can now be simulated and generated. 
+               The default values are taken from Kipingu et. al 2025"),
+    accordion(
+      open = F,
+      accordion_panel(
+        "Chambers",
+        nchambers
+      ),
+      accordion_panel(
+        "Recapture", 
+        lambda
+      ),
+      accordion_panel(
+        "ITN Effect", 
+        itn_effect,
+        helpText("*Proportion of mosquitoes")
+      ),
+      accordion_panel(
+        "PPf Effect", 
+        ppf_effect,
+        helpText("*Proportion of mosquitoes")
+      ),
+      accordion_panel(
+        "Interaction Effect", 
+        ixn_effect,
+        helpText("*Proportion of mosquitoes")
+      ),
+      accordion_panel(
+        "Variance", # label
+        chamb_var,
+        helpText("The estimated variance of 0.1807 used was based on published SFE data. Observe how power decreases with an increase of variance.")
+      ),
+      accordion_panel(
+        "Simulate", # label
+        n_sim,
+        helpText("Notes: number of simulations is set to 100 for illustration purpose."),
+        helpText("However, we recommend setting it to a much higher value, e.g., 1000.")
+      )
+    )
+  ),
+  
+  # Main panel for displaying outputs ----
+  # Output: A tabset that combines three panels ----
+  card(
+    card_header("Table"),
+    height = "600px",
+    # Panel with table ----
+    tableOutput("table")
+  ),
+  card(
+    uiOutput("helptext")
+  ),
+  # Add card for Explanations on the table and the power
+  card(
+    tags$div(
+      tags$p("A function already described ",
+             tags$a("(1)", href = "https://example.com", target = "_blank"),
+             " automates the simulation process that then produces a table containing mosquito counts as an output (above).")
+    ),
+    helpText("Using the simulated linear predictor (sum of terms which include coefficients e.g., as an intercept and as a slope with their associated explanatory variables), 
+                 expected mosquito counts will then be generated using a Poisson distribution.
+                 Since power cannot be estimated from a single simulation, there is a need to simulate multiple data sets.
+                 Again, another function was created to output a list of p-values by automating the previous function to simulate multiple data sets based on the number of simulations assigned.
+                 Therefore, the percentage of the data sets whose p-values are less than 0.05 is the power estimate.")
+  )
+  
+  
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output, session) {
+  
+  dat <- reactive({
+    # design choices 
+    n.ch.per.trt <- input$n.ch.per.trt
+    itn.lev <- 0:1 # ITN levels: 0 means no ITN and 1 means there is ITN
+    ppf.lev <- 0:1 # ITN levels: 0 means no ITN and 1 means there is ITN
+    # make a template data set representing design 
+    dat <-
+      expand.grid(replicates = 1:n.ch.per.trt, ppf = ppf.lev, itn = itn.lev)
+    dat$chamber <- factor(paste(dat$ppf, dat$itn, dat$replicates, sep = "-"))
+    dat$ixn <- dat$ppf * dat$itn # interaction btn PPFa and ITN
+    # rearranging data set in a useful order
+    dat <- dat[, c("replicates", "ppf", "itn", "ixn", "chamber")]
+    dat
+  })
+  
+  singledat <- reactive({
+    # parameter choices - fixed effects
+    # mean recaptured mosquito count in the control group 
+    lambda <- input$lamb
+    # proportion remaining in ITN chambers relative to control chambers 
+    itn.effect <- input$itn.eff
+    ixn.effect <- input$ixn.eff
+    ppf.effect <- input$ppf.eff
+    # assign chamber variance 
+    chamber.var <- input$chamb.var
+    
+    # coefficients (parameter values) for the linear predictor terms
+    b.0 <- log(lambda)
+    b.p <- log(ppf.effect)
+    b.i <- log(itn.effect)
+    b.pi <- log(ixn.effect)
+    
+    # single simulation of random effect variance per chamber
+    dati <- dat()
+    # simulate random effects for chambers
+    set.seed(123)
+    chamber.re <- rnorm(nlevels(dati$chamber), sd = sqrt(chamber.var))
+    names(chamber.re) <- levels(dati$chamber)
+    # simulate linear predictor (with fixed effects only)
+    # add the simulated data to dataset "dat" as a column named lin.pred
+    dati$lin.pred.fixed <-
+      b.0 + b.p * dati$ppf + b.i * dati$itn + b.pi * dati$ixn 
+    # add random effects (chamber.re) to linear predictors trials, mean and size
+    dati$lin.pred <-  
+      dati$lin.pred.fixed + chamber.re[as.character(dati$chamber)] 
+    # generate mosquitoes counts as random data using Poisson distribution   
+    dati$mosquito.count <- rpois(nrow(dati), exp(dati$lin.pred))
+    dati$ixn.effect <- dati$ixn.effect
+    # output the new data table “dat”  
+    dati
+  })
+  
+  # function for simulating the data
+  # assign function to simulate data as sim.dat.fun
+  # beggining of the function "sim.dat.fun"
+  sim.dat.fun <- function(data,b.0,b.p,b.i,b.pi,chamber.var){
+    # simulate random effects for chambers
+    chamber.re <- rnorm(nlevels(data$chamber), sd = sqrt(chamber.var))
+    names(chamber.re) <- levels(data$chamber)
+    # simulate linear predictor (with fixed effects only)
+    # add the simulated data to dataset "dat" as a column named lin.pred
+    data$lin.pred.fixed <-
+      b.0 + b.p * data$ppf + b.i * data$itn + b.pi * data$ixn 
+    # add random effects (chamber.re) to linear predictors trials, mean and size
+    data$lin.pred <-  
+      data$lin.pred.fixed + chamber.re[as.character(data$chamber)] 
+    # generate mosquitoes counts as random data using Poisson distribution    
+    data$mosquito.count <- rpois(nrow(data), exp(data$lin.pred))
+    data$ixn.effect <- data$ixn.effect
+    # output the new data table “dat”  
+    data
+  } # end of data simulation function "sim.dat.fun"
+  
+  simPval <- reactive({
+    # parameter choices - fixed effects
+    # mean recaptured mosquito count in the control group 
+    lambda <- input$lamb
+    # proportion remaining in ITN chambers relative to control chambers 
+    itn.effect <- input$itn.eff
+    ppf.effect <- input$ppf.eff
+    ixn.effect <- input$ixn.eff
+    # assign chamber variance 
+    chamber.var <- input$chamb.var
+    
+    # coefficients (parameter values) for the linear predictor terms
+    b.0 <- log(lambda)
+    b.p <- log(ppf.effect)
+    b.i <- log(itn.effect)
+    b.pi <- log(ixn.effect)
+    
+    # outputting the parameter estimates and the p-values from the simulation function
+    sim.mos.pval <- function(...){
+      simdat2 <- sim.dat.fun(dat(),b.0,b.p,b.i,b.pi,chamber.var)
+      fit.ixn <- glmer(mosquito.count ~ ppf+itn+ixn+(1|chamber),family = "poisson",data=simdat2)
+      fit.noixn <- glmer(mosquito.count ~ ppf+itn+(1|chamber),family = "poisson",data=simdat2)
+      p <- anova(fit.ixn,fit.noixn)[2, "Pr(>Chisq)"]
+      c(p = p)
+    }
+    
+    set.seed(1234)
+    nsim <- input$nsim 
+    sim.pvals.list <- 
+      lapply(1:input$nsim, sim.mos.pval)
+    sim.pvals <- do.call("rbind", sim.pvals.list)
+    # estimate power as a proportion of data sets whose p-values p< 0.05. 
+    n.sig <- sum(sim.pvals[, "p"] < 0.05)
+    power.estimate <- paste0(round(100*n.sig/nsim,2),"%")
+    power.estimate.list <- list(power.estimate,n.sig)
+    # output power estimate
+    power.estimate.list
+  })
+  
+  # use paging = FALSE to disable pagination
+  output$table <- renderTable(
+    head(singledat(),32)
+    
+  )
+  
+  output$helptext <- renderUI({
+    power.string <- simPval()[[1]]  # e.g. "99%"
+    n.sig <- simPval()[[2]]
+    
+    # Extract numeric part (remove % and convert to number)
+    power.num <- as.numeric(gsub("%", "", power.string))
+    
+    # Choose color conditionally
+    color <- if (power.num >= 80) {
+      "green"
+    } else if (power.num >= 50) {
+      "orange"
+    } else {
+      "red"
+    }
+    
+    HTML(paste0(
+      "<p>Given ", input$nsim, " simulations, and ", n.sig," significant p-values, the power estimate is
+      <span style='color:", color, "; font-weight:bold;'>", power.string, "</span>.</p>"
+    ))
+  })
+  
+  
+  
+}
+
+
+# Run the application 
+shinyApp(ui = ui, server = server)

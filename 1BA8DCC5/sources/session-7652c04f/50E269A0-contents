@@ -20,7 +20,10 @@ jobs:
         uses: r-lib/actions/setup-pandoc@v2
 
       - name: Install required R packages
-        run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "devtools"))'
+        run: Rscript -e 'install.packages(c("rmarkdown", "knitr"))'
+
+      - name: Install devtools
+        run: Rscript -e 'install.packages("devtools")'
 
       - name: Install powergene from GitHub
         run: Rscript -e 'devtools::install_github("akipingu/powergene")'
