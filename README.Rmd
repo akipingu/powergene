@@ -68,7 +68,7 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   chamber.var = 0.1807
 )
 
-#output mosquito counts per each chamber
+#print mosquito counts per each chamber
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 ```

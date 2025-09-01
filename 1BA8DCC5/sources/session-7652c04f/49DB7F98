@@ -3,7 +3,7 @@
     "path": "~/Library/CloudStorage/OneDrive-UniversityofGlasgow/Ifakara/Manuscripts/2025/Interactive_power_framework/R_Package/powergene/README.Rmd",
     "project_path": "README.Rmd",
     "type": "r_markdown",
-    "hash": "1192198603",
+    "hash": "2517399307",
     "contents": "",
     "dirty": false,
     "created": 1756648390805.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "37,7",
-        "scrollLine": "33"
+        "cursorPosition": "70,6",
+        "scrollLine": "69"
     },
     "folds": "",
-    "lastKnownWriteTime": 1756656096,
+    "lastKnownWriteTime": 1756728375,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1756656096162,
+    "last_content_update": 1756728375134,
     "read_only": false,
     "read_only_alternatives": []
 }
