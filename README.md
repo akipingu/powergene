@@ -28,7 +28,7 @@ from [GitHub](https://github.com/) with:
 ``` r
 # First, install.packages("devtools") if not already installed
 install.packages("devtools")
-# Then, instal the powergene package from github
+# Then, instal the "powergene" package from github
 devtools::install_github("akipingu/powergene")
 ```
 
@@ -89,14 +89,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates treatment chamber mosquito.count.rondom
-#> 1          1         0     0-1                    39
-#> 2          2         0     0-2                    43
-#> 3          3         0     0-3                    74
-#> 4          4         0     0-4                   111
-#> 5          1         1     1-1                    11
-#> 6          2         1     1-2                    16
-#> 7          3         1     1-3                    11
-#> 8          4         1     1-4                    10
+#> 1          1         0     0-1                    51
+#> 2          2         0     0-2                    50
+#> 3          3         0     0-3                    35
+#> 4          4         0     0-4                    21
+#> 5          1         1     1-1                     6
+#> 6          2         1     1-2                     9
+#> 7          3         1     1-3                     5
+#> 8          4         1     1-4                    11
 ```
 
 3)  Estimate p-value using sim.pval.shortsfe.sinint function by
@@ -117,8 +117,8 @@ pvalue <- sim.pval.shortsfe.sinint(
 
 #output the p-values
 pvalue
-#>       pvalue 
-#> 1.264587e-07
+#>      pvalue 
+#> 1.18803e-07
 ```
 
 4)  Since power cannot be estimated from a single simulation, there is a
@@ -143,5 +143,5 @@ power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
 #print estimated power
 power.estimate
 #> power 
-#>     1
+#>  0.99
 ```
