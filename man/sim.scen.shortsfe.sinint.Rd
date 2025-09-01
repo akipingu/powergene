@@ -26,8 +26,8 @@ Each chamber is uniquely identified by its treatment and replicate combination.
 \details{
 This case study considers various design parameters including:
 - Number of chambers per treatment (`n.ch.per.trt`), e.g., 4
-- Mean mosquito count (`lambda`), e.g., 50
-- Proportion remaining due to ITN (`interv.effect`), e.g., 0.2
+- Expected mosquitoes to be recaptured in control chamber (`lambda`), e.g., 50
+- Proportion reduction due to ITN (`interv.effect`), e.g., 0.8
 - Inter-chamber variance (`chamber.var`), e.g., 0.1807
 - Number of simulations (`nsim`), e.g., 100
 }

@@ -97,10 +97,123 @@ power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
   )
 
 #print estimated power
-power.estimate
+round(power.estimate,2)
 ```
 
+(v) Now you use the function to estimate power for varied number of chambers per treatment, e.g., 2,4,6,8. 
 
+```{r}
+# Define treatment sizes
+n.ch.values <- c(2, 4, 6, 8)
+
+# Initialize storage
+power.df <- data.frame(
+  n.ch.per.trt = n.ch.values,
+  power = NA,
+  ci.lower = NA,
+  ci.upper = NA
+)
+
+# Run simulations and extract power + confidence intervals
+for (i in seq_along(n.ch.values)) {
+  n <- n.ch.values[i]
+  
+  result <- sim.power.shortsfe.sinint(
+    n.ch.per.trt = n,
+    lambda = 50,
+    interv.effect = 0.8,
+    chamber.var = 0.1807,
+    nsim = 100
+  )
+  
+  # Store results
+  power.df$power[i] <- result["power"]
+  power.df$ci.lower[i] <- result["ci.lower"]
+  power.df$ci.upper[i] <- result["ci.upper"]
+}
+
+#print the power results for each number of chambers per treatment
+round(power.df,2)
+```
+
+(vi) Plot the resulting power vs. number of chambers per treatment
+
+```{r}
+library(ggplot2)
+
+ggplot(power.df, aes(x = n.ch.per.trt, y = power)) +
+  geom_point(color = "black", size = 2) +
+  geom_line(color = "black", linewidth = 0.4) +
+  geom_errorbar(aes(ymin = ci.lower, ymax = ci.upper),
+                width = 0.4, color = "black", linewidth = 0.4) +
+  labs(
+    x = "Number of chambers per treatment",
+    y = "Estimated power",
+    title = "Power vs. number of chambers per treatment with 95% CI"
+  ) +
+  scale_y_continuous(labels = scales::percent, limit=c(0,1), breaks=seq(0,1,0.2)) +
+  geom_hline(yintercept=0.8, lty="twodash") +
+  geom_hline(yintercept=0.05, lty="longdash") +  
+  theme_bw()
+```
+
+(vii) Now you use the function to estimate power for varied number of chambers per treatment, e.g., 2,4,6,8 and varied effect size of an intervention.
+
+```{r}
+# Define parameter grids
+n.ch.values <- c(2, 4, 6, 8)
+effect.sizes <- c(0, 0.4, 0.5, 0.6, 0.8)
+
+# Initialize results storage
+results <- expand.grid(
+  n.ch.per.trt = n.ch.values,
+  interv.effect = effect.sizes
+)
+results$power <- NA
+results$ci.lower <- NA
+results$ci.upper <- NA
+
+# Loop over combinations
+for (i in seq_len(nrow(results))) {
+  row <- results[i, ]
+  
+  sim <- sim.power.shortsfe.sinint(
+    n.ch.per.trt = row$n.ch.per.trt,
+    lambda = 50,
+    interv.effect = row$interv.effect,
+    chamber.var = 0.1807,
+    nsim = 100
+  )
+  
+  results$power[i] <- sim["power"]
+  results$ci.lower[i] <- sim["ci.lower"]
+  results$ci.upper[i] <- sim["ci.upper"]
+}
+# print power estimates
+results
+```
+
+(viii) Now plot the resulting power estimates vs. number of chambers per treatment or effect sizes.
+
+```{r}
+library(ggplot2)
+
+ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(interv.effect), group = interv.effect)) +
+  geom_point(size = 2) +
+  geom_line(linewidth = 0.8) +
+  geom_errorbar(aes(ymin = ci.lower, ymax = ci.upper),
+                width = 0.3, linewidth = 0.6) +
+  geom_hline(yintercept = 0.8, linetype = "twodash", color = "gray50") +
+  geom_hline(yintercept = 0.05, linetype = "longdash", color = "gray50") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+  scale_color_brewer(palette = "Dark2", name = "Effect Size \n(% reduction)") +
+  labs(
+    x = "Number of chambers per treatment",
+    y = "Estimated power",
+    title = "Power vs. number of chamber per treatment by intervention effect Size"
+  ) +
+  theme_bw()
+```
 
 
 

@@ -89,14 +89,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates treatment chamber mosquito.count.rondom
-#> 1          1         0     0-1                   116
-#> 2          2         0     0-2                    39
-#> 3          3         0     0-3                    81
-#> 4          4         0     0-4                    21
-#> 5          1         1     1-1                    13
-#> 6          2         1     1-2                    16
+#> 1          1         0     0-1                    44
+#> 2          2         0     0-2                    61
+#> 3          3         0     0-3                    32
+#> 4          4         0     0-4                    45
+#> 5          1         1     1-1                    10
+#> 6          2         1     1-2                     3
 #> 7          3         1     1-3                     8
-#> 8          4         1     1-4                    11
+#> 8          4         1     1-4                     6
 ```
 
 3)  Estimate p-value using sim.pval.shortsfe.sinint function by
@@ -117,8 +117,8 @@ pvalue <- sim.pval.shortsfe.sinint(
 
 #output the p-values
 pvalue
-#>       pvalue 
-#> 3.673234e-12
+#>     pvalue 
+#> 0.02108097
 ```
 
 4)  Since power cannot be estimated from a single simulation, there is a
@@ -141,7 +141,156 @@ power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
   )
 
 #print estimated power
-power.estimate
-#> power 
-#>     1
+round(power.estimate,2)
+#>    power ci.lower ci.upper 
+#>     1.00     0.96     1.00
 ```
+
+22) Now you use the function to estimate power for varied number of
+    chambers per treatment, e.g., 2,4,6,8.
+
+``` r
+# Define treatment sizes
+n.ch.values <- c(2, 4, 6, 8)
+
+# Initialize storage
+power.df <- data.frame(
+  n.ch.per.trt = n.ch.values,
+  power = NA,
+  ci.lower = NA,
+  ci.upper = NA
+)
+
+# Run simulations and extract power + confidence intervals
+for (i in seq_along(n.ch.values)) {
+  n <- n.ch.values[i]
+  
+  result <- sim.power.shortsfe.sinint(
+    n.ch.per.trt = n,
+    lambda = 50,
+    interv.effect = 0.8,
+    chamber.var = 0.1807,
+    nsim = 100
+  )
+  
+  # Store results
+  power.df$power[i] <- result["power"]
+  power.df$ci.lower[i] <- result["ci.lower"]
+  power.df$ci.upper[i] <- result["ci.upper"]
+}
+
+#print the power results for each number of chambers per treatment
+round(power.df,2)
+#>   n.ch.per.trt power ci.lower ci.upper
+#> 1            2  0.98     0.93        1
+#> 2            4  1.00     0.96        1
+#> 3            6  1.00     0.96        1
+#> 4            8  1.00     0.96        1
+```
+
+6)  Plot the resulting power vs. number of chambers per treatment
+
+``` r
+library(ggplot2)
+
+ggplot(power.df, aes(x = n.ch.per.trt, y = power)) +
+  geom_point(color = "black", size = 2) +
+  geom_line(color = "black", linewidth = 0.4) +
+  geom_errorbar(aes(ymin = ci.lower, ymax = ci.upper),
+                width = 0.4, color = "black", linewidth = 0.4) +
+  labs(
+    x = "Number of chambers per treatment",
+    y = "Estimated power",
+    title = "Power vs. number of chambers per treatment with 95% CI"
+  ) +
+  scale_y_continuous(labels = scales::percent, limit=c(0,1), breaks=seq(0,1,0.2)) +
+  geom_hline(yintercept=0.8, lty="twodash") +
+  geom_hline(yintercept=0.05, lty="longdash") +  
+  theme_bw()
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
+7)  Now you use the function to estimate power for varied number of
+    chambers per treatment, e.g., 2,4,6,8 and varied effect size of an
+    intervention.
+
+``` r
+# Define parameter grids
+n.ch.values <- c(2, 4, 6, 8)
+effect.sizes <- c(0, 0.4, 0.5, 0.6, 0.8)
+
+# Initialize results storage
+results <- expand.grid(
+  n.ch.per.trt = n.ch.values,
+  interv.effect = effect.sizes
+)
+results$power <- NA
+results$ci.lower <- NA
+results$ci.upper <- NA
+
+# Loop over combinations
+for (i in seq_len(nrow(results))) {
+  row <- results[i, ]
+  
+  sim <- sim.power.shortsfe.sinint(
+    n.ch.per.trt = row$n.ch.per.trt,
+    lambda = 50,
+    interv.effect = row$interv.effect,
+    chamber.var = 0.1807,
+    nsim = 100
+  )
+  
+  results$power[i] <- sim["power"]
+  results$ci.lower[i] <- sim["ci.lower"]
+  results$ci.upper[i] <- sim["ci.upper"]
+}
+# print power estimates
+results
+#>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
+#> 1             2           0.0  0.25 0.16877974 0.3465525
+#> 2             4           0.0  0.10 0.04900469 0.1762226
+#> 3             6           0.0  0.11 0.05620702 0.1883011
+#> 4             8           0.0  0.08 0.03517156 0.1515576
+#> 5             2           0.4  0.43 0.33139102 0.5328663
+#> 6             4           0.4  0.54 0.43741158 0.6401566
+#> 7             6           0.4  0.50 0.39832113 0.6016789
+#> 8             8           0.4  0.68 0.57923314 0.7697801
+#> 9             2           0.5  0.50 0.39832113 0.6016789
+#> 10            4           0.5  0.71 0.61073404 0.7964258
+#> 11            6           0.5  0.78 0.68608035 0.8566964
+#> 12            8           0.5  0.86 0.77627202 0.9212946
+#> 13            2           0.6  0.79 0.69708462 0.8650563
+#> 14            4           0.6  0.83 0.74182459 0.8977351
+#> 15            6           0.6  0.96 0.90074284 0.9889955
+#> 16            8           0.6  0.97 0.91482395 0.9937700
+#> 17            2           0.8  0.96 0.90074284 0.9889955
+#> 18            4           0.8  0.98 0.92961607 0.9975687
+#> 19            6           0.8  1.00 0.96378331 1.0000000
+#> 20            8           0.8  1.00 0.96378331 1.0000000
+```
+
+8)  Now plot the resulting power estimates vs. number of chambers per
+    treatment or effect sizes.
+
+``` r
+library(ggplot2)
+
+ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(interv.effect), group = interv.effect)) +
+  geom_point(size = 2) +
+  geom_line(linewidth = 0.8) +
+  geom_errorbar(aes(ymin = ci.lower, ymax = ci.upper),
+                width = 0.3, linewidth = 0.6) +
+  geom_hline(yintercept = 0.8, linetype = "twodash", color = "gray50") +
+  geom_hline(yintercept = 0.05, linetype = "longdash", color = "gray50") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+  scale_color_brewer(palette = "Dark2", name = "Effect Size \n(% reduction)") +
+  labs(
+    x = "Number of chambers per treatment",
+    y = "Estimated power",
+    title = "Power vs. number of chamber per treatment by intervention effect Size"
+  ) +
+  theme_bw()
+```
+
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />

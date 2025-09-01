@@ -6,17 +6,15 @@
 \title{Estimate Empirical Power for Short-Term Semi-Field Intervention}
 \usage{
 sim.power.shortsfe.sinint(
-  nsim,
   n.ch.per.trt,
   lambda,
   interv.effect,
   chamber.var,
-  n.cores = parallel::detectCores() - 1
+  nsim,
+  n.cores = 1
 )
 }
 \arguments{
-\item{nsim}{Integer. Number of simulation replicates.}
-
 \item{n.ch.per.trt}{Integer. Number of chambers per treatment level.}
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
@@ -24,6 +22,8 @@ sim.power.shortsfe.sinint(
 \item{interv.effect}{Numeric. Proportion reduction due to ITN.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
+
+\item{nsim}{Integer. Number of simulation replicates.}
 
 \item{n.cores}{Integer. Number of cores to use for parallel processing.}
 }
@@ -37,7 +37,17 @@ A named numeric vector:
 Runs repeated simulations and GLMM fits to estimate empirical power
 as the proportion of simulations with p-values below 0.05.
 }
+\note{
+Parallel execution is supported via `ncores`, but examples default to `ncores = 1` for reproducibility and package checks.
+}
 \examples{
-sim.power.shortsfe.sinint(100, 4, 50, 0.8, 0.1807)
+sim.power.shortsfe.sinint(
+  nsim = 100,
+  n.ch.per.trt = 4,
+  lambda = 50,
+  interv.effect = 0.8,
+  chamber.var = 0.1807,
+  n.cores = 1  # Prevent parallel execution during R CMD check
+)
 
 }

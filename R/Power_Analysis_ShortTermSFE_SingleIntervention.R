@@ -119,27 +119,54 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #'   \item{power}{Estimated empirical power (rounded to two decimal places)}
 #' }
 #'
+#' @note Parallel execution is supported via `ncores`, but examples default to `ncores = 1` for reproducibility and package checks.
+#'
 #' @examples
-#' sim.power.shortsfe.sinint(100, 4, 50, 0.8, 0.1807)
+#' sim.power.shortsfe.sinint(
+#'   nsim = 100,
+#'   n.ch.per.trt = 4,
+#'   lambda = 50,
+#'   interv.effect = 0.8,
+#'   chamber.var = 0.1807,
+#'   n.cores = 1  # Prevent parallel execution during R CMD check
+#' )
 #'
 #' @importFrom parallel makeCluster parLapply stopCluster clusterExport detectCores
+#' @importFrom stats binom.test coef rnorm rpois
 #'
 #' @export
 sim.power.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var, nsim,
-                                      n.cores = parallel::detectCores() - 1) {
-  cl <- parallel::makeCluster(n.cores)
-  on.exit(parallel::stopCluster(cl))
-  parallel::clusterExport(cl, varlist = c("sim.pval.shortsfe.sinint", "n.ch.per.trt",
-                                          "lambda", "interv.effect", "chamber.var"), envir = environment())
-  pvals <- parallel::parLapply(cl, 1:nsim, function(i) {
+                                      n.cores = 1) {
+  # Define simulation wrapper
+  sim_wrapper <- function(i) {
     result <- tryCatch(
       sim.pval.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var),
       error = function(e) NA
     )
     result["pvalue"]
-  })
+  }
+
+  # Run simulations
+  if (n.cores > 1) {
+    cl <- parallel::makeCluster(n.cores)
+    on.exit(parallel::stopCluster(cl))
+    parallel::clusterExport(cl, varlist = c("sim.pval.shortsfe.sinint", "n.ch.per.trt",
+                                            "lambda", "interv.effect", "chamber.var"),
+                            envir = environment())
+    pvals <- parallel::parLapply(cl, 1:nsim, sim_wrapper)
+  } else {
+    pvals <- lapply(1:nsim, sim_wrapper)
+  }
+
+  # Flatten p-values and count significant results
   pvals <- unlist(pvals)
   n.sig <- sum(pvals < 0.05, na.rm = TRUE)
-  power.estimate <- round(n.sig / nsim, 2)
-  c(power = power.estimate)
+
+  # Estimate power and confidence interval
+  power.estimate <- c(
+    power = round(n.sig / nsim, 2),
+    binom.test(x = n.sig, n = nsim)$conf.int
+  )
+  names(power.estimate)[2:3] <- c("ci.lower", "ci.upper")
+  power.estimate
 }

@@ -8,3 +8,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^\.github$
+^shared$
+^1BA8DCC5$
+^LICENSE\.md$
