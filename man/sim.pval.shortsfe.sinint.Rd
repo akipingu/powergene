@@ -3,7 +3,7 @@
 %   R/Power_Analysis_ShortTermSFE_SingleIntervention.R
 \name{sim.pval.shortsfe.sinint}
 \alias{sim.pval.shortsfe.sinint}
-\title{Extract p-value from Simulated GLMM for Short-Term Semi-Field Intervention}
+\title{Extract p-value from Simulated GLMM for Short-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
 sim.pval.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
 }

@@ -5,7 +5,7 @@
 \alias{sim.scen.shortsfe.comint}
 \title{Simulate Design Scenarios for Short-Term Semi-Field Experiment Testing Combined Interventions}
 \usage{
-sim.scen.shortsfe.comint(n.ch.per.trt = 4)
+sim.scen.shortsfe.comint(n.ch.per.trt)
 }
 \arguments{
 \item{n.ch.per.trt}{Integer. Number of chambers per treatment combination (default = 4).}

@@ -3,7 +3,7 @@
 %   R/Power_Analysis_ShortTermSFE_SingleIntervention.R
 \name{sim.mosq.shortsfe.sinint}
 \alias{sim.mosq.shortsfe.sinint}
-\title{Simulate Mosquito Count Data for Short-Term Semi-Field Intervention}
+\title{Simulate Mosquito Count Data for Short-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
 sim.mosq.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
 }

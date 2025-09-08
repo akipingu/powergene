@@ -26,15 +26,6 @@
 #'
 #' @export
 sim.scen.shortsfe.sinint <- function(n.ch.per.trt) {
-
-  # Simulate brief progress bar
-  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
-  for (i in seq(0, 100, by = 10)) {
-    Sys.sleep(0.05)  # brief pause to simulate progress
-    utils::setTxtProgressBar(pb, i)
-  }
-  close(pb)
-
   treatment.lev <- 0:1
   dat <- expand.grid(replicates = 1:n.ch.per.trt, treatment = treatment.lev)
   dat$chamber <- factor(paste(dat$treatment, dat$replicates, sep = "-"))
@@ -42,7 +33,7 @@ sim.scen.shortsfe.sinint <- function(n.ch.per.trt) {
   dat
 }
 
-#' Simulate Mosquito Count Data for Short-Term Semi-Field Intervention
+#' Simulate Mosquito Count Data for Short-Term Semi-Field Experiment Testing Single Intervention
 #'
 #' Generates simulated mosquito count data under a short-term semi-field experimental design
 #' with fixed effects for treatment, random effects for chamber variability, and Poisson-distributed outcomes.
@@ -68,15 +59,6 @@ sim.scen.shortsfe.sinint <- function(n.ch.per.trt) {
 #'
 #' @export
 sim.mosq.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var) {
-
-  # Simulate brief progress bar
-  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
-  for (i in seq(0, 100, by = 10)) {
-    Sys.sleep(0.05)  # brief pause to simulate progress
-    utils::setTxtProgressBar(pb, i)
-  }
-  close(pb)
-
   dat <- sim.scen.shortsfe.sinint(n.ch.per.trt)
   prop.remain <- 1 - interv.effect
   b.0 <- log(lambda)
@@ -90,7 +72,7 @@ sim.mosq.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
   dat
 }
 
-#' Extract p-value from Simulated GLMM for Short-Term Semi-Field Intervention
+#' Extract p-value from Simulated GLMM for Short-Term Semi-Field Experiment Testing Single Intervention
 #'
 #' Simulates mosquito count data and fits a Poisson GLMM to estimate the effect
 #' of ITN treatment. Returns the p-value associated with the treatment effect.
@@ -111,15 +93,6 @@ sim.mosq.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #'
 #' @export
 sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var) {
-
-  # Simulate brief progress bar
-  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
-  for (i in seq(0, 100, by = 10)) {
-    Sys.sleep(0.05)  # brief pause to simulate progress
-    utils::setTxtProgressBar(pb, i)
-  }
-  close(pb)
-
   sim.mosq <- sim.mosq.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
   model <- suppressMessages(suppressWarnings(
     lme4::glmer(mosquito.count.rondom ~ treatment + (1 | chamber),
@@ -129,7 +102,7 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
   c(pvalue = pvalue)
 }
 
-#' Estimate Empirical Power for Short-Term Semi-Field Intervention
+#' Estimate Empirical Power for Short-Term Semi-Field Experiment Testing Single Intervention
 #'
 #' Runs repeated simulations and GLMM fits to estimate empirical power
 #' as the proportion of simulations with p-values below 0.05.
@@ -144,9 +117,11 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #' @return A named numeric vector:
 #' \describe{
 #'   \item{power}{Estimated empirical power (rounded to two decimal places)}
+#'   \item{ci.lower}{Lower bound of 95\% confidence interval}
+#'   \item{ci.upper}{Upper bound of 95\% confidence interval}
 #' }
 #'
-#' @note Parallel execution is supported via `ncores`, but examples default to `ncores = 1` for reproducibility and package checks.
+#' @note Parallel execution is supported via `n.cores`, but examples default to `n.cores = 1` for reproducibility and package checks.
 #'
 #' @examples
 #' sim.power.shortsfe.sinint(
@@ -155,7 +130,7 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #'   lambda = 50,
 #'   interv.effect = 0.8,
 #'   chamber.var = 0.1807,
-#'   n.cores = 1  # Prevent parallel execution during R CMD check
+#'   n.cores = 1
 #' )
 #'
 #' @importFrom parallel makeCluster parLapply stopCluster clusterExport detectCores
@@ -164,14 +139,6 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #' @export
 sim.power.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var, nsim,
                                       n.cores = 1) {
-
-  # Simulate brief progress bar
-  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
-  for (i in seq(0, 100, by = 10)) {
-    Sys.sleep(0.05)  # brief pause to simulate progress
-    utils::setTxtProgressBar(pb, i)
-  }
-  close(pb)
 
   # Define simulation wrapper
   sim_wrapper <- function(i) {
@@ -182,17 +149,32 @@ sim.power.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamb
     result["pvalue"]
   }
 
-  # Run simulations
+  # Initialize progress bar
+  pb <- utils::txtProgressBar(min = 0, max = nsim, style = 3)
+
+  # Run simulations with progress
   if (n.cores > 1) {
     cl <- parallel::makeCluster(n.cores)
     on.exit(parallel::stopCluster(cl))
     parallel::clusterExport(cl, varlist = c("sim.pval.shortsfe.sinint", "n.ch.per.trt",
                                             "lambda", "interv.effect", "chamber.var"),
                             envir = environment())
-    pvals <- parallel::parLapply(cl, 1:nsim, sim_wrapper)
+
+    # Wrap with progress tracking
+    pvals <- vector("list", nsim)
+    for (i in seq_len(nsim)) {
+      pvals[[i]] <- parallel::parLapply(cl, i, sim_wrapper)[[1]]
+      utils::setTxtProgressBar(pb, i)
+    }
   } else {
-    pvals <- lapply(1:nsim, sim_wrapper)
+    pvals <- vector("list", nsim)
+    for (i in seq_len(nsim)) {
+      pvals[[i]] <- sim_wrapper(i)
+      utils::setTxtProgressBar(pb, i)
+    }
   }
+
+  close(pb)
 
   # Flatten p-values and count significant results
   pvals <- unlist(pvals)
