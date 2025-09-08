@@ -26,6 +26,15 @@
 #'
 #' @export
 sim.scen.shortsfe.sinint <- function(n.ch.per.trt) {
+
+  # Simulate brief progress bar
+  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
+  for (i in seq(0, 100, by = 10)) {
+    Sys.sleep(0.05)  # brief pause to simulate progress
+    utils::setTxtProgressBar(pb, i)
+  }
+  close(pb)
+
   treatment.lev <- 0:1
   dat <- expand.grid(replicates = 1:n.ch.per.trt, treatment = treatment.lev)
   dat$chamber <- factor(paste(dat$treatment, dat$replicates, sep = "-"))
@@ -59,6 +68,15 @@ sim.scen.shortsfe.sinint <- function(n.ch.per.trt) {
 #'
 #' @export
 sim.mosq.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var) {
+
+  # Simulate brief progress bar
+  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
+  for (i in seq(0, 100, by = 10)) {
+    Sys.sleep(0.05)  # brief pause to simulate progress
+    utils::setTxtProgressBar(pb, i)
+  }
+  close(pb)
+
   dat <- sim.scen.shortsfe.sinint(n.ch.per.trt)
   prop.remain <- 1 - interv.effect
   b.0 <- log(lambda)
@@ -93,6 +111,15 @@ sim.mosq.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #'
 #' @export
 sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var) {
+
+  # Simulate brief progress bar
+  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
+  for (i in seq(0, 100, by = 10)) {
+    Sys.sleep(0.05)  # brief pause to simulate progress
+    utils::setTxtProgressBar(pb, i)
+  }
+  close(pb)
+
   sim.mosq <- sim.mosq.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
   model <- suppressMessages(suppressWarnings(
     lme4::glmer(mosquito.count.rondom ~ treatment + (1 | chamber),
@@ -137,6 +164,15 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
 #' @export
 sim.power.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chamber.var, nsim,
                                       n.cores = 1) {
+
+  # Simulate brief progress bar
+  pb <- utils::txtProgressBar(min = 0, max = 100, style = 3)
+  for (i in seq(0, 100, by = 10)) {
+    Sys.sleep(0.05)  # brief pause to simulate progress
+    utils::setTxtProgressBar(pb, i)
+  }
+  close(pb)
+
   # Define simulation wrapper
   sim_wrapper <- function(i) {
     result <- tryCatch(

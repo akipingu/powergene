@@ -3,6 +3,7 @@
 export(sim.mosq.shortsfe.sinint)
 export(sim.power.shortsfe.sinint)
 export(sim.pval.shortsfe.sinint)
+export(sim.scen.shortsfe.comint)
 export(sim.scen.shortsfe.sinint)
 importFrom(parallel,clusterExport)
 importFrom(parallel,detectCores)
