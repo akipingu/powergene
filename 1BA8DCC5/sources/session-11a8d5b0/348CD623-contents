@@ -1,0 +1,196 @@
+---
+title: "A power analysis framework to design robust semi-field vector control experiments: \n Power analysis R tutorial for long-term SFE testing single intervention"
+author: "Kipingu AM, Lwetoijera DW, Ng'habi K, Kiware SS, Viana M, Johnson PCD"
+date: "`r Sys.Date()`"
+output: html_document
+fontsize: 12pt
+---
+
+Set libraries
+```{r}
+library(ggplot2) #for ggplot
+library(lme4) #for glmer
+library(dplyr) #case_when function
+```
+
+set seed
+```{r}
+# helps to give same result every time one run the code. You can choose to disable it
+set.seed(123)  
+```
+
+Notes: Simulation of data sets consists of different experimental design scenarios intended to be test. In our case, we consider number of chambers per treatment (“n.ch.per.trt”), which is 4; frequency of sampling ("sampl.freq”), which is 12 corresponds to weekly sampling; number of mosquitoes to be sampled (“lambda”), which is 10; proportion of mosquitoes remaining over time due to ITN “itn.time.effect”, which is 0.2; inter-chamber variance (“chamber.var”), which is 0.1807; time variance (“time.var), which is 0.2266; dispersion parameter (“theta”), which is 10; and total number of simulations (“nsim”), which is 100 for this tutorial. 
+
+i) Set and assign an experimental design choices based on the number of chambers per treatment, sampling frequency and ITN intervention level. Make a template dataset called “dat” representing the design. 
+
+```{r}
+
+# design choices
+n.ch.per.trt <- 4
+    sampl.freq <- 12
+    itn.lev <- 0:1
+    
+    # make template data set representing design 
+    dat <-
+      expand.grid(replicates = 1:n.ch.per.trt, itn = itn.lev, time = (0:sampl.freq)/sampl.freq)
+    dat$itn.time <- dat$itn*dat$time
+    dat$chamber <- factor(paste(dat$itn, dat$replicates, sep = "-"))
+    dat$timef <- factor(dat$time)
+    # rearranging data set in a useful order
+    dat <- dat[, c("replicates", "itn", "timef", "time", "chamber", "itn.time")]
+    dat
+```
+
+Assign values for all parameters choices for fixed and random effects. The intervention (i.e., ITN) effect size here will be dynamic, which means changes with time. 
+
+```{r}
+    # mean catch mosquito count in control group
+    lambda <- 40
+    # proportions remaining due to ITN
+    itn.effect <- 1 
+    itn.time.effect <- 0.2 
+    # assign chamber and time variances and dispersion parameter 
+    chamber.var <- 1.807e-01
+    # time variance/variability (in weeks) 
+    time.var <- 2.266e-01
+    # theta is a dispersion/variability parameter for negative binomial distribution 
+    # measures how sample (i.e., mosquito counts in our case) fluctuates around the mean
+    # theta is usually interpreted as a measure of overdispersion with respect to the Poisson distribution.       
+    # the variance of the negative binomial is 𝜇+𝜇2/𝜃, so 𝜃 really controls the excess variability compared to Poisson (which would be 𝜇)
+    theta <- 10
+```
+
+Calculate coefficients for all linear predictor terms using the log link function. We used the log link function because parameter of negative binomial distribution is non-negative. 
+
+```{r}
+    b.0 <- log(lambda)
+    b.i <- log(itn.effect)
+    b.i.t <- log(itn.time.effect)
+```
+
+ii)	Simulation of a single data set. 
+As we have already set our experimental design scenarios and parameter choices such as coefficients for linear predictors, inter-chamber variance and the dispersion parameter value, now we can simulate a single data set. This means we will first simulate the values for the linear predictor that will then generate the mosquito counts that would be expected if faced with our experimental scenario and parameter choices. Here, we also simulate random effects between chambers as well as linear predictors without and with random effects. Using the simulated linear predictors, expected mosquito counts will then be generated using a negative binomial distribution.
+
+```{r}
+      # simulate random effects
+      # random effect between chambers
+      chamber.re <- rnorm(nlevels(dat$chamber), sd = sqrt(chamber.var))
+      names(chamber.re) <- levels(dat$chamber)
+      # random effect between time (e.g., between weeks)
+      time.re <- rnorm(nlevels(dat$timef), sd = sqrt(time.var))
+      names(time.re) <- levels(dat$timef)
+      # simulate linear predictor (with fixed effects only)
+      # add the simulated data to dataset "dat" as a column named lin.pred
+      dat$lin.pred.fixed <-
+        b.0 +  b.i * dat$itn + b.i.t*dat$itn.time 
+      # add random effects (chamber.re and time.re) to linear predictors trials, mean and size
+      dat$lin.pred <-
+        dat$lin.pred.fixed +
+        chamber.re[as.character(dat$chamber)] +
+        time.re[as.character(dat$timef)]
+      # generate mosquitoes counts as random data using negative binomial distribution with number of trials (total rows of "dat"), mean or mu (exponet of lin.pred) and size (theta) 
+      dat$mosquito.count <- rnbinom(nrow(dat), mu = exp(dat$lin.pred), size = theta)
+    # output the “dat”
+    dat
+```
+
+iii)	Perform a statistical test for a simulated data set to extract the p-value. 
+
+Fit the simulated data to the GLMM model using a glmer.nb function. The first model denoted by “model.itn.time“ will incorporate a response variable which is mosquito counts denoted by “mosquito.count”, fixed effects which are ITN, time and random effects based on chambers and time. The second model called “model.itn” obtained by updating the model “model.itn.time” using the update() function by opting out the term “itn:time”. Extract p-values by comparing the two models using anova() function.
+
+```{r}
+    # outputting the parameter estimates and the p-values 
+      model.itn.time <- glmer.nb(mosquito.count ~ itn*time + (1|chamber)+(1|timef),data=dat)
+      model.itn <- update(model.itn.time, ~.-itn:time)
+      p <- anova(model.itn.time,model.itn)[2, "Pr(>Chisq)"]    
+      c(p = p)
+```
+
+iv)	Power estimation for a single data set 
+
+In sub-sections (i-iii), we illustrated how to simulate and calculate a p-value for a single data. Since we can’t learn anything from a single simulation for power estimation, therefore, we need to simulate multiple data sets as shown in subsequent sections (v-vii). 
+
+v)	Simulation of the multiple data sets.
+
+A function called “sim.dat.fun” was created to automate the simulation process described in sub-section (ii) above. The "sim.dat.fun" function takes a design table “dat”, coefficients “b.0”, “b.i”, “b.i.t”, and inter-chamber variance “chamber.var” and time variance “time.var” as input parameters. The function then produces a table “dat” containing mosquito counts as an output.
+
+```{r}
+    # function for simulating the data
+    # assign function to simulate data as sim.dat.fun
+    # beginning of the function "sim.dat.fun"
+    sim.dat.fun <- function(dat,b.0,b.i,b.i.t,chamber.var,time.var, theta){
+      # simulate random effects
+      # random effect between chambers
+      chamber.re <- rnorm(nlevels(dat$chamber), sd = sqrt(chamber.var))
+      names(chamber.re) <- levels(dat$chamber)
+      # random effect between time (e.g., between weeks)
+      time.re <- rnorm(nlevels(dat$timef), sd = sqrt(time.var))
+      names(time.re) <- levels(dat$timef)
+      # simulate linear predictor (with fixed effects only)
+      # add the simulated data to dataset "dat" as a column named lin.pred
+      dat$lin.pred.fixed <-
+        b.0 +  b.i * dat$itn + b.i.t*dat$itn.time 
+      # add random effects (chamber.re and time.re) to linear predictors trials, mean and size
+      dat$lin.pred <-
+        dat$lin.pred.fixed +
+        chamber.re[as.character(dat$chamber)] +
+        time.re[as.character(dat$timef)]
+      # generate mosquitoes counts as random data using NB with number of    
+      dat$mosquito.count <- rnbinom(nrow(dat), mu = exp(dat$lin.pred), size = theta)
+      dat
+    } # end of data simulation function "sim.dat.fun"
+    # assigh the function as simdat for easy referencing 
+    simdat <- sim.dat.fun(dat,b.0,b.i,b.i.t,chamber.var,time.var, theta)
+    # output the “simdat”
+    simdat
+```
+
+You can produce a time series plot of the mosquito data generated by a function assigned as “simdat”. You can plot mosquito counts without and with random effects. Here is how to produce plots for mosquito count excluding random effects. 
+
+```{r}
+  simdat.treatment <- simdat %>% mutate(Treatments=case_when(itn==0 ~ "Control",
+                                                             itn==1 ~ "ITN"))
+
+      # plot mosquito counts data without random effects (i.e., the linear predictor with fixed effects)
+      ggplot(simdat.treatment,aes(x=factor(time*12),y=exp(lin.pred.fixed), group=chamber, col=Treatments)) +
+        geom_line()+
+        geom_point()+
+        labs(x = "Time (Weeks)", y = "Mosquito counts") +
+        scale_color_manual(values=c("black", "red"))+
+        scale_y_continuous(limits=c(0,40.5))+
+        theme_bw()
+```
+
+vi)	Perform a statistical test for the simulated data sets to extract p-values.
+
+In this case, a function called “sim.mos.pval” was created to automate the function “sim.dat.fun” and outputs p-values. The function “sim.mos.pval” will output the p-values from the GLMM model with a negative binomial distribution. The fitted model denoted by “model.itn.time” will incorporate a response variable which is the expected mosquito counts denoted by “mosquito.count”, fixed effects which are ITN, time and their interactions and random effects between chambers and time. Another model namely “model.itn” will contain the same terms as “model.itn” but without an interaction term. 
+
+```{r}
+    # outputting the parameter estimates and the p-values from the simulation function
+    sim.mos.pval <- function(...){
+      simdat2 <- sim.dat.fun(dat,b.0,b.i,b.i.t,chamber.var,time.var, theta)
+      model.itn.time <- glmer.nb(mosquito.count ~ itn*time + (1|chamber)+(1|timef),data=simdat2)
+      model.itn <- update(model.itn.time, ~.-itn:time)
+      p <- anova(model.itn.time,model.itn)[2, "Pr(>Chisq)"]    
+      c(p = p)
+    }
+```
+
+vii)	Power estimation for multiple data sets
+Here, we created a function “sim.pvals.list” to output power estimate by updating function “sim.mos.pval” multiple times based on the number of simulations “nsim” provided. Again, we created another function called “sim.pvals.list” that will output a list of p-values by updating the function “sim.mos.pval” to simulate multiple data sets based on the number of simulations “nsim” assigned. 
+Notes: nsim is set to 100 for illustration purpose. However, we recommend setting nsim to a much higher value, e.g., 1000.
+
+```{r}
+    nsim <- 100
+    set.seed(1234)
+    sim.pvals.list <- lapply(1:nsim, sim.mos.pval)
+    sim.pvals <- do.call("rbind", sim.pvals.list)
+    # return power estimates
+    n.sig <- sum(sim.pvals[, "p"] < 0.05)
+    power.estimate <- round((n.sig/nsim),2)
+    power.estimate
+```
+
+viii) Warnings 
+
+Typically, there is one common warning that may occur when running this tutorial namely "model convergence warning". Here, there is no any warning out of 100 runs, which is good but it is important knowing how to deal with it when it occurs. One can ignore this warning as it does not affect the results. However, it is important for readers to know why this warning occurs and how to deal with it. One of the common reason for the convergence warning to occur is because the model is too complex for the given data set. This means that there is no much data for a given statistical model. For example, two chambers for single intervention results to four rows of a data set, which may not be enough to use statistical test. This warning can be addressed by changing the optimizer (i.e., control = glmerControl(optimizer = "bobyqa")) and comparing the likelihood with and without changing the optimizer.
