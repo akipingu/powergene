@@ -54,7 +54,7 @@ package to estimate power of a short-term SFE
 ``` r
 scen.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
 
-#print the scenario table
+#print a scenario table
 scen.table
 #>   replicates treatment chamber
 #> 1          1         0     0-1
@@ -90,14 +90,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates treatment chamber mosquito.count.rondom
-#> 1          1         0     0-1                    91
-#> 2          2         0     0-2                    41
-#> 3          3         0     0-3                    50
-#> 4          4         0     0-4                    68
-#> 5          1         1     1-1                     6
-#> 6          2         1     1-2                    13
-#> 7          3         1     1-3                    16
-#> 8          4         1     1-4                     5
+#> 1          1         0     0-1                    47
+#> 2          2         0     0-2                    67
+#> 3          3         0     0-3                    91
+#> 4          4         0     0-4                   121
+#> 5          1         1     1-1                    13
+#> 6          2         1     1-2                     7
+#> 7          3         1     1-3                    10
+#> 8          4         1     1-4                    15
 ```
 
 3)  Estimate p-value using sim.pval.shortsfe.sinint function by
@@ -119,7 +119,7 @@ pvalue <- sim.pval.shortsfe.sinint(
 #output the p-values
 pvalue
 #>       pvalue 
-#> 9.115551e-17
+#> 2.432749e-14
 ```
 
 4)  Since power cannot be estimated from a single simulation, there is a
@@ -145,7 +145,7 @@ power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
 #print estimated power
 round(power.estimate,2)
 #>    power ci.lower ci.upper 
-#>     1.00     0.96     1.00
+#>     0.99     0.95     1.00
 ```
 
 22) Now you use the function to estimate power for varied number of
@@ -188,8 +188,8 @@ for (i in seq_along(n.ch.values)) {
 #print the power results for each number of chambers per treatment
 round(power.df,2)
 #>   n.ch.per.trt power ci.lower ci.upper
-#> 1            2  0.98     0.93        1
-#> 2            4  1.00     0.96        1
+#> 1            2  0.99     0.95        1
+#> 2            4  0.98     0.93        1
 #> 3            6  1.00     0.96        1
 #> 4            8  1.00     0.96        1
 ```
@@ -274,23 +274,23 @@ for (i in seq_len(nrow(results))) {
 # print power estimates
 results
 #>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
-#> 1             2           0.0  0.21 0.13494370 0.3029154
-#> 2             4           0.0  0.11 0.05620702 0.1883011
-#> 3             6           0.0  0.14 0.07870540 0.2237280
-#> 4             8           0.0  0.10 0.04900469 0.1762226
-#> 5             2           0.4  0.48 0.37900548 0.5822102
-#> 6             4           0.4  0.51 0.40803633 0.6113558
-#> 7             6           0.4  0.55 0.44728019 0.6496798
-#> 8             8           0.4  0.63 0.52764836 0.7244334
-#> 9             2           0.5  0.59 0.48714420 0.6873800
-#> 10            4           0.5  0.68 0.57923314 0.7697801
-#> 11            6           0.5  0.76 0.66426451 0.8397754
-#> 12            8           0.5  0.85 0.76469250 0.9135456
-#> 13            2           0.6  0.69 0.58968545 0.7787112
-#> 14            4           0.6  0.88 0.79976432 0.9364311
-#> 15            6           0.6  0.93 0.86108027 0.9713947
+#> 1             2           0.0  0.35 0.25729378 0.4518494
+#> 2             4           0.0  0.08 0.03517156 0.1515576
+#> 3             6           0.0  0.18 0.11031123 0.2694771
+#> 4             8           0.0  0.08 0.03517156 0.1515576
+#> 5             2           0.4  0.49 0.38864417 0.5919637
+#> 6             4           0.4  0.55 0.44728019 0.6496798
+#> 7             6           0.4  0.51 0.40803633 0.6113558
+#> 8             8           0.4  0.64 0.53787811 0.7335916
+#> 9             2           0.5  0.60 0.49720915 0.6967052
+#> 10            4           0.5  0.72 0.62133300 0.8052064
+#> 11            6           0.5  0.80 0.70815731 0.8733444
+#> 12            8           0.5  0.91 0.83601774 0.9580164
+#> 13            2           0.6  0.75 0.65344750 0.8312203
+#> 14            4           0.6  0.84 0.75321240 0.9056897
+#> 15            6           0.6  0.94 0.87397007 0.9776651
 #> 16            8           0.6  0.99 0.94554061 0.9997469
-#> 17            2           0.8  0.97 0.91482395 0.9937700
+#> 17            2           0.8  0.95 0.88716509 0.9835681
 #> 18            4           0.8  1.00 0.96378331 1.0000000
 #> 19            6           0.8  1.00 0.96378331 1.0000000
 #> 20            8           0.8  1.00 0.96378331 1.0000000
