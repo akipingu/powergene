@@ -174,7 +174,7 @@ sim.plot.shortsfe.sinint <- function(n.ch.per.trt, lambda, interv.effect, chambe
     ggplot2::geom_boxplot(outlier.shape = NA, fill = "lightblue") +
     ggplot2::labs(x = "Treatments",
                   y = "Mosquito Count",
-                  title = "Mosquito Counts by intvn") +
+                  title = "") +
     ggplot2::theme_bw()
 
   # Add jittered points if requested
