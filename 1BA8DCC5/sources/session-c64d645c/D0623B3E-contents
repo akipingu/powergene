@@ -16,8 +16,8 @@ analysis for short- or long-term semi-field experimental planning.
 This package is an extension of a simulation based power analysis
 framework developed by [Kipingu et. al
 2025](https://doi.org/10.1186/s12936-025-05454-y). Therefore, all
-parameter values for the examples below are taken directily from the
-same study. Visit [Kipingu et. al
+parameter values for the examples below are taken directly from the same
+study. Visit [Kipingu et. al
 2025](https://doi.org/10.1186/s12936-025-05454-y) for more information
 and description regarding simulation-based power analysis.
 
@@ -96,14 +96,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates intvn chamber mosquito.count.fixed mosquito.count.random
-#> 1          1     0     0-1                   54                    69
-#> 2          2     0     0-2                   52                    31
-#> 3          3     0     0-3                   47                    13
-#> 4          4     0     0-4                   55                    29
-#> 5          1     1     1-1                   12                    13
-#> 6          2     1     1-2                    9                     6
-#> 7          3     1     1-3                   24                    12
-#> 8          4     1     1-4                   13                    16
+#> 1          1     0     0-1                   48                    24
+#> 2          2     0     0-2                   54                    53
+#> 3          3     0     0-3                   49                    33
+#> 4          4     0     0-4                   52                    58
+#> 5          1     1     1-1                    8                     9
+#> 6          2     1     1-2                   12                     9
+#> 7          3     1     1-3                    5                    16
+#> 8          4     1     1-4                   10                     3
 ```
 
 3.  Plot the simulated mosquitoes. This function plots a box plot with
@@ -144,8 +144,8 @@ pvalue <- sim.pval.shortsfe.sinint(
 
 #output the p-values
 pvalue
-#>       pvalue 
-#> 3.027503e-18
+#>    pvalue 
+#> 0.1490801
 ```
 
 V. Since power cannot be estimated from a single simulation, there is a
@@ -219,7 +219,7 @@ for (i in seq_along(n.ch.values)) {
 round(power.df,2)
 #>   n.ch.per.trt power ci.lower ci.upper
 #> 1            2  0.97     0.91     0.99
-#> 2            4  0.99     0.95     1.00
+#> 2            4  1.00     0.96     1.00
 #> 3            6  1.00     0.96     1.00
 #> 4            8  1.00     0.96     1.00
 ```
@@ -307,21 +307,21 @@ results
 #>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
 #> 1             2           0.0  0.26 0.17739444 0.3573121
 #> 2             4           0.0  0.13 0.07107305 0.2120407
-#> 3             6           0.0  0.06 0.02233489 0.1260299
-#> 4             8           0.0  0.07 0.02860529 0.1389197
-#> 5             2           0.4  0.48 0.37900548 0.5822102
+#> 3             6           0.0  0.10 0.04900469 0.1762226
+#> 4             8           0.0  0.11 0.05620702 0.1883011
+#> 5             2           0.4  0.43 0.33139102 0.5328663
 #> 6             4           0.4  0.49 0.38864417 0.5919637
-#> 7             6           0.4  0.54 0.43741158 0.6401566
+#> 7             6           0.4  0.49 0.38864417 0.5919637
 #> 8             8           0.4  0.69 0.58968545 0.7787112
-#> 9             2           0.5  0.59 0.48714420 0.6873800
-#> 10            4           0.5  0.65 0.54815064 0.7427062
-#> 11            6           0.5  0.75 0.65344750 0.8312203
-#> 12            8           0.5  0.91 0.83601774 0.9580164
-#> 13            2           0.6  0.78 0.68608035 0.8566964
-#> 14            4           0.6  0.87 0.78795932 0.9289270
+#> 9             2           0.5  0.60 0.49720915 0.6967052
+#> 10            4           0.5  0.69 0.58968545 0.7787112
+#> 11            6           0.5  0.80 0.70815731 0.8733444
+#> 12            8           0.5  0.88 0.79976432 0.9364311
+#> 13            2           0.6  0.70 0.60018532 0.7875936
+#> 14            4           0.6  0.78 0.68608035 0.8566964
 #> 15            6           0.6  0.94 0.87397007 0.9776651
-#> 16            8           0.6  0.99 0.94554061 0.9997469
-#> 17            2           0.8  0.95 0.88716509 0.9835681
+#> 16            8           0.6  0.98 0.92961607 0.9975687
+#> 17            2           0.8  0.93 0.86108027 0.9713947
 #> 18            4           0.8  1.00 0.96378331 1.0000000
 #> 19            6           0.8  1.00 0.96378331 1.0000000
 #> 20            8           0.8  1.00 0.96378331 1.0000000

@@ -1,0 +1,37 @@
+#' powergene: A Simulation-Based Power Analysis for Semi-Field Vector Control Trials
+#'
+#' The methods for a simulation-based power analysis tailored to short- or long-term semi-field vector control trials testing single or combined interventions.
+#' The \code{powergene} package supports random effects modeling, empirical p-value extraction, and
+#' parallelized workflows. It is designed to guide experimental design and improve statistical rigor
+#' in entomological research.
+#'
+#' @section Author(s):
+#' \strong{Maintainer:} Andrea M. Kipingu \email{akipingu@ihi.or.tz} (\href{https://orcid.org/0000-0002-9063-8651}{ORCID}) \cr
+#' Affiliation: Department of Environmental Health & Ecological Sciences, Ifakara Health Institute, P.O. Box 78 373, Dar es Salaam, Tanzania
+#'
+#' List of Authors \cr
+#' • Andrea M. Kipingu \email{akipingu@ihi.or.tz} (\href{https://orcid.org/0000-0002-9063-8651}{ORCID}) \cr
+#' • Samson S. Kiware \email{skiware@ihi.or.tz} (\href{https://orcid.org/0000-0001-7252-520X}{ORCID})
+#'
+#' @section Cite this package:
+#' Kipingu, A.M., Kiware, S.S. powergene: a generalizable simulation-based power analysis R package
+#' to guide the design of robust semi-field vector control experiments. 2025;
+#' Available from: https://github.com/akipingu/powergene.
+#'
+#' @section References:
+#' 1. Kipingu, A.M., Lwetoijera, D.W., Ng’habi, K.R. et al. (2025). A power analysis framework to aid the design of robust semi-field vector control experiments. \cr
+#' \emph{Malaria Journal}, 24, 238.
+#' \url{https://doi.org/10.1186/s12936-025-05454-y}.
+#'
+#' 2. Johnson, P.C.D., Barry, S.J.E., Ferguson, H.M., Müller, P. (2015). Power analysis for generalized linear mixed models in ecology and evolution. \cr
+#' \emph{Methods in Ecology and Evolution}, 6, 133–142.
+#' \url{https://doi.org/10.1111/2041-210X.12306}.
+#'
+#' @section See Also:
+#' Useful links: \cr
+#' GitHub \url{https://github.com/akipingu/powergene} \cr
+#' Report bugs at \url{https://github.com/akipingu/powergene/issues}
+#'
+#' @docType package
+#' @name powergene
+NULL

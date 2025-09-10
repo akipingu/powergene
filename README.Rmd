@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 The powergene R package simulates mosquito count data under short- and long-term semi-field experimental design scenarios, evaluating single or combined interventions. It incorporates fixed treatment effects, random chamber-level or sampling time-level variability to support robust power analysis for short- or long-term semi-field experimental planning. 
 
 This package is an extension of a simulation based power analysis framework developed by [Kipingu et. al 2025](https://doi.org/10.1186/s12936-025-05454-y
-). Therefore, all parameter values for the examples below are taken directily from the same study. Visit [Kipingu et. al 2025](https://doi.org/10.1186/s12936-025-05454-y
+). Therefore, all parameter values for the examples below are taken directly from the same study. Visit [Kipingu et. al 2025](https://doi.org/10.1186/s12936-025-05454-y
 ) for more information and description regarding simulation-based power analysis.
 
 ## Installation of powergene package
