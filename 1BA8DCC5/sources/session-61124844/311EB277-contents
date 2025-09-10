@@ -33,7 +33,7 @@ You can install the development version of powergene package directly from
 
 
 ```r
-# First, install.packages("devtools") if not already installed
+# First, install.packages("devtools") if not already installed in your RStudio
 install.packages("devtools")
 # Then, instal the "powergene" package from github
 devtools::install_github("akipingu/powergene")

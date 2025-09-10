@@ -24,7 +24,7 @@ and description regarding simulation-based power analysis.
 You can install the development version of powergene package directly
 from [GitHub](https://github.com/) with:
 
-    # First, install.packages("devtools") if not already installed
+    # First, install.packages("devtools") if not already installed in your RStudio
     install.packages("devtools")
     # Then, instal the "powergene" package from github
     devtools::install_github("akipingu/powergene")
@@ -91,14 +91,14 @@ package to estimate power of a short-term SFE
     sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
     sim.mosquitoes
     #>   replicates intvn chamber mosquito.count.fixed mosquito.count.random
-    #> 1          1     0     0-1                   50                    42
-    #> 2          2     0     0-2                   49                    68
-    #> 3          3     0     0-3                   50                    50
-    #> 4          4     0     0-4                   50                    46
-    #> 5          1     1     1-1                   16                    20
-    #> 6          2     1     1-2                   10                     3
-    #> 7          3     1     1-3                   11                    11
-    #> 8          4     1     1-4                   14                    13
+    #> 1          1     0     0-1                   57                    66
+    #> 2          2     0     0-2                   51                    47
+    #> 3          3     0     0-3                   61                    49
+    #> 4          4     0     0-4                   47                    43
+    #> 5          1     1     1-1                   12                    23
+    #> 6          2     1     1-2                    6                    19
+    #> 7          3     1     1-3                   15                    11
+    #> 8          4     1     1-4                    9                     6
 
 1.  Plot the simulated mosquitoes. This function plots a box plot with
     an option to jitter points if jitter=TURE and without jittering if
@@ -139,8 +139,8 @@ package to estimate power of a short-term SFE
 
     #output the p-values
     pvalue
-    #>       pvalue 
-    #> 9.288298e-20
+    #>      pvalue 
+    #> 0.001105201
 
 1.  Since power cannot be estimated from a single simulation, there is a
     need to simulate multiple data sets and estimate power. Now you can
@@ -170,7 +170,7 @@ package to estimate power of a short-term SFE
     #print estimated power
     round(power.estimate,2)
     #>    power ci.lower ci.upper 
-    #>     1.00     0.96     1.00
+    #>     0.99     0.95     1.00
 
 1.  Now you use the function to estimate power for varied number of
     chambers per treatment, e.g., 2,4,6,8.
@@ -214,10 +214,10 @@ package to estimate power of a short-term SFE
     #print the power results for each number of chambers per treatment
     round(power.df,2)
     #>   n.ch.per.trt power ci.lower ci.upper
-    #> 1            2  0.97     0.91     0.99
-    #> 2            4  1.00     0.96     1.00
-    #> 3            6  1.00     0.96     1.00
-    #> 4            8  1.00     0.96     1.00
+    #> 1            2  0.99     0.95        1
+    #> 2            4  1.00     0.96        1
+    #> 3            6  1.00     0.96        1
+    #> 4            8  1.00     0.96        1
 
 1.  Plot the resulting power vs. number of chambers per treatment
 
@@ -301,24 +301,24 @@ package to estimate power of a short-term SFE
     # print power estimates
     results
     #>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
-    #> 1             2           0.0  0.35 0.25729378 0.4518494
-    #> 2             4           0.0  0.19 0.11844320 0.2806980
-    #> 3             6           0.0  0.15 0.08645439 0.2353075
-    #> 4             8           0.0  0.08 0.03517156 0.1515576
-    #> 5             2           0.4  0.47 0.36940516 0.5724185
+    #> 1             2           0.0  0.32 0.23021992 0.4207669
+    #> 2             4           0.0  0.18 0.11031123 0.2694771
+    #> 3             6           0.0  0.11 0.05620702 0.1883011
+    #> 4             8           0.0  0.07 0.02860529 0.1389197
+    #> 5             2           0.4  0.49 0.38864417 0.5919637
     #> 6             4           0.4  0.51 0.40803633 0.6113558
-    #> 7             6           0.4  0.53 0.42758148 0.6305948
-    #> 8             8           0.4  0.67 0.56882725 0.7608015
-    #> 9             2           0.5  0.58 0.47711920 0.6780145
-    #> 10            4           0.5  0.63 0.52764836 0.7244334
-    #> 11            6           0.5  0.76 0.66426451 0.8397754
-    #> 12            8           0.5  0.82 0.73052291 0.8896888
-    #> 13            2           0.6  0.77 0.67514127 0.8482684
-    #> 14            4           0.6  0.83 0.74182459 0.8977351
-    #> 15            6           0.6  0.91 0.83601774 0.9580164
-    #> 16            8           0.6  0.96 0.90074284 0.9889955
-    #> 17            2           0.8  0.94 0.87397007 0.9776651
-    #> 18            4           0.8  0.98 0.92961607 0.9975687
+    #> 7             6           0.4  0.56 0.45718750 0.6591640
+    #> 8             8           0.4  0.68 0.57923314 0.7697801
+    #> 9             2           0.5  0.61 0.50731448 0.7059896
+    #> 10            4           0.5  0.61 0.50731448 0.7059896
+    #> 11            6           0.5  0.78 0.68608035 0.8566964
+    #> 12            8           0.5  0.80 0.70815731 0.8733444
+    #> 13            2           0.6  0.66 0.55846673 0.7517765
+    #> 14            4           0.6  0.82 0.73052291 0.8896888
+    #> 15            6           0.6  0.95 0.88716509 0.9835681
+    #> 16            8           0.6  0.99 0.94554061 0.9997469
+    #> 17            2           0.8  0.96 0.90074284 0.9889955
+    #> 18            4           0.8  1.00 0.96378331 1.0000000
     #> 19            6           0.8  1.00 0.96378331 1.0000000
     #> 20            8           0.8  1.00 0.96378331 1.0000000
 
