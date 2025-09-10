@@ -44,7 +44,7 @@ devtools::install_github("akipingu/powergene")
 library("powergene")
 ```
 
-## Example 1: Estimating power of a short-term SFE testing single intervention
+## Example I: Estimating power of a short-term SFE testing single intervention
 
 This is a basic example which shows you how to apply the powergene package to estimate power of a short-term SFE
 
