@@ -3,7 +3,7 @@
 %   R/Power_Analysis_LongTermSFE_CombinedIntervention.R
 \name{sim.scen.longsfe.comint}
 \alias{sim.scen.longsfe.comint}
-\title{Simulate Experimental Design Template with Dual Interventions (ITN and PPFa)}
+\title{Simulate Experimental Design Scenarios for Long-Term Semi-Filed Experiment Testing Combined Interventions}
 \usage{
 sim.scen.longsfe.comint(n.ch.per.trt, exp.length, sampl.freq = "weekly")
 }
@@ -19,7 +19,7 @@ A \code{data.frame} with columns for replicate ID, intervention levels, time (nu
 chamber ID, and interaction terms.
 }
 \description{
-Generates a structured dataset representing experimental design scenarios
+Generates a structured data set representing experimental design scenarios
 for mosquito intervention studies involving two binary treatments: ITN and PPFa.
 Sampling frequency is converted to a time interval, and time is scaled between 0 and 1.
 }

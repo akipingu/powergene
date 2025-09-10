@@ -7,9 +7,9 @@
 
 The powergene R package simulates mosquito count data under short- and
 long-term semi-field experimental design scenarios, evaluating single or
-combined interventions. It incorporates fixed treatment effects and
-random chamber-level variability to support robust power analysis and
-semi-field experimental planning.
+combined interventions. It incorporates fixed treatment effects, random
+chamber-level or sampling time-level variability to support robust power
+analysis for short- or long-term semi-field experimental planning.
 
 This package is an extension of a simulation based power analysis
 framework developed by [Kipingu et. al
@@ -91,14 +91,14 @@ package to estimate power of a short-term SFE
     sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
     sim.mosquitoes
     #>   replicates intvn chamber mosquito.count.fixed mosquito.count.random
-    #> 1          1     0     0-1                   51                    73
-    #> 2          2     0     0-2                   40                    63
-    #> 3          3     0     0-3                   46                    35
-    #> 4          4     0     0-4                   49                    41
-    #> 5          1     1     1-1                   12                     6
-    #> 6          2     1     1-2                    7                    10
-    #> 7          3     1     1-3                    9                     1
-    #> 8          4     1     1-4                    9                    15
+    #> 1          1     0     0-1                   50                    42
+    #> 2          2     0     0-2                   49                    68
+    #> 3          3     0     0-3                   50                    50
+    #> 4          4     0     0-4                   50                    46
+    #> 5          1     1     1-1                   16                    20
+    #> 6          2     1     1-2                   10                     3
+    #> 7          3     1     1-3                   11                    11
+    #> 8          4     1     1-4                   14                    13
 
 1.  Plot the simulated mosquitoes. This function plots a box plot with
     an option to jitter points if jitter=TURE and without jittering if
@@ -140,7 +140,7 @@ package to estimate power of a short-term SFE
     #output the p-values
     pvalue
     #>       pvalue 
-    #> 4.349834e-20
+    #> 9.288298e-20
 
 1.  Since power cannot be estimated from a single simulation, there is a
     need to simulate multiple data sets and estimate power. Now you can
@@ -170,7 +170,7 @@ package to estimate power of a short-term SFE
     #print estimated power
     round(power.estimate,2)
     #>    power ci.lower ci.upper 
-    #>     0.99     0.95     1.00
+    #>     1.00     0.96     1.00
 
 1.  Now you use the function to estimate power for varied number of
     chambers per treatment, e.g., 2,4,6,8.
@@ -214,8 +214,8 @@ package to estimate power of a short-term SFE
     #print the power results for each number of chambers per treatment
     round(power.df,2)
     #>   n.ch.per.trt power ci.lower ci.upper
-    #> 1            2  0.94     0.87     0.98
-    #> 2            4  0.99     0.95     1.00
+    #> 1            2  0.97     0.91     0.99
+    #> 2            4  1.00     0.96     1.00
     #> 3            6  1.00     0.96     1.00
     #> 4            8  1.00     0.96     1.00
 
@@ -301,24 +301,24 @@ package to estimate power of a short-term SFE
     # print power estimates
     results
     #>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
-    #> 1             2           0.0  0.30 0.21240642 0.3998147
-    #> 2             4           0.0  0.13 0.07107305 0.2120407
-    #> 3             6           0.0  0.11 0.05620702 0.1883011
-    #> 4             8           0.0  0.07 0.02860529 0.1389197
-    #> 5             2           0.4  0.46 0.35984335 0.5625884
+    #> 1             2           0.0  0.35 0.25729378 0.4518494
+    #> 2             4           0.0  0.19 0.11844320 0.2806980
+    #> 3             6           0.0  0.15 0.08645439 0.2353075
+    #> 4             8           0.0  0.08 0.03517156 0.1515576
+    #> 5             2           0.4  0.47 0.36940516 0.5724185
     #> 6             4           0.4  0.51 0.40803633 0.6113558
-    #> 7             6           0.4  0.56 0.45718750 0.6591640
-    #> 8             8           0.4  0.66 0.55846673 0.7517765
-    #> 9             2           0.5  0.61 0.50731448 0.7059896
+    #> 7             6           0.4  0.53 0.42758148 0.6305948
+    #> 8             8           0.4  0.67 0.56882725 0.7608015
+    #> 9             2           0.5  0.58 0.47711920 0.6780145
     #> 10            4           0.5  0.63 0.52764836 0.7244334
-    #> 11            6           0.5  0.85 0.76469250 0.9135456
-    #> 12            8           0.5  0.91 0.83601774 0.9580164
-    #> 13            2           0.6  0.73 0.63198373 0.8139336
-    #> 14            4           0.6  0.88 0.79976432 0.9364311
-    #> 15            6           0.6  0.89 0.81169887 0.9437930
+    #> 11            6           0.5  0.76 0.66426451 0.8397754
+    #> 12            8           0.5  0.82 0.73052291 0.8896888
+    #> 13            2           0.6  0.77 0.67514127 0.8482684
+    #> 14            4           0.6  0.83 0.74182459 0.8977351
+    #> 15            6           0.6  0.91 0.83601774 0.9580164
     #> 16            8           0.6  0.96 0.90074284 0.9889955
-    #> 17            2           0.8  0.96 0.90074284 0.9889955
-    #> 18            4           0.8  1.00 0.96378331 1.0000000
+    #> 17            2           0.8  0.94 0.87397007 0.9776651
+    #> 18            4           0.8  0.98 0.92961607 0.9975687
     #> 19            6           0.8  1.00 0.96378331 1.0000000
     #> 20            8           0.8  1.00 0.96378331 1.0000000
 

@@ -1,6 +1,6 @@
-#' Simulate Experimental Design Template with Dual Interventions (ITN and PPFa)
+#' Simulate Experimental Design Scenarios for Long-Term Semi-Filed Experiment Testing Combined Interventions
 #'
-#' Generates a structured dataset representing experimental design scenarios
+#' Generates a structured data set representing experimental design scenarios
 #' for mosquito intervention studies involving two binary treatments: ITN and PPFa.
 #' Sampling frequency is converted to a time interval, and time is scaled between 0 and 1.
 #'
