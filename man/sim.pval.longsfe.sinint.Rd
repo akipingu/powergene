@@ -2,7 +2,7 @@
 % Please edit documentation in R/Power_Analysis_LongTermSFE_SingleIntervention.R
 \name{sim.pval.longsfe.sinint}
 \alias{sim.pval.longsfe.sinint}
-\title{Extract p-value from GLMM for Simulated Mosquito Count Data}
+\title{Extract p-value from GLMM for Simulated Mosquito Count Data (Single Intervention)}
 \usage{
 sim.pval.longsfe.sinint(
   n.ch.per.trt,
@@ -33,8 +33,9 @@ sim.pval.longsfe.sinint(
 
 \item{theta}{Numeric. Overdispersion parameter for the negative binomial model.}
 
-\item{use.random}{Logical. If `TRUE`, uses mosquito counts simulated with random effects;
-if `FALSE`, uses counts based on fixed effects only.}
+\item{use.random}{Logical.
+If \code{TRUE}, uses mosquito counts simulated with random effects;
+If \code{FALSE}, uses counts based on fixed effects only.}
 }
 \value{
 Named numeric vector containing the p-value from the likelihood ratio test.
@@ -44,7 +45,15 @@ Automates simulation and model comparison for long-term semi-field experiments t
 Fits two GLMMs (with and without interaction term) using either fixed-effect or random-effect mosquito counts.
 }
 \examples{
-sim.pval.longsfe.sinint(n.ch.per.trt = 4, exp.length = 90, sampl.freq = "weekly",
-                        lambda = 10, intvn.effect = 0.8, chamber.var = 0.2,
-                        time.var = 0.1, theta = 10, use.random = TRUE)
+sim.pval.longsfe.sinint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = TRUE
+)
 }

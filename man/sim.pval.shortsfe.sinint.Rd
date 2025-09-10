@@ -5,29 +5,44 @@
 \alias{sim.pval.shortsfe.sinint}
 \title{Extract p-value from Simulated GLMM for Short-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
-sim.pval.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
+sim.pval.shortsfe.sinint(
+  n.ch.per.trt,
+  lambda,
+  interv.effect,
+  chamber.var,
+  use.random = TRUE
+)
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment level.}
+\item{n.ch.per.trt}{Integer. Number of chambers per intvn level.}
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
 \item{interv.effect}{Numeric. Proportion reduction due to ITN.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
+
+\item{use.random}{Logical.
+If \code{TRUE}, uses mosquito counts simulated with random effects;
+If \code{FALSE}, uses counts based on fixed effects only.}
 }
 \value{
 A named numeric vector:
 \describe{
-  \item{pvalue}{P-value for the treatment effect from the GLMM}
+  \item{pvalue}{P-value for the intvn effect from the GLMM}
 }
 }
 \description{
 Simulates mosquito count data and fits a Poisson GLMM to estimate the effect
-of ITN treatment. Returns the p-value associated with the treatment effect.
+of ITN intvn. Returns the p-value associated with the intvn effect.
 }
 \examples{
-sim.pval.shortsfe.sinint(4, 50, 0.8, 0.1807)
-
+sim.pval.shortsfe.sinint(
+  n.ch.per.trt = 4,
+  lambda = 50,
+  interv.effect = 0.8,
+  chamber.var = 0.1807,
+  use.random = TRUE
+)
 
 }

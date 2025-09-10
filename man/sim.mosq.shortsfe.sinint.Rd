@@ -5,34 +5,53 @@
 \alias{sim.mosq.shortsfe.sinint}
 \title{Simulate Mosquito Count Data for Short-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
-sim.mosq.shortsfe.sinint(n.ch.per.trt, lambda, interv.effect, chamber.var)
+sim.mosq.shortsfe.sinint(
+  n.ch.per.trt,
+  lambda,
+  interv.effect,
+  chamber.var,
+  use.random = "ALL"
+)
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment level.}
+\item{n.ch.per.trt}{Integer. Number of chambers per intvn level.}
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
 \item{interv.effect}{Numeric. Proportion reduction due to ITN.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
+
+\item{use.random}{Logical, NULL, or "ALL".
+If \code{TRUE}, returns mosquito counts simulated with random effects;
+If \code{FALSE}, returns counts based on fixed effects only;
+If \code{NULL}, returns expected counts from fixed effects (no sampling);
+If \code{"ALL"}, returns the full dataset with all mosquito count columns.}
 }
 \value{
-A data frame with the following columns:
+A data frame with the following columns, depending on \code{use.random}:
 \describe{
-  \item{replicates}{Replicate number within each treatment group}
-  \item{treatment}{Treatment level (0 = no ITN, 1 = ITN)}
+  \item{replicates}{Replicate number within each intvn group}
+  \item{intvn}{intvn level (0 = no ITN, 1 = ITN)}
   \item{chamber}{Unique chamber identifier}
   \item{lin.pred.fixed}{Linear predictor with fixed effects only}
+  \item{mosquito.count.fixed.exp}{Expected counts from fixed effects (no sampling)}
   \item{mosquito.count.fixed}{Simulated counts based on fixed effects}
   \item{lin.pred.random}{Linear predictor including random chamber effects}
-  \item{mosquito.count.rondom}{Simulated counts including random effects}
+  \item{mosquito.count.random}{Simulated counts including random effects}
 }
 }
 \description{
 Generates simulated mosquito count data under a short-term semi-field experimental design
-with fixed effects for treatment, random effects for chamber variability, and Poisson-distributed outcomes.
+with fixed effects for intvn, random effects for chamber variability, and Poisson-distributed outcomes.
 }
 \examples{
-sim.mosq.shortsfe.sinint(4, 50, 0.8, 0.1807)
+sim.mosq.shortsfe.sinint(
+  n.ch.per.trt = 4,
+  lambda = 50,
+  interv.effect = 0.8,
+  chamber.var = 0.1807,
+  use.random = "ALL"
+)
 
 }

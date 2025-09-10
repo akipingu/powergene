@@ -8,12 +8,12 @@
 sim.scen.shortsfe.comint(n.ch.per.trt)
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment combination (default = 4).}
+\item{n.ch.per.trt}{Integer. Number of chambers per Treatments combination (default = 4).}
 }
 \value{
 A data frame with columns:
 \describe{
-  \item{replicates}{Replicate number within each treatment combination}
+  \item{replicates}{Replicate number within each Treatments combination}
   \item{intvn1}{intvn1a intervention level}
   \item{intvn2}{intvn2 intervention level}
   \item{ixn}{Interaction term: intvn1 × intvn2}
@@ -23,7 +23,7 @@ A data frame with columns:
 \description{
 Constructs a data frame representing the factorial design of semi-field experiments
 testing intvn1 and intvn2 interventions. Each chamber is uniquely identified and assigned
-treatment combinations, including interaction terms.
+Treatments combinations, including interaction terms.
 }
 \examples{
 sim.scen.shortsfe.comint(n.ch.per.trt = 4)

@@ -13,11 +13,12 @@ sim.power.shortsfe.comint(
   ixn.effect,
   chamber.var,
   nsim,
-  n.cores = 1
+  n.cores = 1,
+  use.random = TRUE
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment level.}
+\item{n.ch.per.trt}{Integer. Number of chambers per Treatments level.}
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
@@ -32,6 +33,10 @@ sim.power.shortsfe.comint(
 \item{nsim}{Integer. Number of simulation replicates.}
 
 \item{n.cores}{Integer. Number of cores to use for parallel processing.}
+
+\item{use.random}{Logical.
+If \code{TRUE}, uses mosquito counts simulated with random effects;
+If \code{FALSE}, uses counts based on fixed effects only.}
 }
 \value{
 A named numeric vector:
@@ -57,7 +62,8 @@ sim.power.shortsfe.comint(
   ixn.effect = 0.5,
   chamber.var = 0.1807,
   nsim = 100,
-  n.cores = 1
+  n.cores = 1,
+  use.random = TRUE
 )
 
 }

@@ -11,11 +11,12 @@ sim.pval.shortsfe.comint(
   intvn1.effect,
   intvn2.effect,
   ixn.effect,
-  chamber.var
+  chamber.var,
+  use.random = TRUE
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment combination.}
+\item{n.ch.per.trt}{Integer. Number of chambers per Treatments combination.}
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
@@ -26,11 +27,15 @@ sim.pval.shortsfe.comint(
 \item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
+
+\item{use.random}{Logical.
+If \code{TRUE}, uses mosquito counts simulated with random effects;
+If \code{FALSE}, uses counts based on fixed effects only.}
 }
 \value{
 A named numeric vector:
 \describe{
-  \item{p}{p-value from likelihood ratio test comparing models with and without the interaction term}
+  \item{pvalue}{p-value from likelihood ratio test comparing models with and without the interaction term}
 }
 }
 \description{
@@ -45,7 +50,8 @@ sim.pval.shortsfe.comint(
   intvn1.effect = 0.7,
   intvn2.effect = 0.8,
   ixn.effect = 0.5,
-  chamber.var = 0.1807
+  chamber.var = 0.1807,
+  use.random = TRUE
 )
 
 }

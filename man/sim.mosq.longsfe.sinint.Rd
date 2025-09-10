@@ -12,7 +12,8 @@ sim.mosq.longsfe.sinint(
   intvn.effect,
   chamber.var,
   time.var,
-  theta
+  theta,
+  use.random = "ALL"
 )
 }
 \arguments{
@@ -31,10 +32,16 @@ sim.mosq.longsfe.sinint(
 \item{time.var}{Numeric. Variance between time points (random effect).}
 
 \item{theta}{Numeric. Dispersion parameter for the negative binomial distribution.}
+
+\item{use.random}{Logical, NULL, or "ALL".
+If \code{TRUE}, returns mosquito counts simulated with random effects;
+If \code{FALSE}, returns counts based on fixed effects only;
+If \code{NULL}, returns expected counts from fixed effects (no sampling);
+If \code{"ALL"}, returns the full dataset with all mosquito count columns.}
 }
 \value{
 A data frame containing the original design plus simulated mosquito counts and linear predictors.
-        Includes both fixed-effect and random-effect mosquito counts.
+        Output depends on the value of \code{use.random}.
 }
 \description{
 Automates the simulation of mosquito count data under a semi-field experimental design testing a single intervention.
@@ -48,6 +55,8 @@ sim.mosq.longsfe.sinint(
   intvn.effect = 0.8,
   chamber.var = 0.1807,
   time.var = 0.2266,
-  theta = 10
+  theta = 10,
+  use.random = "ALL"
 )
+
 }

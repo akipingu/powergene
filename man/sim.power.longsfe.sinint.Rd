@@ -39,8 +39,9 @@ sim.power.longsfe.sinint(
 
 \item{n.cores}{Integer. Number of cores to use for parallel processing.}
 
-\item{use.random}{Logical. If `TRUE`, uses mosquito counts simulated with random effects;
-if `FALSE`, uses counts based on fixed effects only.}
+\item{use.random}{Logical.
+If \code{TRUE}, uses mosquito counts simulated with random effects;
+If \code{FALSE}, uses counts based on fixed effects only.}
 }
 \value{
 A named numeric vector:
@@ -64,8 +65,8 @@ sim.power.longsfe.sinint(
   sampl.freq = "weekly",
   lambda = 10,
   intvn.effect = 0.8,
-  chamber.var = 0.2,
-  time.var = 0.1,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
   theta = 10,
   nsim = 100,
   n.cores = 1,

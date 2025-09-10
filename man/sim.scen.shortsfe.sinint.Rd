@@ -8,24 +8,24 @@
 sim.scen.shortsfe.sinint(n.ch.per.trt)
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment level.}
+\item{n.ch.per.trt}{Integer. Number of chambers per intvn level.}
 }
 \value{
 A data frame with columns:
 \describe{
-  \item{replicates}{Replicate number within each treatment group}
-  \item{treatment}{Treatment level (0 = no ITN, 1 = ITN)}
+  \item{replicates}{Replicate number within each intvn group}
+  \item{intvn}{intvn level (e.g., 0 = no ITN, 1 = ITN)}
   \item{chamber}{Unique chamber identifier as a factor}
 }
 }
 \description{
 Constructs a template dataset representing a short-term semi-field experiment
-with two ITN treatment levels and a specified number of chambers per treatment.
-Each chamber is uniquely identified by its treatment and replicate combination.
+with two ITN intvn levels and a specified number of chambers per intvn.
+Each chamber is uniquely identified by its intvn and replicate combination.
 }
 \details{
 This case study considers various design parameters including:
-- Number of chambers per treatment (`n.ch.per.trt`), e.g., 4
+- Number of chambers per intvn (`n.ch.per.trt`), e.g., 4
 - Expected mosquitoes to be recaptured in control chamber (`lambda`), e.g., 50
 - Proportion reduction due to ITN (`interv.effect`), e.g., 0.8
 - Inter-chamber variance (`chamber.var`), e.g., 0.1807

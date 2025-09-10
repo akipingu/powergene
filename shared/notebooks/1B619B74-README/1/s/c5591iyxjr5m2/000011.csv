@@ -1,0 +1,8 @@
+"0","sim.plot.shortsfe.sinint("
+"0","  n.ch.per.trt = 4,"
+"0","  lambda = 50,"
+"0","  interv.effect = 0.8,"
+"0","  chamber.var = 0.1807,"
+"0","  use.random = TRUE,"
+"0","  jitter = TRUE"
+"0",")"

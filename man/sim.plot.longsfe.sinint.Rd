@@ -33,15 +33,17 @@ sim.plot.longsfe.sinint(
 
 \item{theta}{Numeric. Dispersion parameter for the negative binomial distribution.}
 
-\item{use.random}{Logical. If `TRUE`, plots mosquito counts simulated with random effects;
-if `FALSE`, plots counts based on fixed effects only.}
+\item{use.random}{Logical or NULL.
+If \code{TRUE}, plots mosquito counts simulated with random effects;
+If \code{FALSE}, plots counts based on fixed effects only;
+If \code{NULL}, plots expected counts from fixed effects (no sampling).}
 }
 \value{
 A `ggplot` object showing mosquito counts over time by treatment group.
 }
 \description{
-Generates a time series plot of mosquito counts based on either fixed effects only
-or the full model including random effects, using data simulated by `sim.mosq.longsfe.sinint`.
+Generates a time series plot of mosquito counts based on either fixed effects only,
+random effects, or expected counts, using data simulated by `sim.mosq.longsfe.sinint`.
 }
 \examples{
 sim.plot.longsfe.sinint(
@@ -53,6 +55,7 @@ sim.plot.longsfe.sinint(
   chamber.var = 0.1807,
   time.var = 0.2266,
   theta = 10,
-  use.random = FALSE
+  use.random = TRUE
 )
+
 }

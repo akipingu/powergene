@@ -11,11 +11,12 @@ sim.mosq.shortsfe.comint(
   intvn1.effect,
   intvn2.effect,
   ixn.effect,
-  chamber.var
+  chamber.var,
+  use.random = "ALL"
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment combination.}
+\item{n.ch.per.trt}{Integer. Number of chambers per Treatments combination.}
 
 \item{lambda}{Numeric. Mean mosquito count in control chambers.}
 
@@ -26,19 +27,16 @@ sim.mosq.shortsfe.comint(
 \item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
 
 \item{chamber.var}{Numeric. Variance of random chamber effects.}
+
+\item{use.random}{Logical, NULL, or "ALL".
+If \code{TRUE}, returns mosquito counts simulated with random effects;
+If \code{FALSE}, returns counts based on fixed effects only;
+If \code{NULL}, returns expected counts from fixed effects (no sampling);
+If \code{"ALL"}, returns the full dataset with all mosquito count columns.}
 }
 \value{
-A data frame with columns:
-\describe{
-  \item{replicates}{Replicate number within each treatment combination}
-  \item{intvn1}{Intervention 1 level (0 or 1)}
-  \item{intvn2}{Intervention 2 level (0 or 1)}
-  \item{ixn}{Interaction term: intvn1 × intvn2}
-  \item{chamber}{Unique chamber identifier}
-  \item{lin.pred.fixed}{Linear predictor from fixed effects only}
-  \item{lin.pred.random}{Linear predictor including random chamber effects}
-  \item{mosquito.count}{Simulated mosquito counts from Poisson distribution}
-}
+A data frame containing the original design plus mosquito counts and linear predictors.
+        Output depends on the value of \code{use.random}.
 }
 \description{
 Generates simulated mosquito count data based on fixed effects (intervention levels),
@@ -52,7 +50,8 @@ sim.mosq.shortsfe.comint(
   intvn1.effect = 0.7,
   intvn2.effect = 0.8,
   ixn.effect = 0.5,
-  chamber.var = 0.1807
+  chamber.var = 0.1807,
+  use.random = "ALL"
 )
 
 }
