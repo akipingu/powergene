@@ -74,7 +74,7 @@ sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 ```
 
-III. Plot the simulated mosquitoes. This function plots a box plot with an option to jitter points if jitter=TURE and without jittering if jitter=FALSE. The use.random option is also used in this function with only TRUE, FALSE or NULL as explained in (ii) above
+III. Plot the simulated mosquitoes. This function plots a box plot with an option to jitter points if jitter=TURE and without jittering if jitter=FALSE. The use.random option is also used in this function with only TRUE, FALSE or NULL as explained in (2) above
 
 ```{r}
 sim.plot.shortsfe.sinint(
