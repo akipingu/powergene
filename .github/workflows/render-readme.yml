@@ -23,7 +23,7 @@ jobs:
         run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"))'
 
       - name: Install devtools
-        run: Rscript -e 'install.packages("devtools")'
+        run: Rscript -e 'install.packages("devtools", repos = "https://cloud.r-project.org")'
 
       - name: Install powergene from GitHub
         run: Rscript -e 'devtools::install_github("akipingu/powergene")'

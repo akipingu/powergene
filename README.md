@@ -17,9 +17,12 @@ This package is an extension of a simulation based power analysis
 framework developed by [Kipingu et. al
 2025](https://doi.org/10.1186/s12936-025-05454-y). Therefore, all
 parameter values for the examples below are taken directly from the same
-study. Visit [Kipingu et. al
-2025](https://doi.org/10.1186/s12936-025-05454-y) for more information
+study. Visit [Kipingu et
+al. 2025](https://doi.org/10.1186/s12936-025-05454-y) or [Johnson et
+al. 2014](https://doi.org/10.1111/2041-210X.12306) for more information
 and description regarding simulation-based power analysis.
+
+Cite this package
 
 ## Installation of powergene package
 
@@ -28,14 +31,43 @@ from [GitHub](https://github.com/) with:
 
 ``` r
 # First, install.packages("devtools") if not already installed in your RStudio
-install.packages("devtools")
-# Then, instal the "powergene" package from github
+# install.packages("devtools") # Run this manually if needed
+# Load "devtools" library before installing "powergene"
+library("devtools")
+#> Loading required package: usethis
+# Then, install the "powergene" package from github
 devtools::install_github("akipingu/powergene")
+#> Using GitHub PAT from the git credential store.
+#> Downloading GitHub repo akipingu/powergene@HEAD
+#> Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
+#>   download from 'https://api.github.com/repos/akipingu/powergene/tarball/HEAD' failed
+
+#Finally, load the powergene package library
+library("powergene")
 ```
 
+If you use **powergene** in your research or publications, please cite
+it appropriately
+
 ``` r
-#load package library
-library("powergene")
+#cite this package
+citation("powergene")
+#> To cite powergene in publications use:
+#> 
+#>   Kipingu, A.M., Kiware, S.S. (2025). "powergene: A generalizable
+#>   simulation-based power analysis R package to guide the design of
+#>   robust semi-field vector control experiments." R package available at
+#>   GitHub. <https://github.com/akipingu/powergene>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Misc{,
+#>     author = {{Kipingu, A.M.} and {Kiware, S.S.}},
+#>     title = {powergene: A generalizable simulation-based power analysis R package to guide the design of robust semi-field vector control experiments},
+#>     year = {2025},
+#>     howpublished = {R package available at GitHub},
+#>     url = {https://github.com/akipingu/powergene},
+#>   }
 ```
 
 ## Example I: Estimating power of a short-term SFE testing single intervention
@@ -96,14 +128,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates intvn chamber mosquito.count.fixed mosquito.count.random
-#> 1          1     0     0-1                   48                    24
-#> 2          2     0     0-2                   54                    53
-#> 3          3     0     0-3                   49                    33
-#> 4          4     0     0-4                   52                    58
-#> 5          1     1     1-1                    8                     9
-#> 6          2     1     1-2                   12                     9
-#> 7          3     1     1-3                    5                    16
-#> 8          4     1     1-4                   10                     3
+#> 1          1     0     0-1                   61                    73
+#> 2          2     0     0-2                   59                    67
+#> 3          3     0     0-3                   61                    21
+#> 4          4     0     0-4                   36                    44
+#> 5          1     1     1-1                    5                    10
+#> 6          2     1     1-2                    7                     9
+#> 7          3     1     1-3                   10                    17
+#> 8          4     1     1-4                    9                    16
 ```
 
 3.  Plot the simulated mosquitoes. This function plots a box plot with
@@ -122,7 +154,7 @@ sim.plot.shortsfe.sinint(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 4.  Estimate p-value using sim.pval.shortsfe.sinint function by
     specifying the number of chambers per treatment, e.g., n.ch.per.trt
@@ -144,8 +176,8 @@ pvalue <- sim.pval.shortsfe.sinint(
 
 #output the p-values
 pvalue
-#>    pvalue 
-#> 0.1490801
+#>       pvalue 
+#> 3.264329e-05
 ```
 
 V. Since power cannot be estimated from a single simulation, there is a
@@ -218,8 +250,8 @@ for (i in seq_along(n.ch.values)) {
 #print the power results for each number of chambers per treatment
 round(power.df,2)
 #>   n.ch.per.trt power ci.lower ci.upper
-#> 1            2  0.97     0.91     0.99
-#> 2            4  1.00     0.96     1.00
+#> 1            2  0.94     0.87     0.98
+#> 2            4  0.99     0.95     1.00
 #> 3            6  1.00     0.96     1.00
 #> 4            8  1.00     0.96     1.00
 ```
@@ -245,7 +277,7 @@ ggplot(power.df, aes(x = n.ch.per.trt, y = power)) +
   theme_bw()
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 8.  Now you can use the function to estimate power for varied number of
     chambers per treatment, e.g., 2,4,6,8 and varied effect size of an
@@ -305,23 +337,23 @@ for (i in seq_len(nrow(results))) {
 # print power estimates
 results
 #>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
-#> 1             2           0.0  0.26 0.17739444 0.3573121
-#> 2             4           0.0  0.13 0.07107305 0.2120407
-#> 3             6           0.0  0.10 0.04900469 0.1762226
-#> 4             8           0.0  0.11 0.05620702 0.1883011
-#> 5             2           0.4  0.43 0.33139102 0.5328663
-#> 6             4           0.4  0.49 0.38864417 0.5919637
-#> 7             6           0.4  0.49 0.38864417 0.5919637
-#> 8             8           0.4  0.69 0.58968545 0.7787112
-#> 9             2           0.5  0.60 0.49720915 0.6967052
-#> 10            4           0.5  0.69 0.58968545 0.7787112
-#> 11            6           0.5  0.80 0.70815731 0.8733444
-#> 12            8           0.5  0.88 0.79976432 0.9364311
+#> 1             2           0.0  0.28 0.19479363 0.3786670
+#> 2             4           0.0  0.18 0.11031123 0.2694771
+#> 3             6           0.0  0.17 0.10226491 0.2581754
+#> 4             8           0.0  0.10 0.04900469 0.1762226
+#> 5             2           0.4  0.39 0.29401041 0.4926855
+#> 6             4           0.4  0.43 0.33139102 0.5328663
+#> 7             6           0.4  0.58 0.47711920 0.6780145
+#> 8             8           0.4  0.65 0.54815064 0.7427062
+#> 9             2           0.5  0.59 0.48714420 0.6873800
+#> 10            4           0.5  0.67 0.56882725 0.7608015
+#> 11            6           0.5  0.78 0.68608035 0.8566964
+#> 12            8           0.5  0.90 0.82377740 0.9509953
 #> 13            2           0.6  0.70 0.60018532 0.7875936
-#> 14            4           0.6  0.78 0.68608035 0.8566964
-#> 15            6           0.6  0.94 0.87397007 0.9776651
-#> 16            8           0.6  0.98 0.92961607 0.9975687
-#> 17            2           0.8  0.93 0.86108027 0.9713947
+#> 14            4           0.6  0.88 0.79976432 0.9364311
+#> 15            6           0.6  0.92 0.84844236 0.9648284
+#> 16            8           0.6  0.96 0.90074284 0.9889955
+#> 17            2           0.8  0.94 0.87397007 0.9776651
 #> 18            4           0.8  1.00 0.96378331 1.0000000
 #> 19            6           0.8  1.00 0.96378331 1.0000000
 #> 20            8           0.8  1.00 0.96378331 1.0000000
@@ -351,4 +383,4 @@ ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(interv.effect), 
   theme_bw()
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
