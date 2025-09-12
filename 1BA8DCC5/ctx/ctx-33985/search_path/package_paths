@@ -1,8 +1,0 @@
-compiler="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/compiler"
-datasets="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/datasets"
-grDevices="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/grDevices"
-graphics="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/graphics"
-methods="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/methods"
-stats="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/stats"
-tools="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/tools"
-utils="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/utils"
