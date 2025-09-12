@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# powergene: A simulation-based power analysis R Package to aid the design of robust semi-field vector control experiments
+# powergene: A generalizable simulation-based power analysis R package for semi-field vector control trials
 
 <!-- badges: start -->
 
@@ -22,8 +22,6 @@ al. 2025](https://doi.org/10.1186/s12936-025-05454-y) or [Johnson et
 al. 2014](https://doi.org/10.1111/2041-210X.12306) for more information
 and description regarding simulation-based power analysis.
 
-Cite this package
-
 ## Installation of powergene package
 
 You can install the development version of powergene package directly
@@ -39,8 +37,24 @@ library("devtools")
 devtools::install_github("akipingu/powergene")
 #> Using GitHub PAT from the git credential store.
 #> Downloading GitHub repo akipingu/powergene@HEAD
-#> Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
-#>   download from 'https://api.github.com/repos/akipingu/powergene/tarball/HEAD' failed
+#> magrittr (2.0.3 -> 2.0.4) [CRAN]
+#> ggplot2  (3.5.2 -> 4.0.0) [CRAN]
+#> Installing 2 packages: magrittr, ggplot2
+#> Installing packages into '/private/var/folders/yy/rpq5vlf569g6wk875n3c94140000gn/T/RtmpmyScMu/temp_libpath20f21ccec10f'
+#> (as 'lib' is unspecified)
+#> 
+#> The downloaded binary packages are in
+#>  /var/folders/yy/rpq5vlf569g6wk875n3c94140000gn/T//RtmpCjKh3a/downloaded_packages
+#> ── R CMD build ─────────────────────────────────────────────────────────────────
+#> * checking for file ‘/private/var/folders/yy/rpq5vlf569g6wk875n3c94140000gn/T/RtmpCjKh3a/remotes24cd7cf16852/akipingu-powergene-80c6f0f/DESCRIPTION’ ... OK
+#> * preparing ‘powergene’:
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#> Omitted ‘LazyData’ from DESCRIPTION
+#> * building ‘powergene_1.0.0.tar.gz’
+#> Installing package into '/private/var/folders/yy/rpq5vlf569g6wk875n3c94140000gn/T/RtmpmyScMu/temp_libpath20f21ccec10f'
+#> (as 'lib' is unspecified)
 
 #Finally, load the powergene package library
 library("powergene")
@@ -128,14 +142,14 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates intvn chamber mosquito.count.fixed mosquito.count.random
-#> 1          1     0     0-1                   61                    73
-#> 2          2     0     0-2                   59                    67
-#> 3          3     0     0-3                   61                    21
-#> 4          4     0     0-4                   36                    44
-#> 5          1     1     1-1                    5                    10
-#> 6          2     1     1-2                    7                     9
-#> 7          3     1     1-3                   10                    17
-#> 8          4     1     1-4                    9                    16
+#> 1          1     0     0-1                   47                    65
+#> 2          2     0     0-2                   54                    19
+#> 3          3     0     0-3                   53                    93
+#> 4          4     0     0-4                   45                    26
+#> 5          1     1     1-1                    8                    10
+#> 6          2     1     1-2                   11                    11
+#> 7          3     1     1-3                    8                    17
+#> 8          4     1     1-4                   14                     5
 ```
 
 3.  Plot the simulated mosquitoes. This function plots a box plot with
@@ -177,7 +191,7 @@ pvalue <- sim.pval.shortsfe.sinint(
 #output the p-values
 pvalue
 #>       pvalue 
-#> 3.264329e-05
+#> 9.219716e-15
 ```
 
 V. Since power cannot be estimated from a single simulation, there is a
@@ -250,10 +264,10 @@ for (i in seq_along(n.ch.values)) {
 #print the power results for each number of chambers per treatment
 round(power.df,2)
 #>   n.ch.per.trt power ci.lower ci.upper
-#> 1            2  0.94     0.87     0.98
-#> 2            4  0.99     0.95     1.00
-#> 3            6  1.00     0.96     1.00
-#> 4            8  1.00     0.96     1.00
+#> 1            2  0.99     0.95        1
+#> 2            4  1.00     0.96        1
+#> 3            6  1.00     0.96        1
+#> 4            8  1.00     0.96        1
 ```
 
 7.  Plot the resulting power vs. number of chambers per treatment
@@ -337,23 +351,23 @@ for (i in seq_len(nrow(results))) {
 # print power estimates
 results
 #>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
-#> 1             2           0.0  0.28 0.19479363 0.3786670
-#> 2             4           0.0  0.18 0.11031123 0.2694771
-#> 3             6           0.0  0.17 0.10226491 0.2581754
-#> 4             8           0.0  0.10 0.04900469 0.1762226
-#> 5             2           0.4  0.39 0.29401041 0.4926855
-#> 6             4           0.4  0.43 0.33139102 0.5328663
-#> 7             6           0.4  0.58 0.47711920 0.6780145
-#> 8             8           0.4  0.65 0.54815064 0.7427062
-#> 9             2           0.5  0.59 0.48714420 0.6873800
-#> 10            4           0.5  0.67 0.56882725 0.7608015
-#> 11            6           0.5  0.78 0.68608035 0.8566964
-#> 12            8           0.5  0.90 0.82377740 0.9509953
-#> 13            2           0.6  0.70 0.60018532 0.7875936
-#> 14            4           0.6  0.88 0.79976432 0.9364311
-#> 15            6           0.6  0.92 0.84844236 0.9648284
-#> 16            8           0.6  0.96 0.90074284 0.9889955
-#> 17            2           0.8  0.94 0.87397007 0.9776651
+#> 1             2           0.0  0.21 0.13494370 0.3029154
+#> 2             4           0.0  0.15 0.08645439 0.2353075
+#> 3             6           0.0  0.10 0.04900469 0.1762226
+#> 4             8           0.0  0.09 0.04198360 0.1639823
+#> 5             2           0.4  0.51 0.40803633 0.6113558
+#> 6             4           0.4  0.51 0.40803633 0.6113558
+#> 7             6           0.4  0.56 0.45718750 0.6591640
+#> 8             8           0.4  0.64 0.53787811 0.7335916
+#> 9             2           0.5  0.60 0.49720915 0.6967052
+#> 10            4           0.5  0.68 0.57923314 0.7697801
+#> 11            6           0.5  0.75 0.65344750 0.8312203
+#> 12            8           0.5  0.84 0.75321240 0.9056897
+#> 13            2           0.6  0.79 0.69708462 0.8650563
+#> 14            4           0.6  0.87 0.78795932 0.9289270
+#> 15            6           0.6  0.97 0.91482395 0.9937700
+#> 16            8           0.6  0.99 0.94554061 0.9997469
+#> 17            2           0.8  0.95 0.88716509 0.9835681
 #> 18            4           0.8  1.00 0.96378331 1.0000000
 #> 19            6           0.8  1.00 0.96378331 1.0000000
 #> 20            8           0.8  1.00 0.96378331 1.0000000
