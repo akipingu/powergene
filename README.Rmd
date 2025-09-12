@@ -34,7 +34,7 @@ You can install the development version of powergene package directly from
 [GitHub](https://github.com/) with:
 
 
-```{r}
+```{r install-powergene, message=FALSE, warning=FALSE, results='hide'}
 # First, install.packages("devtools") if not already installed in your RStudio
 # install.packages("devtools") # Run this manually if needed
 # Load "devtools" library before installing "powergene"
@@ -170,6 +170,7 @@ round(power.df,2)
 VII. Plot the resulting power vs. number of chambers per treatment
 
 ```{r}
+# install.packages("ggplot2") if not yet installed
 library(ggplot2)
 
 ggplot(power.df, aes(x = n.ch.per.trt, y = power)) +
@@ -228,6 +229,7 @@ results
 IX. Now plot the resulting power estimates vs. number of chambers per treatment or effect sizes.
 
 ```{r}
+# install.packages("ggplot2") if not yet installed
 library(ggplot2)
 results$interv.effect <- factor(results$interv.effect, levels = sort(unique(results$interv.effect), decreasing = TRUE))
 ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(interv.effect), group = interv.effect)) +
