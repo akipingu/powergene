@@ -19,6 +19,7 @@ shared/notebooks/**/000*.png
 shared/notebooks/**/output*.html
 shared/notebooks/**/cache/
 shared/notebooks/**/figures/
+shared/notebooks/
 
 # R Markdown rendering outputs
 *_cache/
