@@ -96,7 +96,7 @@ scen.table
 2.  Simulate mosquitoes counts/abundance by specifying the number of
     chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes
     to be recaptured from a control chamber, e.g., lambda=50,
-    intervention effect, e.g., interv.effect = 0.8 for 80% effect, and
+    intervention effect, e.g., intvn.effect = 0.8 for 80% effect, and
     chamber-level variance, e.g., chamber.var = 0.1807. The resultant
     number of mosquitoes will be either with random effect included or
     without including the random effect. Below, columns 4, 5 and 6
@@ -113,23 +113,23 @@ scen.table
 sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = "ALL"
 )
-
+?sim.mosq.shortsfe.sinint
 #output mosquito counts per each chamber per each treatment
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
 #>   replicates intvn chamber mosquito.count.fixed mosquito.count.random
-#> 1          1     0     0-1                   47                    43
-#> 2          2     0     0-2                   50                    53
-#> 3          3     0     0-3                   52                   130
-#> 4          4     0     0-4                   45                    34
-#> 5          1     1     1-1                    5                    13
-#> 6          2     1     1-2                    4                     6
-#> 7          3     1     1-3                    5                     7
-#> 8          4     1     1-4                   14                     9
+#> 1          1     0     0-1                   36                    73
+#> 2          2     0     0-2                   47                    35
+#> 3          3     0     0-3                   52                    38
+#> 4          4     0     0-4                   48                    65
+#> 5          1     1     1-1                    9                    10
+#> 6          2     1     1-2                    6                    13
+#> 7          3     1     1-3                   16                     6
+#> 8          4     1     1-4                    8                    20
 ```
 
 3.  Plot the simulated mosquitoes. This function plots a box plot with
@@ -141,7 +141,7 @@ sim.mosquitoes
 sim.plot.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = TRUE,
   jitter = TRUE
@@ -153,7 +153,7 @@ sim.plot.shortsfe.sinint(
 4.  Estimate p-value using sim.pval.shortsfe.sinint function by
     specifying the number of chambers per treatment, e.g., n.ch.per.trt
     = 4, expected mosquitoes to be recaptured from a control chamber,
-    e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for
+    e.g., lambda=50, intervention effect, e.g., intvn.effect = 0.8 for
     80% effect, and chamber-level variance, e.g., chamber.var = 0.1807.
     The p-value estimation is based on mosquito abundance that accounted
     for random chamber effect. The use.random option is also used in
@@ -163,7 +163,7 @@ sim.plot.shortsfe.sinint(
 pvalue <- sim.pval.shortsfe.sinint(
     n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = TRUE
 )
@@ -171,14 +171,14 @@ pvalue <- sim.pval.shortsfe.sinint(
 #output the p-values
 pvalue
 #>       pvalue 
-#> 4.590521e-06
+#> 5.849661e-14
 ```
 
 V. Since power cannot be estimated from a single simulation, there is a
 need to simulate multiple data sets and estimate power. Now you can
 estimate power by specifying the number of chambers per treatment, e.g.,
 n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control
-chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8
+chamber, e.g., lambda=50, intervention effect, e.g., intvn.effect = 0.8
 for 80% effect, chamber-level variance, e.g., chamber.var = 0.1807, and
 the total simulations, e.g., nsim=100. A 100 simulations are just for
 illustration purpose, but it is recommended to run at least 1000
@@ -190,7 +190,7 @@ only TRUE or FALSE as explained in (ii) above.
 ``` r
 power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807, 
   nsim = 100,
   use.random = TRUE
@@ -225,7 +225,7 @@ for (i in seq_along(n.ch.values)) {
   result <- sim.power.shortsfe.sinint(
     n.ch.per.trt = n,
     lambda = 50,
-    interv.effect = 0.8,
+    intvn.effect = 0.8,
     chamber.var = 0.1807,
     nsim = 100,
     use.random = TRUE
@@ -244,10 +244,10 @@ for (i in seq_along(n.ch.values)) {
 #print the power results for each number of chambers per treatment
 round(power.df,2)
 #>   n.ch.per.trt power ci.lower ci.upper
-#> 1            2  0.98     0.93        1
-#> 2            4  1.00     0.96        1
-#> 3            6  1.00     0.96        1
-#> 4            8  1.00     0.96        1
+#> 1            2  0.96     0.90     0.99
+#> 2            4  0.99     0.95     1.00
+#> 3            6  1.00     0.96     1.00
+#> 4            8  1.00     0.96     1.00
 ```
 
 7.  Plot the resulting power vs. number of chambers per treatment
@@ -286,7 +286,7 @@ effect.sizes <- c(0, 0.4, 0.5, 0.6, 0.8)
 # Initialize results storage
 results <- expand.grid(
   n.ch.per.trt = n.ch.values,
-  interv.effect = effect.sizes
+  intvn.effect = effect.sizes
 )
 results$power <- NA
 results$ci.lower <- NA
@@ -299,7 +299,7 @@ for (i in seq_len(nrow(results))) {
   sim <- sim.power.shortsfe.sinint(
     n.ch.per.trt = row$n.ch.per.trt,
     lambda = 50,
-    interv.effect = row$interv.effect,
+    intvn.effect = row$intvn.effect,
     chamber.var = 0.1807,
     nsim = 100,
     TRUE
@@ -331,27 +331,27 @@ for (i in seq_len(nrow(results))) {
 #>   |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |===                                                                   |   4%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  17%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  23%  |                                                                              |=================                                                     |  24%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |===============================                                       |  44%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  57%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  63%  |                                                                              |=============================================                         |  64%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  77%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |===========================================================           |  84%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================| 100%
 # print power estimates
 results
-#>    n.ch.per.trt interv.effect power   ci.lower  ci.upper
-#> 1             2           0.0  0.33 0.23919853 0.4311728
-#> 2             4           0.0  0.14 0.07870540 0.2237280
-#> 3             6           0.0  0.09 0.04198360 0.1639823
-#> 4             8           0.0  0.08 0.03517156 0.1515576
-#> 5             2           0.4  0.39 0.29401041 0.4926855
-#> 6             4           0.4  0.50 0.39832113 0.6016789
-#> 7             6           0.4  0.56 0.45718750 0.6591640
-#> 8             8           0.4  0.66 0.55846673 0.7517765
-#> 9             2           0.5  0.66 0.55846673 0.7517765
-#> 10            4           0.5  0.67 0.56882725 0.7608015
-#> 11            6           0.5  0.83 0.74182459 0.8977351
-#> 12            8           0.5  0.90 0.82377740 0.9509953
-#> 13            2           0.6  0.81 0.71930204 0.8815568
-#> 14            4           0.6  0.83 0.74182459 0.8977351
-#> 15            6           0.6  0.93 0.86108027 0.9713947
-#> 16            8           0.6  0.96 0.90074284 0.9889955
-#> 17            2           0.8  0.98 0.92961607 0.9975687
-#> 18            4           0.8  0.99 0.94554061 0.9997469
-#> 19            6           0.8  1.00 0.96378331 1.0000000
-#> 20            8           0.8  1.00 0.96378331 1.0000000
+#>    n.ch.per.trt intvn.effect power   ci.lower   ci.upper
+#> 1             2          0.0  0.31 0.22128879 0.41031455
+#> 2             4          0.0  0.06 0.02233489 0.12602993
+#> 3             6          0.0  0.04 0.01100449 0.09925716
+#> 4             8          0.0  0.11 0.05620702 0.18830113
+#> 5             2          0.4  0.41 0.31261998 0.51285580
+#> 6             4          0.4  0.45 0.35032023 0.55271981
+#> 7             6          0.4  0.51 0.40803633 0.61135583
+#> 8             8          0.4  0.66 0.55846673 0.75177650
+#> 9             2          0.5  0.61 0.50731448 0.70598959
+#> 10            4          0.5  0.73 0.63198373 0.81393358
+#> 11            6          0.5  0.81 0.71930204 0.88155680
+#> 12            8          0.5  0.91 0.83601774 0.95801640
+#> 13            2          0.6  0.74 0.64268794 0.82260556
+#> 14            4          0.6  0.76 0.66426451 0.83977539
+#> 15            6          0.6  0.93 0.86108027 0.97139471
+#> 16            8          0.6  0.99 0.94554061 0.99974685
+#> 17            2          0.8  0.98 0.92961607 0.99756866
+#> 18            4          0.8  1.00 0.96378331 1.00000000
+#> 19            6          0.8  1.00 0.96378331 1.00000000
+#> 20            8          0.8  1.00 0.96378331 1.00000000
 ```
 
 9.  Now plot the resulting power estimates vs. number of chambers per
@@ -360,8 +360,8 @@ results
 ``` r
 # install.packages("ggplot2") if not yet installed
 library(ggplot2)
-results$interv.effect <- factor(results$interv.effect, levels = sort(unique(results$interv.effect), decreasing = TRUE))
-ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(interv.effect), group = interv.effect)) +
+results$intvn.effect <- factor(results$intvn.effect, levels = sort(unique(results$intvn.effect), decreasing = TRUE))
+ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(intvn.effect), group = intvn.effect)) +
   geom_point(size = 2) +
   geom_line(linewidth = 0.8) +
   geom_errorbar(aes(ymin = ci.lower, ymax = ci.upper),

@@ -68,17 +68,17 @@ scen.table
 ```
 
 
-II. Simulate mosquitoes counts/abundance by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for 80% effect, and chamber-level variance, e.g., chamber.var = 0.1807. The resultant number of mosquitoes will be either with random effect included or without including the random effect. Below, columns 4, 5 and 6 because they are optional but you can print them if you want. Remember our main target is the mosquito abundance that account for chamber random effect. The use.random has four options to output mosquito count column either with the use of random effect (TRUE), fixed effect only (FALSE), only fixed effect from exponential function rather than from a known statistical distribution (NULL) or all mosquito count columns ("ALL"). Below I set use.random = "ALL" as an example.
+II. Simulate mosquitoes counts/abundance by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., intvn.effect = 0.8 for 80% effect, and chamber-level variance, e.g., chamber.var = 0.1807. The resultant number of mosquitoes will be either with random effect included or without including the random effect. Below, columns 4, 5 and 6 because they are optional but you can print them if you want. Remember our main target is the mosquito abundance that account for chamber random effect. The use.random has four options to output mosquito count column either with the use of random effect (TRUE), fixed effect only (FALSE), only fixed effect from exponential function rather than from a known statistical distribution (NULL) or all mosquito count columns ("ALL"). Below I set use.random = "ALL" as an example.
 
 ```{r}
 sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = "ALL"
 )
-
+?sim.mosq.shortsfe.sinint
 #output mosquito counts per each chamber per each treatment
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
@@ -90,7 +90,7 @@ III. Plot the simulated mosquitoes. This function plots a box plot with an optio
 sim.plot.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = TRUE,
   jitter = TRUE
@@ -98,13 +98,13 @@ sim.plot.shortsfe.sinint(
 ```
 
 
-IV. Estimate p-value using sim.pval.shortsfe.sinint function by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for 80% effect, and chamber-level variance, e.g., chamber.var = 0.1807. The p-value estimation is based on mosquito abundance that accounted for random chamber effect. The use.random option is also used in this function with only TRUE or FALSE as explained in (ii) above
+IV. Estimate p-value using sim.pval.shortsfe.sinint function by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., intvn.effect = 0.8 for 80% effect, and chamber-level variance, e.g., chamber.var = 0.1807. The p-value estimation is based on mosquito abundance that accounted for random chamber effect. The use.random option is also used in this function with only TRUE or FALSE as explained in (ii) above
 
 ```{r}
 pvalue <- sim.pval.shortsfe.sinint(
     n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = TRUE
 )
@@ -115,12 +115,12 @@ pvalue
 
 
 
-V. Since power cannot be estimated from a single simulation, there is a need to simulate multiple data sets and estimate power. Now you can estimate power by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., interv.effect = 0.8 for 80% effect, chamber-level variance, e.g., chamber.var = 0.1807, and the total simulations, e.g., nsim=100. A 100 simulations are just for illustration purpose, but it is recommended to run at least 1000 simulations if you are estimating power for a real experiment. The power estimation is based on mosquito abundance that accounted for random chamber effect. The use.random option is also used in this function with only TRUE or FALSE as explained in (ii) above.
+V. Since power cannot be estimated from a single simulation, there is a need to simulate multiple data sets and estimate power. Now you can estimate power by specifying the number of chambers per treatment, e.g., n.ch.per.trt = 4, expected mosquitoes to be recaptured from a control chamber, e.g., lambda=50, intervention effect, e.g., intvn.effect = 0.8 for 80% effect, chamber-level variance, e.g., chamber.var = 0.1807, and the total simulations, e.g., nsim=100. A 100 simulations are just for illustration purpose, but it is recommended to run at least 1000 simulations if you are estimating power for a real experiment. The power estimation is based on mosquito abundance that accounted for random chamber effect. The use.random option is also used in this function with only TRUE or FALSE as explained in (ii) above.
 
 ```{r}
 power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807, 
   nsim = 100,
   use.random = TRUE
@@ -151,7 +151,7 @@ for (i in seq_along(n.ch.values)) {
   result <- sim.power.shortsfe.sinint(
     n.ch.per.trt = n,
     lambda = 50,
-    interv.effect = 0.8,
+    intvn.effect = 0.8,
     chamber.var = 0.1807,
     nsim = 100,
     use.random = TRUE
@@ -199,7 +199,7 @@ effect.sizes <- c(0, 0.4, 0.5, 0.6, 0.8)
 # Initialize results storage
 results <- expand.grid(
   n.ch.per.trt = n.ch.values,
-  interv.effect = effect.sizes
+  intvn.effect = effect.sizes
 )
 results$power <- NA
 results$ci.lower <- NA
@@ -212,7 +212,7 @@ for (i in seq_len(nrow(results))) {
   sim <- sim.power.shortsfe.sinint(
     n.ch.per.trt = row$n.ch.per.trt,
     lambda = 50,
-    interv.effect = row$interv.effect,
+    intvn.effect = row$intvn.effect,
     chamber.var = 0.1807,
     nsim = 100,
     TRUE
@@ -231,8 +231,8 @@ IX. Now plot the resulting power estimates vs. number of chambers per treatment 
 ```{r}
 # install.packages("ggplot2") if not yet installed
 library(ggplot2)
-results$interv.effect <- factor(results$interv.effect, levels = sort(unique(results$interv.effect), decreasing = TRUE))
-ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(interv.effect), group = interv.effect)) +
+results$intvn.effect <- factor(results$intvn.effect, levels = sort(unique(results$intvn.effect), decreasing = TRUE))
+ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(intvn.effect), group = intvn.effect)) +
   geom_point(size = 2) +
   geom_line(linewidth = 0.8) +
   geom_errorbar(aes(ymin = ci.lower, ymax = ci.upper),

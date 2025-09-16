@@ -1,0 +1,4 @@
+"0","scen.table <- sim.scen.shortsfe.sinint(n.ch.per.trt = 4)"
+"0",""
+"0","#print a scenario table"
+"0","scen.table"
