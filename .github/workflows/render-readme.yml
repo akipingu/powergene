@@ -5,6 +5,9 @@ on:
     paths:
       - README.Rmd
 
+env:
+  R_LIBS_USER: ${{ runner.temp }}/Rlib
+
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -18,6 +21,9 @@ jobs:
 
       - name: Set up Pandoc
         uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Create R library path
+        run: mkdir -p $R_LIBS_USER
 
       - name: Install required R packages
         run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"))'
