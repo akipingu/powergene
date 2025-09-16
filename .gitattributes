@@ -1,0 +1,24 @@
+# Ensure consistent line endings across platforms
+* text=auto
+
+# Treat R scripts and Markdown as UTF-8 text
+*.R text eol=lf
+*.Rmd text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+
+# Improve diff readability for R Markdown and Markdown
+*.Rmd diff=markdown
+*.md diff=markdown
+
+# Treat CSVs as text for diffing (optional)
+*.csv text diff=astextplain
+
+# Ignore binary diffs for images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+
+# Optional: preserve line endings for LaTeX
+*.tex text eol=lf

@@ -1,6 +1,44 @@
-.Rproj.user
+# RStudio and R session files
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
+
+# Package build artifacts
 .Rcheck/
+*.tar.gz
+*.Rbuildignore
+
+# roxygen2 and devtools outputs
+man/*.Rd
+NAMESPACE
+
+# Notebook and rendering artifacts
+.ipynb_checkpoints/
+shared/notebooks/**/000*.png
+shared/notebooks/**/output*.html
+shared/notebooks/**/cache/
+shared/notebooks/**/figures/
+
+# R Markdown rendering outputs
+*_cache/
+*_files/
+*.utf8.md
+*.knit.md
+*.pdf
+*.html
+
+# Simulation or diagnostic outputs (customize as needed)
+output/
+diagnostics/
+plots/
+*.csv
+*.rds
+
+# System-specific folders
 1BA8DCC5/
+.DS_Store
+Thumbs.db
+
+# GitHub Actions temp files (if any)
+.github/workflows/*.log
