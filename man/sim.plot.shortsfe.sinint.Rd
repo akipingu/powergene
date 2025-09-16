@@ -8,40 +8,42 @@
 sim.plot.shortsfe.sinint(
   n.ch.per.trt,
   lambda,
-  interv.effect,
+  intvn.effect,
   chamber.var,
   use.random = TRUE,
   jitter = TRUE
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per intvn level.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{lambda}{Numeric. Mean mosquito count in control chambers.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{interv.effect}{Numeric. Proportion reduction due to intervention.}
+\item{intvn.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention (e.g., ITN).}
 
-\item{chamber.var}{Numeric. Variance of random chamber effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{use.random}{Logical or NULL.
-If \code{TRUE}, plots mosquito counts simulated with random effects;
-If \code{FALSE}, plots counts based on fixed effects only;
-If \code{NULL}, plots expected counts from fixed effects (no sampling).}
+\item{use.random}{A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects) or exponential function (fixed effect)
+If \code{TRUE}, plots expected mosquito counts simulated using sampling distribution with random effects;
+If \code{FALSE}, plots expected counts using sampling distribution based on fixed effects only;
+If \code{NULL}, plots expected counts simulated using exponential function with fixed effects only (no sampling).}
 
-\item{jitter}{Logical. If \code{TRUE}, overlays individual chamber-level points.}
+\item{jitter}{A logical value indicating whether to overlay individual chamber-level points
+If \code{TRUE}, overlays individual chamber-level points.
+If \code{FALSE}, do not overlay individual chamber-level points.}
 }
 \value{
-A `ggplot` object showing mosquito counts by intvn group.
+A `ggplot` object showing expected mosquito counts by treatment group.
 }
 \description{
-Generates a boxplot of simulated mosquito counts grouped by intvn level (Control vs Intervention).
-Uses output from `sim.mosq.shortsfe.sinint()` and overlays jittered points to show chamber-level variation.
+Generates a boxplot of simulated mosquito counts grouped by intervention status (Control vs Intervention).
+Uses output from `sim.mosq.shortsfe.sinint()` and can overlay jittered points to show chamber-level variation.
 }
 \examples{
 sim.plot.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = TRUE,
   jitter = TRUE

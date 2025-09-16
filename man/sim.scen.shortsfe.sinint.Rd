@@ -3,35 +3,32 @@
 %   R/Power_Analysis_ShortTermSFE_SingleIntervention.R
 \name{sim.scen.shortsfe.sinint}
 \alias{sim.scen.shortsfe.sinint}
-\title{Simulate Experimental Design for Short-Term Semi-Field Intervention}
+\title{Simulate Design Scenarios for Short-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
 sim.scen.shortsfe.sinint(n.ch.per.trt)
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per intvn level.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 }
 \value{
 A data frame with columns:
 \describe{
-  \item{replicates}{Replicate number within each intvn group}
-  \item{intvn}{intvn level (e.g., 0 = no ITN, 1 = ITN)}
-  \item{chamber}{Unique chamber identifier as a factor}
+  \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+  \item{intvn}{Intervention status (e.g., 0 = control or no intervention and 1 = there is intervention)}
+  \item{chamber}{Unique chamber identifier as a factor (e.g., 0-1, 0-2 for the control chambers and 1-1, 1-2 for intervention chambers)}
 }
 }
 \description{
-Constructs a template dataset representing a short-term semi-field experiment
-with two ITN intvn levels and a specified number of chambers per intvn.
-Each chamber is uniquely identified by its intvn and replicate combination.
+Constructs a design scenario table representing a short-term semi-field experiment
+with two treatment levels (or intervention status), i.e., control (no intervention) and intervention, and a specified number of chambers or compartment per treatment.
+Each chamber is uniquely identified by a treatment level and a replicate combination. An intervention here is shortly named as `intvn`.
 }
 \details{
-This case study considers various design parameters including:
-- Number of chambers per intvn (`n.ch.per.trt`), e.g., 4
-- Expected mosquitoes to be recaptured in control chamber (`lambda`), e.g., 50
-- Proportion reduction due to ITN (`interv.effect`), e.g., 0.8
-- Inter-chamber variance (`chamber.var`), e.g., 0.1807
-- Number of simulations (`nsim`), e.g., 100
+This function considers a single design parameter, which is
+the total number of chambers or compartments per treatment (`n.ch.per.trt`), e.g., 4.
+The `n.ch.per.trt` indicates how many chambers known as `replicates` are present per treatment.
 }
 \examples{
-sim.scen.shortsfe.sinint(4)
+sim.scen.shortsfe.sinint(n.ch.per.trt = 4)
 
 }

@@ -3,7 +3,7 @@
 %   R/Power_Analysis_ShortTermSFE_CombinedIntervention.R
 \name{sim.plot.shortsfe.comint}
 \alias{sim.plot.shortsfe.comint}
-\title{Plot Mosquito Counts from Short-Term Semi-Field Experiment with Combined Interventions}
+\title{Plot Mosquito Counts for Short-Term Semi-Field Experiment Testing Combined Interventions}
 \usage{
 sim.plot.shortsfe.comint(
   n.ch.per.trt,
@@ -51,7 +51,7 @@ sim.plot.shortsfe.comint(
   intvn2.effect = 0.8,
   ixn.effect = 0.5,
   chamber.var = 0.1807,
-  use.random = NULL,
+  use.random = TRUE,
   jitter = TRUE
 )
 

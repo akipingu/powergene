@@ -8,7 +8,7 @@
 sim.power.shortsfe.sinint(
   n.ch.per.trt,
   lambda,
-  interv.effect,
+  intvn.effect,
   chamber.var,
   nsim,
   n.cores = 1,
@@ -16,21 +16,21 @@ sim.power.shortsfe.sinint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per intvn level.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{lambda}{Numeric. Mean mosquito count in control chambers.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{interv.effect}{Numeric. Proportion reduction due to ITN.}
+\item{intvn.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention (e.g., ITN).}
 
-\item{chamber.var}{Numeric. Variance of random chamber effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{nsim}{Integer. Number of simulation replicates.}
+\item{nsim}{An integer indicating the total number of simulations.}
 
-\item{n.cores}{Integer. Number of cores to use for parallel processing.}
+\item{n.cores}{An integer the number of cores to use for parallel processing.}
 
-\item{use.random}{Logical.
-If \code{TRUE}, uses mosquito counts simulated with random effects;
-If \code{FALSE}, uses counts based on fixed effects only.}
+\item{use.random}{A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects).
+If \code{TRUE}, returns power for expected mosquito counts simulated using sampling distribution with random effects;
+If \code{FALSE}, returns power for expected counts using sampling distribution based on fixed effects only.}
 }
 \value{
 A named numeric vector:
@@ -41,8 +41,8 @@ A named numeric vector:
 }
 }
 \description{
-Runs repeated simulations and GLMM fits to estimate empirical power
-as the proportion of simulations with p-values below 0.05.
+Runs repeated simulations and Poisson GLMM fits to estimate empirical power
+as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.shortsfe.sinint()`.
 }
 \note{
 Parallel execution is supported via `n.cores`, but examples default to `n.cores = 1` for reproducibility and package checks.
@@ -52,7 +52,7 @@ sim.power.shortsfe.sinint(
   nsim = 100,
   n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   n.cores = 1,
   use.random = TRUE

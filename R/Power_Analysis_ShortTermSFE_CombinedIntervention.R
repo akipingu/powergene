@@ -110,7 +110,7 @@ sim.mosq.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
   }
 }
 
-#' Plot Mosquito Counts from Short-Term Semi-Field Experiment with Combined Interventions
+#' Plot Mosquito Counts for Short-Term Semi-Field Experiment Testing Combined Interventions
 #'
 #' Generates a boxplot of simulated mosquito counts grouped by intervention combinations.
 #' Uses output from `sim.mosq.shortsfe.comint()` and overlays jittered points to show chamber-level variation.
@@ -137,7 +137,7 @@ sim.mosq.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 #'   intvn2.effect = 0.8,
 #'   ixn.effect = 0.5,
 #'   chamber.var = 0.1807,
-#'   use.random = NULL,
+#'   use.random = TRUE,
 #'   jitter = TRUE
 #' )
 #'
@@ -180,9 +180,9 @@ sim.plot.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
   # Create boxplot
   p <- ggplot2::ggplot(dat, ggplot2::aes(x = Treatments, y = .data[[count.col]])) +
     ggplot2::geom_boxplot(outlier.shape = NA, fill = "lightblue") +
-    ggplot2::labs(x = "Treatmentss",
-                  y = "Mosquito Count",
-                  title = "Mosquito Counts by Intervention Group") +
+    ggplot2::labs(x = "Treatments",
+                  y = "Mosquito counts",
+                  title = "") +
     ggplot2::theme_bw()
 
   # Add jittered points if requested

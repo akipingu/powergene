@@ -3,44 +3,44 @@
 %   R/Power_Analysis_ShortTermSFE_SingleIntervention.R
 \name{sim.pval.shortsfe.sinint}
 \alias{sim.pval.shortsfe.sinint}
-\title{Extract p-value from Simulated GLMM for Short-Term Semi-Field Experiment Testing Single Intervention}
+\title{Extract p-values from Simulated GLMM for Short-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
 sim.pval.shortsfe.sinint(
   n.ch.per.trt,
   lambda,
-  interv.effect,
+  intvn.effect,
   chamber.var,
   use.random = TRUE
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per intvn level.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{lambda}{Numeric. Mean mosquito count in control chambers.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{interv.effect}{Numeric. Proportion reduction due to ITN.}
+\item{intvn.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention (e.g., ITN).}
 
-\item{chamber.var}{Numeric. Variance of random chamber effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{use.random}{Logical.
-If \code{TRUE}, uses mosquito counts simulated with random effects;
-If \code{FALSE}, uses counts based on fixed effects only.}
+\item{use.random}{A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects) or exponential function (fixed effect)
+If \code{TRUE}, returns p-value for GLMM fitted to expected mosquito counts simulated using sampling distribution with random effects;
+If \code{FALSE}, returns p-value for GLMM fitted to mosquito counts simulated using sampling distribution based on fixed effects only.}
 }
 \value{
 A named numeric vector:
 \describe{
-  \item{pvalue}{P-value for the intvn effect from the GLMM}
+  \item{pvalue}{A p-value for the intervention effect from the GLMM}
 }
 }
 \description{
-Simulates mosquito count data and fits a Poisson GLMM to estimate the effect
-of ITN intvn. Returns the p-value associated with the intvn effect.
+Returns the p-value by fitting a Poisson GLMM to simulated mosquito count data.
+Uses simulated mosquito counts data from `sim.mosq.shortsfe.sinint()` and fits a Poisson GLMM to extract the p-value associated with the intvn effect.
 }
 \examples{
 sim.pval.shortsfe.sinint(
   n.ch.per.trt = 4,
   lambda = 50,
-  interv.effect = 0.8,
+  intvn.effect = 0.8,
   chamber.var = 0.1807,
   use.random = TRUE
 )
