@@ -2,8 +2,11 @@ name: Render README
 
 on:
   push:
+    branches:
+      - main
     paths:
       - README.Rmd
+  workflow_dispatch:
 
 env:
   R_LIBS_USER: ${{ runner.temp }}/Rlib
