@@ -11,6 +11,22 @@ Authors@R: c(
                ORCID = "0000-0002-9063-8651",
                affiliation = "Department of Environmental Health & Ecological Sciences, Ifakara Health Institute, P.O. Box 78 373, Dar es Salaam, Tanzania"
            )),
+    person(given = "Mafalda.",
+           family = "Viana",
+           email = "mafalda.viana@glasgow.ac.uk",
+           role = c("aut"),
+           comment = c(
+               ORCID = "0000-0001-5975-6505",
+               affiliation = "School of Biodiversity, One Health and Veterinary Medicine, University of Glasgow, Graham Kerr Building, Glasgow, G12 8QQ, UK"
+           )),
+    person(given = "Paul C.D.",
+           family = "Johnson",
+           email = "paul.johnson@glasgow.ac.uk",
+           role = c("aut"),
+           comment = c(
+               ORCID = "0000-0001-6663-7520",
+               affiliation = "School of Biodiversity, One Health & Veterinary Medicine, University of Glasgow, Wolfson Link Building, Glasgow, G12 8QQ, UK"
+           )),
     person(given = "Samson S.",
            family = "Kiware",
            email = "skiware@ihi.or.tz",

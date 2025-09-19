@@ -10,8 +10,9 @@
 *.Rbuildignore
 
 # roxygen2 and devtools outputs
-man/*.Rd
-NAMESPACE
+# (Keep these tracked for reproducibility)
+#man/*.Rd
+#NAMESPACE
 
 # Notebook and rendering artifacts
 .ipynb_checkpoints/
@@ -20,6 +21,7 @@ shared/notebooks/**/output*.html
 shared/notebooks/**/cache/
 shared/notebooks/**/figures/
 shared/notebooks/
+shared/
 
 # R Markdown rendering outputs
 *_cache/
