@@ -20,6 +20,7 @@ shared/notebooks/**/000*.png
 shared/notebooks/**/output*.html
 shared/notebooks/**/cache/
 shared/notebooks/**/figures/
+shared/notebooks/**/chunks.json
 shared/notebooks/
 shared/
 

@@ -42,7 +42,7 @@ library("devtools")
 # Then, install the "powergene" package from github
 devtools::install_github("akipingu/powergene")
 
-#Finally, load the powergene package library
+#Finally, load the "powergene" package library
 library("powergene")
 ```
 
