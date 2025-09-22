@@ -68,19 +68,24 @@ jobs:
                         repos = "https://cloud.r-project.org"
                       )'
 
-      # --- Install powergene (only if missing) ---
+      # --- Install powergene from GitHub using PAT ---
       - name: Install powergene from GitHub
+        env:
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
         run: |
           Rscript -e '.libPaths("Rlib");
+                      Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"));
                       if (!requireNamespace("powergene", quietly = TRUE)) {
                         remotes::install_github("akipingu/powergene")
                       }'
 
       # --- Render README ---
       - name: Render README
-        run: Rscript -e '.libPaths("Rlib"); rmarkdown::render("README.Rmd", output_format = "md_document")'
+        run: |
+          Rscript -e '.libPaths("Rlib");
+                      rmarkdown::render("README.Rmd", output_format = "md_document")'
 
-      # --- Commit rendered README ---
+      # --- Commit rendered README via HTTPS ---
       - name: Push changes via HTTPS
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
