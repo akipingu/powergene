@@ -30,11 +30,11 @@ jobs:
       - name: Install required R packages
         run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"), repos = "https://cloud.r-project.org")'
 
-      - name: Install devtools and dependencies
-        run: Rscript -e 'install.packages(c("devtools", "usethis", "pkgdown", "rcmdcheck", "rversions", "urlchecker"), repos = "https://cloud.r-project.org")'
+      - name: Install remotes
+        run: Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org")'
 
       - name: Install powergene from GitHub
-        run: Rscript -e '.libPaths("Rlib"); library(devtools); install_github("akipingu/powergene")'
+        run: Rscript -e '.libPaths("Rlib"); remotes::install_github("akipingu/powergene")'
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
