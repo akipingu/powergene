@@ -2,10 +2,8 @@ name: Render README
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - README.Rmd
+    branches: [main]
+    paths: ["README.Rmd"]
   workflow_dispatch:
 
 jobs:
@@ -15,42 +13,61 @@ jobs:
       R_LIBS_USER: Rlib
 
     steps:
+      # --- Checkout source ---
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # --- R & Pandoc setup ---
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
 
       - name: Set up Pandoc
         uses: r-lib/actions/setup-pandoc@v2
 
+      # --- Prepare library path ---
       - name: Create R library path
         run: mkdir -p Rlib
 
-      # Install system dependencies for packages that need compilation
+      # --- Cache installed R packages ---
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: Rlib
+          key: ${{ runner.os }}-R-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-R-
+
+      # --- Install system libraries (for packages with compiled code) ---
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            build-essential \
             libcurl4-openssl-dev \
             libssl-dev \
             libgit2-dev \
             libssh2-1-dev \
-            build-essential \
             libxml2-dev \
-            zlib1g-dev
+            zlib1g-dev \
+            libv8-dev \
+            cargo \
+            libjpeg-dev \
+            libpng-dev \
+            libmagick++-dev \
+            libfontconfig1-dev \
+            libfreetype6-dev \
+            libharfbuzz-dev \
+            libfribidi-dev
 
-      # Install all required R packages (lighter without full devtools)
-      - name: Install required R packages
+      # --- Install minimal CRAN packages ---
+      - name: Install base R packages
         run: |
           Rscript -e 'install.packages(
-              c("rmarkdown","knitr","ggplot2","dplyr","tidyr",
-                "curl","gert","gh","usethis","pkgdown","remotes"),
-              repos = "https://cloud.r-project.org",
-              dependencies = TRUE
+              c("rmarkdown","knitr","remotes"),
+              repos = "https://cloud.r-project.org"
           )'
 
-      # Install powergene from GitHub (using remotes instead of devtools)
+      # --- Install powergene (only if missing) ---
       - name: Install powergene from GitHub
         run: |
           Rscript -e '.libPaths("Rlib");
@@ -58,11 +75,11 @@ jobs:
                         remotes::install_github("akipingu/powergene")
                       }'
 
-      # Render README
+      # --- Render README ---
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
 
-      # Commit rendered README
+      # --- Commit rendered README ---
       - name: Commit rendered README
         run: |
           git config --global user.name 'github-actions'
