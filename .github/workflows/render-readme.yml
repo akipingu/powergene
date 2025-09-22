@@ -62,10 +62,11 @@ jobs:
       # --- Install minimal CRAN packages ---
       - name: Install base R packages
         run: |
-          Rscript -e 'install.packages(
-              c("rmarkdown","knitr","remotes"),
-              repos = "https://cloud.r-project.org"
-          )'
+          Rscript -e '.libPaths("Rlib");
+                      install.packages(
+                        c("rmarkdown", "knitr", "remotes"),
+                        repos = "https://cloud.r-project.org"
+                      )'
 
       # --- Install powergene (only if missing) ---
       - name: Install powergene from GitHub
@@ -77,7 +78,7 @@ jobs:
 
       # --- Render README ---
       - name: Render README
-        run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
+        run: Rscript -e '.libPaths("Rlib"); rmarkdown::render("README.Rmd", output_format = "md_document")'
 
       # --- Commit rendered README ---
       - name: Commit rendered README
