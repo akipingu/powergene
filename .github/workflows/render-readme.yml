@@ -8,9 +8,6 @@ on:
       - README.Rmd
   workflow_dispatch:
 
-env:
-  R_LIBS_USER: ${{ runner.temp }}/Rlib
-
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -26,16 +23,16 @@ jobs:
         uses: r-lib/actions/setup-pandoc@v2
 
       - name: Create R library path
-        run: mkdir -p $R_LIBS_USER
+        run: mkdir -p Rlib
 
       - name: Install required R packages
-        run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"))'
+        run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"), lib = "Rlib")'
 
       - name: Install devtools
-        run: Rscript -e 'install.packages("devtools", repos = "https://cloud.r-project.org")'
+        run: Rscript -e 'install.packages("devtools", repos = "https://cloud.r-project.org", lib = "Rlib")'
 
       - name: Install powergene from GitHub
-        run: Rscript -e 'devtools::install_github("akipingu/powergene")'
+        run: Rscript -e 'devtools::install_github("akipingu/powergene", lib = "Rlib")'
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
