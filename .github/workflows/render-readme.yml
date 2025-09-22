@@ -87,7 +87,6 @@ jobs:
           Rscript -e '.libPaths("Rlib");
                       rmarkdown::render("README.Rmd", output_format = "md_document")'
 
-      # --- Pull and push rendered README via HTTPS ---
       - name: Pull and push rendered README
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,7 +96,13 @@ jobs:
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
           git fetch origin
           git checkout main
-          git pull origin main --rebase
-          git add README.md
+
+          # Stage changes BEFORE pulling
+          git add README.md man/figures/*.png
           git commit -m 'Auto-render README.Rmd' || echo "No changes to commit"
+
+          # Now pull safely
+          git pull origin main --rebase
+
+          # Push final result
           git push origin main
