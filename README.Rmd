@@ -61,7 +61,7 @@ You can install the development version of powergene package directly from
 # -------------------------------
 
 # List all CRAN packages your Rmd needs
-required_cran <- c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr", "remotes")
+required_cran <- c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr", "remotes", "devtools")
 
 # Install any missing CRAN packages
 for (pkg in required_cran) {
@@ -75,7 +75,7 @@ lapply(required_cran, library, character.only = TRUE)
 
 # Install 'powergene' from GitHub if not already installed
 if (!requireNamespace("powergene", quietly = TRUE)) {
-  remotes::install_github("akipingu/powergene")
+  devtools::install_github("akipingu/powergene")
 }
 
 # Load 'powergene'

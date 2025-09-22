@@ -64,7 +64,7 @@ jobs:
         run: |
           Rscript -e '.libPaths("Rlib");
                       install.packages(
-                        c("rmarkdown", "knitr", "remotes"),
+                        c("rmarkdown", "knitr", "remotes", "devtools"),
                         repos = "https://cloud.r-project.org"
                       )'
 
@@ -76,7 +76,7 @@ jobs:
           Rscript -e '.libPaths("Rlib");
                       Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"));
                       if (!requireNamespace("powergene", quietly = TRUE)) {
-                        remotes::install_github("akipingu/powergene")
+                        devtools::install_github("akipingu/powergene")
                       }'
 
       # --- Render README ---
