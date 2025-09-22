@@ -13,9 +13,11 @@ jobs:
       R_LIBS_USER: Rlib
 
     steps:
-      # --- Checkout source ---
+      # --- Checkout source with full history ---
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       # --- R & Pandoc setup ---
       - name: Set up R
