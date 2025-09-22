@@ -28,13 +28,13 @@ jobs:
         run: mkdir -p Rlib
 
       - name: Install required R packages
-        run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"))'
+        run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"), repos = "https://cloud.r-project.org")'
 
       - name: Install devtools
         run: Rscript -e 'install.packages("devtools", repos = "https://cloud.r-project.org")'
 
       - name: Install powergene from GitHub
-        run: Rscript -e 'devtools::install_github("akipingu/powergene")'
+        run: Rscript -e 'library(devtools, lib.loc = Sys.getenv("R_LIBS_USER")); install_github("akipingu/powergene")'
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
