@@ -95,8 +95,9 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
-          git config --global pull.rebase true
-          git pull origin main
+          git fetch origin
+          git checkout main
+          git pull origin main --rebase
           git add README.md
           git commit -m 'Auto-render README.Rmd' || echo "No changes to commit"
-          git push origin HEAD:main
+          git push origin main
