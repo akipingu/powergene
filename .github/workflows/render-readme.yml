@@ -12,7 +12,7 @@ jobs:
   render:
     runs-on: ubuntu-latest
     env:
-      R_LIBS_USER: Rlib  # Ensures R uses this path for all packages
+      R_LIBS_USER: Rlib
 
     steps:
       - name: Checkout repository
@@ -27,14 +27,28 @@ jobs:
       - name: Create R library path
         run: mkdir -p Rlib
 
-      - name: Install required R packages
-        run: Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr"), repos = "https://cloud.r-project.org")'
+      # --- NEW: install system dependencies for curl/gert/gh/usethis/devtools
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libgit2-dev \
+            libssh2-1-dev \
+            build-essential
 
-      - name: Install remotes
-        run: Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org")'
+      - name: Install required R packages
+        run: |
+          Rscript -e 'install.packages(
+              c("rmarkdown","knitr","ggplot2","dplyr","tidyr",
+                "curl","gert","gh","usethis","devtools"),
+              repos = "https://cloud.r-project.org",
+              dependencies = TRUE
+          )'
 
       - name: Install powergene from GitHub
-        run: Rscript -e '.libPaths("Rlib"); remotes::install_github("akipingu/powergene")'
+        run: Rscript -e '.libPaths("Rlib"); devtools::install_github("akipingu/powergene")'
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'

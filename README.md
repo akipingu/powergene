@@ -28,9 +28,9 @@ from [GitHub](https://github.com/) with:
     # First, install.packages("devtools") if not already installed in your RStudio
     # install.packages("devtools") # Run this manually if needed
     # Load "devtools" library before installing "powergene"
-    # library("remotes")
+    library("devtools")
     # Then, install the "powergene" package from github
-    remotes::install_github("akipingu/powergene")
+    devtools::install_github("akipingu/powergene")
 
     #Finally, load the "powergene" package library
     library("powergene")
@@ -114,14 +114,14 @@ chamber/replicate.
     sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
     sim.mosquitoes
     #>   replicates intvn chamber mosquito.count.fixed mosquito.count.random
-    #> 1          1     0     0-1                   43                    57
-    #> 2          2     0     0-2                   43                    80
-    #> 3          3     0     0-3                   64                    47
-    #> 4          4     0     0-4                   53                    38
-    #> 5          1     1     1-1                   12                    12
-    #> 6          2     1     1-2                   13                     8
-    #> 7          3     1     1-3                    8                    14
-    #> 8          4     1     1-4                    8                     4
+    #> 1          1     0     0-1                   58                    51
+    #> 2          2     0     0-2                   48                    40
+    #> 3          3     0     0-3                   51                    74
+    #> 4          4     0     0-4                   44                   152
+    #> 5          1     1     1-1                   10                    16
+    #> 6          2     1     1-2                    7                    12
+    #> 7          3     1     1-3                    9                     6
+    #> 8          4     1     1-4                    5                     5
 
 1.  Plot the simulated mosquitoes. This function plots a box plot with
     an option to jitter points if jitter=TURE and without jittering if
@@ -163,7 +163,7 @@ chamber/replicate.
     #output the p-values
     pvalue
     #>       pvalue 
-    #> 4.047516e-14
+    #> 7.398404e-06
 
 V. Since power cannot be estimated from a single simulation, there is a
 need to simulate multiple data sets and estimate power. Now you can
@@ -190,7 +190,7 @@ only TRUE or FALSE as explained in (ii) above.
     #print estimated power
     round(power.estimate,2)
     #>    power ci.lower ci.upper 
-    #>     1.00     0.96     1.00
+    #>     0.99     0.95     1.00
 
 1.  Now you use the function to estimate power for varied number of
     chambers per treatment, e.g., 2,4,6,8.
@@ -234,7 +234,7 @@ only TRUE or FALSE as explained in (ii) above.
     #print the power results for each number of chambers per treatment
     round(power.df,2)
     #>   n.ch.per.trt power ci.lower ci.upper
-    #> 1            2  0.95     0.89     0.98
+    #> 1            2  0.92     0.85     0.96
     #> 2            4  1.00     0.96     1.00
     #> 3            6  1.00     0.96     1.00
     #> 4            8  1.00     0.96     1.00
@@ -322,23 +322,23 @@ only TRUE or FALSE as explained in (ii) above.
     # print power estimates
     results
     #>    n.ch.per.trt intvn.effect power   ci.lower  ci.upper
-    #> 1             2          0.0  0.32 0.23021992 0.4207669
-    #> 2             4          0.0  0.20 0.12665555 0.2918427
-    #> 3             6          0.0  0.14 0.07870540 0.2237280
-    #> 4             8          0.0  0.10 0.04900469 0.1762226
-    #> 5             2          0.4  0.50 0.39832113 0.6016789
-    #> 6             4          0.4  0.56 0.45718750 0.6591640
-    #> 7             6          0.4  0.63 0.52764836 0.7244334
-    #> 8             8          0.4  0.70 0.60018532 0.7875936
+    #> 1             2          0.0  0.24 0.16022461 0.3357355
+    #> 2             4          0.0  0.21 0.13494370 0.3029154
+    #> 3             6          0.0  0.09 0.04198360 0.1639823
+    #> 4             8          0.0  0.06 0.02233489 0.1260299
+    #> 5             2          0.4  0.60 0.49720915 0.6967052
+    #> 6             4          0.4  0.54 0.43741158 0.6401566
+    #> 7             6          0.4  0.55 0.44728019 0.6496798
+    #> 8             8          0.4  0.58 0.47711920 0.6780145
     #> 9             2          0.5  0.59 0.48714420 0.6873800
-    #> 10            4          0.5  0.66 0.55846673 0.7517765
+    #> 10            4          0.5  0.69 0.58968545 0.7787112
     #> 11            6          0.5  0.76 0.66426451 0.8397754
-    #> 12            8          0.5  0.85 0.76469250 0.9135456
-    #> 13            2          0.6  0.72 0.62133300 0.8052064
-    #> 14            4          0.6  0.90 0.82377740 0.9509953
-    #> 15            6          0.6  0.98 0.92961607 0.9975687
-    #> 16            8          0.6  0.99 0.94554061 0.9997469
-    #> 17            2          0.8  0.99 0.94554061 0.9997469
+    #> 12            8          0.5  0.79 0.69708462 0.8650563
+    #> 13            2          0.6  0.71 0.61073404 0.7964258
+    #> 14            4          0.6  0.89 0.81169887 0.9437930
+    #> 15            6          0.6  0.95 0.88716509 0.9835681
+    #> 16            8          0.6  0.96 0.90074284 0.9889955
+    #> 17            2          0.8  0.94 0.87397007 0.9776651
     #> 18            4          0.8  1.00 0.96378331 1.0000000
     #> 19            6          0.8  1.00 0.96378331 1.0000000
     #> 20            8          0.8  1.00 0.96378331 1.0000000
