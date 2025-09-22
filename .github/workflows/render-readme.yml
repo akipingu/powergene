@@ -27,7 +27,7 @@ jobs:
       - name: Create R library path
         run: mkdir -p Rlib
 
-      # --- NEW: install system dependencies for curl/gert/gh/usethis/devtools
+      # Install system dependencies for packages that need compilation
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -36,13 +36,16 @@ jobs:
             libssl-dev \
             libgit2-dev \
             libssh2-1-dev \
-            build-essential
+            build-essential \
+            libxml2-dev \
+            zlib1g-dev
 
+      # Install all required R packages, including devtools + its deps
       - name: Install required R packages
         run: |
           Rscript -e 'install.packages(
               c("rmarkdown","knitr","ggplot2","dplyr","tidyr",
-                "curl","gert","gh","usethis","devtools"),
+                "curl","gert","gh","usethis","pkgdown","devtools"),
               repos = "https://cloud.r-project.org",
               dependencies = TRUE
           )'
