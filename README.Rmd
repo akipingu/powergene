@@ -35,15 +35,51 @@ You can install the development version of powergene package directly from
 
 
 ```{r install-powergene, message=FALSE, warning=FALSE, results='hide'}
-# First, install.packages("devtools") if not already installed in your RStudio
-# install.packages("devtools") # Run this manually if needed
-# Load "devtools" library before installing "powergene"
-library("devtools")
-# Then, install the "powergene" package from github
-devtools::install_github("akipingu/powergene")
+# # First, install.packages("devtools") if not already installed in your RStudio
+# # install.packages("devtools") # Run this manually if needed
+# # Load "devtools" library before installing "powergene"
+# library("devtools")
+# # Then, install the "powergene" package from github
+# devtools::install_github("akipingu/powergene")
+# 
+# #Finally, load the "powergene" package library
+# library("powergene")
 
-#Finally, load the "powergene" package library
-library("powergene")
+# # Use 'remotes' to install 'powergene' if not already installed
+# if (!requireNamespace("powergene", quietly = TRUE)) {
+#   if (!requireNamespace("remotes", quietly = TRUE)) {
+#     install.packages("remotes", repos = "https://cloud.r-project.org")
+#   }
+#   remotes::install_github("akipingu/powergene")
+# }
+# 
+# # Load the package
+# library(powergene)
+
+# -------------------------------
+# Setup: install/load required packages
+# -------------------------------
+
+# List all CRAN packages your Rmd needs
+required_cran <- c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr", "remotes")
+
+# Install any missing CRAN packages
+for (pkg in required_cran) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg, repos = "https://cloud.r-project.org")
+  }
+}
+
+# Load CRAN packages
+lapply(required_cran, library, character.only = TRUE)
+
+# Install 'powergene' from GitHub if not already installed
+if (!requireNamespace("powergene", quietly = TRUE)) {
+  remotes::install_github("akipingu/powergene")
+}
+
+# Load 'powergene'
+library(powergene)
 ```
 
 If you use **powergene** in your research or publications, please cite it appropriately

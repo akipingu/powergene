@@ -40,22 +40,29 @@ jobs:
             libxml2-dev \
             zlib1g-dev
 
-      # Install all required R packages, including devtools + its deps
+      # Install all required R packages (lighter without full devtools)
       - name: Install required R packages
         run: |
           Rscript -e 'install.packages(
               c("rmarkdown","knitr","ggplot2","dplyr","tidyr",
-                "curl","gert","gh","usethis","pkgdown","devtools"),
+                "curl","gert","gh","usethis","pkgdown","remotes"),
               repos = "https://cloud.r-project.org",
               dependencies = TRUE
           )'
 
+      # Install powergene from GitHub (using remotes instead of devtools)
       - name: Install powergene from GitHub
-        run: Rscript -e '.libPaths("Rlib"); devtools::install_github("akipingu/powergene")'
+        run: |
+          Rscript -e '.libPaths("Rlib");
+                      if (!requireNamespace("powergene", quietly = TRUE)) {
+                        remotes::install_github("akipingu/powergene")
+                      }'
 
+      # Render README
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
 
+      # Commit rendered README
       - name: Commit rendered README
         run: |
           git config --global user.name 'github-actions'
