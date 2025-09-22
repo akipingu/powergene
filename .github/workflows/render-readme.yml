@@ -68,7 +68,7 @@ jobs:
                         repos = "https://cloud.r-project.org"
                       )'
 
-      # --- Install powergene from GitHub using PAT ---
+      # --- Install powergene from GitHub using devtools and PAT ---
       - name: Install powergene from GitHub
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
@@ -85,14 +85,15 @@ jobs:
           Rscript -e '.libPaths("Rlib");
                       rmarkdown::render("README.Rmd", output_format = "md_document")'
 
-      # --- Commit rendered README via HTTPS ---
-      - name: Push changes via HTTPS
+      # --- Pull and push rendered README via HTTPS ---
+      - name: Pull and push rendered README
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
+          git pull --rebase
           git add README.md
           git commit -m 'Auto-render README.Rmd' || echo "No changes to commit"
           git push
