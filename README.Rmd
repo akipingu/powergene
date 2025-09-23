@@ -35,7 +35,7 @@ You can install the development version of powergene package directly from
 
 
 ```{r install-powergene, message=FALSE, warning=FALSE, results='hide'}
-# # First, install.packages("devtools") if not already installed in your RStudio
+# # First, install.packages("devtools") if not already installed in your RStudio.
 
 # -------------------------------
 # Setup: install/load required packages

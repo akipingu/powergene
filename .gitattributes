@@ -11,6 +11,10 @@
 *.Rmd diff=markdown
 *.md diff=markdown
 
+#If there's a conflict in README.md, always keep my local version.
+README.md merge=ours
+man/figures/* merge=ours
+
 # Treat CSVs as text for diffing (optional)
 *.csv text diff=astextplain
 
