@@ -15,6 +15,8 @@
 README.md merge=ours
 man/figures/* merge=ours
 
+shared/* linguist-generated=true diff=none
+
 # Treat CSVs as text for diffing (optional)
 *.csv text diff=astextplain
 

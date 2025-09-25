@@ -47,7 +47,9 @@ required_cran <- c("rmarkdown", "knitr", "ggplot2", "dplyr", "tidyr", "remotes",
 # Install any missing CRAN packages
 for (pkg in required_cran) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
+        suppressMessages(suppressWarnings(
     install.packages(pkg, repos = "https://cloud.r-project.org")
+  ))
   }
 }
 

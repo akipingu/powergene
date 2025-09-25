@@ -18,6 +18,7 @@ Rlib/
 #NAMESPACE
 
 # Notebook and rendering artifacts
+shared/
 .ipynb_checkpoints/
 shared/notebooks/**/000*.png
 shared/notebooks/**/output*.html
@@ -26,7 +27,7 @@ shared/notebooks/**/figures/
 shared/notebooks/**/chunks.json
 shared/notebooks/paths
 shared/notebooks/
-shared/
+
 
 # R Markdown rendering outputs
 *_cache/
