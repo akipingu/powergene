@@ -252,11 +252,11 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, intvn.effect, chamber
 #' Runs repeated simulations and Poisson GLMM fits to estimate empirical power
 #' as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.shortsfe.sinint()`.
 #'
-#' @param nsim An integer indicating the total number of simulations.
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
 #' @param intvn.effect A numeric value representing the proportional reduction in mosquito count due to the intervention (e.g., ITN).
 #' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param nsim An integer indicating the total number of simulations.
 #' @param n.cores An integer the number of cores to use for parallel processing.
 #' @param use.random A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects).
 #' If \code{TRUE}, returns power for expected mosquito counts simulated using sampling distribution with random effects;
@@ -273,11 +273,11 @@ sim.pval.shortsfe.sinint <- function(n.ch.per.trt, lambda, intvn.effect, chamber
 #'
 #' @examples
 #' sim.power.shortsfe.sinint(
-#'   nsim = 100,
 #'   n.ch.per.trt = 4,
 #'   lambda = 50,
 #'   intvn.effect = 0.8,
 #'   chamber.var = 0.1807,
+#'   nsim = 100,
 #'   n.cores = 1,
 #'   use.random = TRUE
 #' )

@@ -2,17 +2,17 @@
 #'
 #' Constructs a data frame representing the factorial design of semi-field experiments
 #' testing intvn1 and intvn2 interventions. Each chamber is uniquely identified and assigned
-#' Treatments combinations, including interaction terms.
+#' treatments combinations, including interaction terms.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per Treatments combination (default = 4).
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #'
 #' @return A data frame with columns:
 #' \describe{
-#'   \item{replicates}{Replicate number within each Treatments combination}
-#'   \item{intvn1}{intvn1a intervention level}
-#'   \item{intvn2}{intvn2 intervention level}
-#'   \item{ixn}{Interaction term: intvn1 × intvn2}
-#'   \item{chamber}{Unique chamber identifier}
+#'   \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+#'   \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+#'   \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+#'   \item{ixn}{Interventions interactions status (e.g., 0 = control or no intervention and 1 = there is interaction)}
+#'   \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
 #' }
 #' @examples
 #' sim.scen.shortsfe.comint(n.ch.per.trt = 4)
@@ -38,24 +38,35 @@ sim.scen.shortsfe.comint <- function(n.ch.per.trt) {
 
 #' Simulate Mosquito Count Data for Short-Term Semi-Field Experiment Testing Combined Interventions
 #'
-#' Generates simulated mosquito count data based on fixed effects (intervention levels),
-#' random chamber effects, and a Poisson response model. This function is designed to
-#' support empirical power analysis in semi-field experiments.
+#' Generates simulated mosquito count data under a short-term semi-field experimental design
+#' with fixed effects for interventions, `intvn1` and `intvn2`, random effects for chamber variability, and Poisson-distributed outcomes.
+#' Uses output from `sim.scen.shortsfe.comint()` to incorporate the table of experimental design scenarios.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per Treatments combination.
-#' @param lambda Numeric. Mean mosquito count in control chambers.
-#' @param intvn1.effect Numeric. Proportion reduction due to intervention 1.
-#' @param intvn2.effect Numeric. Proportion reduction due to intervention 2.
-#' @param ixn.effect Numeric. Proportion reduction due to interaction between interventions.
-#' @param chamber.var Numeric. Variance of random chamber effects.
-#' @param use.random Logical, NULL, or "ALL".
-#' If \code{TRUE}, returns mosquito counts simulated with random effects;
-#' If \code{FALSE}, returns counts based on fixed effects only;
-#' If \code{NULL}, returns expected counts from fixed effects (no sampling);
-#' If \code{"ALL"}, returns the full dataset with all mosquito count columns.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+#' If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+#' If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+#' If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);
+#' If \code{"ALL"}, returns the full data set with all mosquito count columns based in all three options described above.
 #'
-#' @return A data frame containing the original design plus mosquito counts and linear predictors.
-#'         Output depends on the value of \code{use.random}.
+#' @return A data frame with the following columns, depending on the \code{use.random} option:
+#' \describe{
+#'   \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+#'   \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+#'   \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+#'   \item{ixn}{Interventions interactions status (e.g., 0 = control or no intervention and 1 = there is interaction)}
+#'   \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
+#'   \item{lin.pred.fixed}{Linear predictor with fixed effects only}
+#'   \item{lin.pred.random}{Linear predictor with random chamber effects}
+#'   \item{mosquito.count.fixed.exp}{Simulted mosquito counts through exponetial function from fixed effects only (no sampling)}
+#'   \item{mosquito.count.fixed}{Simulated mosquito counts through sampling distribution based on fixed effects only}
+#'   \item{mosquito.count.random}{Simulated mosquito counts through sampling distribution accounting for random effects}
+#' }
 #'
 #' @examples
 #' sim.mosq.shortsfe.comint(
@@ -115,19 +126,21 @@ sim.mosq.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 #' Generates a boxplot of simulated mosquito counts grouped by intervention combinations.
 #' Uses output from `sim.mosq.shortsfe.comint()` and overlays jittered points to show chamber-level variation.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per Treatments combination.
-#' @param lambda Numeric. Mean mosquito count in control chambers.
-#' @param intvn1.effect Numeric. Proportion reduction due to intervention 1.
-#' @param intvn2.effect Numeric. Proportion reduction due to intervention 2.
-#' @param ixn.effect Numeric. Proportion reduction due to interaction between interventions.
-#' @param chamber.var Numeric. Variance of random chamber effects.
-#' @param use.random Logical or NULL.
-#' If \code{TRUE}, plots mosquito counts simulated with random effects;
-#' If \code{FALSE}, plots counts based on fixed effects only;
-#' If \code{NULL}, plots expected counts from fixed effects (no sampling).
-#' @param jitter Logical. If \code{TRUE}, overlays individual chamber-level points.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+#' If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+#' If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+#' If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);
+#' @param jitter A logical value indicating whether to overlay individual chamber-level points
+#' If \code{TRUE}, overlays individual chamber-level points.
+#' If \code{FALSE}, do not overlay individual chamber-level points.
 #'
-#' @return A `ggplot` object showing mosquito counts by Treatments combination.
+#' @return A `ggplot` object showing expected mosquito counts by treatment group.
 #'
 #' @examples
 #' sim.plot.shortsfe.comint(
@@ -195,23 +208,22 @@ sim.plot.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 
 #' Extract p-value from Simulated GLMM for Short-Term Semi-Field Experiment Testing Combined Interventions
 #'
-#' Simulates mosquito count data under a factorial intervention design, fits two generalized linear mixed models (GLMMs),
-#' and extracts the p-value for the interaction term via likelihood ratio test. This function supports empirical power analysis
-#' by quantifying the statistical significance of combined intervention effects.
+#' Returns the p-value by fitting a Poisson GLMM to simulated mosquito count data.
+#' Uses simulated mosquito counts data from `sim.mosq.shortsfe.comint()` and fits a Poisson GLMM to extract the p-value associated with the intvn effect.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per Treatments combination.
-#' @param lambda Numeric. Mean mosquito count in control chambers.
-#' @param intvn1.effect Numeric. Proportion reduction due to intervention 1.
-#' @param intvn2.effect Numeric. Proportion reduction due to intervention 2.
-#' @param ixn.effect Numeric. Proportion reduction due to interaction between interventions.
-#' @param chamber.var Numeric. Variance of random chamber effects.
-#' @param use.random Logical.
-#' If \code{TRUE}, uses mosquito counts simulated with random effects;
-#' If \code{FALSE}, uses counts based on fixed effects only.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+#' If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+#' If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
 #'
 #' @return A named numeric vector:
 #' \describe{
-#'   \item{pvalue}{p-value from likelihood ratio test comparing models with and without the interaction term}
+#'   \item{pvalue}{A p-value from likelihood ratio test comparing models with and without the interaction term}
 #' }
 #'
 #' @examples
@@ -272,17 +284,17 @@ sim.pval.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 #' Runs repeated simulations and GLMM fits to estimate empirical power
 #' as the proportion of simulations with p-values below 0.05.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per Treatments level.
-#' @param lambda Numeric. Mean mosquito count in control chambers.
-#' @param intvn1.effect Numeric. Proportion reduction due to intervention 1.
-#' @param intvn2.effect Numeric. Proportion reduction due to intervention 2.
-#' @param ixn.effect Numeric. Proportion reduction due to interaction between interventions.
-#' @param chamber.var Numeric. Variance of random chamber effects.
-#' @param nsim Integer. Number of simulation replicates.
-#' @param n.cores Integer. Number of cores to use for parallel processing.
-#' @param use.random Logical.
-#' If \code{TRUE}, uses mosquito counts simulated with random effects;
-#' If \code{FALSE}, uses counts based on fixed effects only.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param nsim An integer indicating the total number of simulations.
+#' @param n.cores An integer the number of cores to use for parallel processing.
+#' @param use.random A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects).
+#' If \code{TRUE}, returns power for expected mosquito counts simulated using sampling distribution with random effects;
+#' If \code{FALSE}, returns power for expected counts using sampling distribution based on fixed effects only.
 #'
 #' @return A named numeric vector:
 #' \describe{
