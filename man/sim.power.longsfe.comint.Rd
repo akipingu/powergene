@@ -3,7 +3,7 @@
 %   R/Power_Analysis_LongTermSFE_CombinedIntervention.R
 \name{sim.power.longsfe.comint}
 \alias{sim.power.longsfe.comint}
-\title{Estimate Empirical Power for Long-Term Semi-Field Experiment Testing Two Interventions}
+\title{Estimate Empirical Power for Long-Term Semi-Field Experiment Testing Combined Interventions}
 \usage{
 sim.power.longsfe.comint(
   n.ch.per.trt,
@@ -22,33 +22,33 @@ sim.power.longsfe.comint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment group.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{exp.length}{Integer. Total duration of the experiment in days.}
+\item{exp.length}{An integer indicating total duration of the experiment in days, e.g., 90 days.}
 
-\item{sampl.freq}{Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.}
+\item{sampl.freq}{A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.}
 
-\item{lambda}{Numeric. Baseline mosquito count rate.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn1.effect}{Numeric. Proportion reduction due to intervention 1.}
+\item{intvn1.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).}
 
-\item{intvn2.effect}{Numeric. Proportion reduction due to intervention 2.}
+\item{intvn2.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (PPFa).}
 
-\item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
+\item{ixn.effect}{A numeric value representing the proportional reduction in mosquito count due to the interaction between interventions (e.g., ITN x PPFa).}
 
-\item{chamber.var}{Numeric. Variance component for chamber-level random effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{time.var}{Numeric. Variance component for time-level random effects.}
+\item{time.var}{A numeric value indicating the variance between sampling time points (random effect).}
 
-\item{theta}{Numeric. Dispersion parameter for the negative binomial distribution.}
+\item{theta}{A numeric value quantifying overdispersion parameter for the negative binomial distribution.}
 
-\item{nsim}{Integer. Number of simulation replicates.}
+\item{nsim}{An integer indicating the total number of simulations.}
 
-\item{n.cores}{Integer. Number of cores to use for parallel processing.}
+\item{n.cores}{An integer the number of cores to use for parallel processing.}
 
-\item{use.random}{Logical.
-If \code{TRUE}, uses mosquito counts simulated with random effects;
-If \code{FALSE}, uses counts based on fixed effects only.}
+\item{use.random}{A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects).
+If \code{TRUE}, returns power for expected mosquito counts simulated using sampling distribution with random effects;
+If \code{FALSE}, returns power for expected counts using sampling distribution based on fixed effects only.}
 }
 \value{
 A named numeric vector:
@@ -59,8 +59,8 @@ A named numeric vector:
 }
 }
 \description{
-Runs repeated simulations and GLMM fits to estimate empirical power
-as the proportion of simulations with p-values below 0.05.
+Runs repeated simulations and negative binomial GLMM fits to estimate empirical power
+as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.longsfe.comint()`.
 }
 \note{
 Parallel execution is supported via `n.cores`, but examples default to `n.cores = 1` for reproducibility and package checks.

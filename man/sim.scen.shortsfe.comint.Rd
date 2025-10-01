@@ -22,8 +22,8 @@ A data frame with columns:
 }
 \description{
 Constructs a data frame representing the factorial design of semi-field experiments
-testing intvn1 and intvn2 interventions. Each chamber is uniquely identified and assigned
-treatments combinations, including interaction terms.
+testing combined interventions. Each chamber is uniquely identified and assigned
+treatments combinations, including interaction terms. The intervention here are shortly named as `intvn1` and `intvn2`.
 }
 \examples{
 sim.scen.shortsfe.comint(n.ch.per.trt = 4)

@@ -3,7 +3,7 @@
 %   R/Power_Analysis_LongTermSFE_CombinedIntervention.R
 \name{sim.mosq.longsfe.comint}
 \alias{sim.mosq.longsfe.comint}
-\title{Simulate Mosquito Counts with Time-Varying Effects of Two Interventions}
+\title{Simulate Mosquito Count Data for Long-Term Semi-Field Experiment Testing Combined Interventions}
 \usage{
 sim.mosq.longsfe.comint(
   n.ch.per.trt,
@@ -20,45 +20,55 @@ sim.mosq.longsfe.comint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment group.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{exp.length}{Integer. Total experiment duration in days.}
+\item{exp.length}{An integer indicating total duration of the experiment in days, e.g., 90 days.}
 
-\item{sampl.freq}{Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.}
+\item{sampl.freq}{A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.}
 
-\item{lambda}{Numeric. Mean mosquito count in the control group.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn1.effect}{Numeric. Proportion reduction due to intvn1 over time.}
+\item{intvn1.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).}
 
-\item{intvn2.effect}{Numeric. Proportion reduction due to intvn2 over time.}
+\item{intvn2.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (PPFa).}
 
-\item{ixn.effect}{Numeric. Proportion reduction due to intvn1 × intvn2 interaction over time.}
+\item{ixn.effect}{A numeric value representing the proportional reduction in mosquito count due to the interaction between interventions (e.g., ITN x PPFa).}
 
-\item{chamber.var}{Numeric. Variance between chambers (random effect).}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{time.var}{Numeric. Variance across time points (random effect).}
+\item{time.var}{A numeric value indicating the variance between sampling time points (random effect).}
 
-\item{theta}{Numeric. Dispersion parameter for negative binomial distribution.}
+\item{theta}{A numeric value quantifying overdispersion parameter for the negative binomial distribution.}
 
-\item{use.random}{Logical, NULL, or "ALL".
-If \code{TRUE}, returns mosquito counts with random effects.
-If \code{FALSE}, returns counts with fixed effects only.
-If \code{NULL}, returns expected counts from fixed effects (no sampling).
-If \code{"ALL"}, returns the full dataset with all mosquito count columns.}
+\item{use.random}{A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);
+If \code{"ALL"}, returns the full data set with all mosquito count columns based in all three options described above.}
 }
 \value{
-A data frame containing the original design plus simulated mosquito counts and linear predictors.
-        Output depends on the value of \code{use.random}.
+A data frame with columns:
+\describe{
+  \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+  \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+  \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+  \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
+  \item{time}{Time sequence scaled between 0 and 1, it is calculate by the ratio of sampling points by their total number}
+  \item{timef}{This is just the same as "time" but as a factor}
+  \item{ixn.intvn1.time}{This is the interaction between an intvn1 and time, i.e., intvn1 x time}
+  \item{ixn.intvn2.time}{This is the interaction between an intvn2 and time, i.e., intvn2 x time}
+  \item{ixn.intvn1.intvn2.time}{This is the interaction between an intvn1, intvn2 and time, i.e., intvn1 x intvn2 x time}
+  \item{lin.pred.fixed}{Linear predictor with fixed effects only}
+  \item{lin.pred.random}{Linear predictor with random chamber effects}
+  \item{mosquito.count.fixed.exp}{Simulted mosquito counts through exponetial function from fixed effects only (no sampling)}
+  \item{mosquito.count.fixed}{Simulated mosquito counts through sampling distribution based on fixed effects only}
+  \item{mosquito.count.random}{Simulated mosquito counts through sampling distribution accounting for random effects}
+}
 }
 \description{
-Simulates mosquito count data under a factorial design with two interventions—
-\code{intvn1} (e.g., PPFa) and \code{intvn2} (e.g., ITN)—whose effects vary over time.
-The simulation incorporates fixed effects (derived from user-defined parameters), random effects,
-and interaction terms using a negative binomial distribution with a log-link function.
-}
-\details{
-Intervention effects should be specified as proportions of reduction (e.g., 0.8 means 80% reduction),
-and are internally transformed using \code{log(1 - intvn.effect)} to ensure positivity of the mean.
+Generates simulated mosquito count data under a short-term semi-field experimental design
+with fixed effects for interventions `intvn1` and `intvn2`, random effects for chambers and sampling time points variability, and a negative binomial distributed outcomes.
+Uses output from `sim.scen.longsfe.comint()` to incorporate the table of experimental design scenarios.
 }
 \examples{
 sim.mosq.longsfe.comint(

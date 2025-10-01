@@ -57,7 +57,7 @@ A data frame with columns:
 }
 \description{
 Generates simulated mosquito count data under a short-term semi-field experimental design
-with fixed effects for intervention ('intvn'), random effects for chamber variability, and negative binomially distributed outcomes.
+with fixed effects for intervention ('intvn'), random effects for chambers and sampling time points variability, and a negative binomial distributed outcomes.
 Uses output from `sim.scen.longsfe.sinint()` to incorporate the table of experimental design scenarios.
 }
 \examples{

@@ -47,8 +47,8 @@ A named numeric vector:
 }
 }
 \description{
-Runs repeated simulations and GLMM fits to estimate empirical power
-as the proportion of simulations with p-values below 0.05.
+Runs repeated simulations and Poisson GLMM fits to estimate empirical power
+as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.shortsfe.comint()`.
 }
 \note{
 Parallel execution is supported via `n.cores`, but examples default to `n.cores = 1` for reproducibility and package checks.

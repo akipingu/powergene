@@ -52,7 +52,7 @@ A named numeric vector:
 }
 }
 \description{
-Runs repeated simulations and a negative binomial GLMM fits to estimate empirical power
+Runs repeated simulations and negative binomial GLMM fits to estimate empirical power
 as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.longsfe.sinint()`.
 }
 \note{

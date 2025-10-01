@@ -2,7 +2,7 @@
 % Please edit documentation in R/Power_Analysis_LongTermSFE_SingleIntervention.R
 \name{sim.pval.longsfe.sinint}
 \alias{sim.pval.longsfe.sinint}
-\title{Extract p-value from GLMM for Simulated Mosquito Count Data Testing Single Intervention}
+\title{Extract p-value from Simulated GLMM for Long-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
 sim.pval.longsfe.sinint(
   n.ch.per.trt,
@@ -38,7 +38,10 @@ If \code{TRUE}, returns expected mosquito counts simulated through sampling dist
 If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;}
 }
 \value{
-Named numeric vector containing the p-value from the likelihood ratio test.
+A named numeric vector:
+\describe{
+  \item{pvalue}{A p-value from likelihood ratio test comparing models with and without the interaction term}
+}
 }
 \description{
 Returns the p-value by fitting a negative binomial GLMM to simulated mosquito count data.

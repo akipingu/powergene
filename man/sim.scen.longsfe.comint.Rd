@@ -3,25 +3,35 @@
 %   R/Power_Analysis_LongTermSFE_CombinedIntervention.R
 \name{sim.scen.longsfe.comint}
 \alias{sim.scen.longsfe.comint}
-\title{Simulate Experimental Design Scenarios for Long-Term Semi-Filed Experiment Testing Combined Interventions}
+\title{Simulate Design Scenarios for Long-Term Semi-Filed Experiment Testing Combined Interventions}
 \usage{
 sim.scen.longsfe.comint(n.ch.per.trt, exp.length, sampl.freq = "weekly")
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment group.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{exp.length}{Integer. Total experiment duration in days.}
+\item{exp.length}{An integer indicating total duration of the experiment in days, e.g., 90 days.}
 
-\item{sampl.freq}{Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.}
+\item{sampl.freq}{A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.}
 }
 \value{
-A \code{data.frame} with columns for replicate ID, intervention levels, time (numeric and factor),
-chamber ID, and interaction terms.
+A data frame with columns:
+\describe{
+  \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+  \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+  \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+  \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
+  \item{time}{Time sequence scaled between 0 and 1, it is calculate by the ratio of sampling points by their total number}
+  \item{timef}{This is just the same as "time" but as a factor}
+  \item{ixn.intvn1.time}{This is the interaction between an intvn1 and time, i.e., intvn1 x time}
+  \item{ixn.intvn2.time}{This is the interaction between an intvn2 and time, i.e., intvn2 x time}
+  \item{ixn.intvn1.intvn2.time}{This is the interaction between an intvn1, intvn2 and time, i.e., intvn1 x intvn2 x time}
+}
 }
 \description{
-Generates a structured data set representing experimental design scenarios
-for mosquito intervention studies involving two binary treatments: ITN and PPFa.
-Sampling frequency is converted to a time interval, and time is scaled between 0 and 1.
+Constructs a data frame representing the factorial design of semi-field experiments
+testing combined interventions. Each chamber is uniquely identified and assigned
+treatments combinations, including interaction terms. The intervention here are shortly named as `intvn1` and `intvn2`.
 }
 \examples{
 sim.scen.longsfe.comint(

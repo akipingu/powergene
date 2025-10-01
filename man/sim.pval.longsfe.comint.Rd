@@ -3,7 +3,7 @@
 %   R/Power_Analysis_LongTermSFE_CombinedIntervention.R
 \name{sim.pval.longsfe.comint}
 \alias{sim.pval.longsfe.comint}
-\title{Extract p-value from GLMM for Simulated Mosquito Count Data (Two Interventions)}
+\title{Extract p-value from Simulated GLMM for Long-Term Semi-Field Experiment Testing Combined Interventions}
 \usage{
 sim.pval.longsfe.comint(
   n.ch.per.trt,
@@ -20,36 +20,39 @@ sim.pval.longsfe.comint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment group.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{exp.length}{Integer. Total duration of the experiment in days.}
+\item{exp.length}{An integer indicating total duration of the experiment in days, e.g., 90 days.}
 
-\item{sampl.freq}{Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.}
+\item{sampl.freq}{A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.}
 
-\item{lambda}{Numeric. Baseline mosquito count rate.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn1.effect}{Numeric. Proportion reduction due to intervention 1.}
+\item{intvn1.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).}
 
-\item{intvn2.effect}{Numeric. Proportion reduction due to intervention 2.}
+\item{intvn2.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (PPFa).}
 
-\item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
+\item{ixn.effect}{A numeric value representing the proportional reduction in mosquito count due to the interaction between interventions (e.g., ITN x PPFa).}
 
-\item{chamber.var}{Numeric. Variance component for chamber-level random effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{time.var}{Numeric. Variance component for time-level random effects.}
+\item{time.var}{A numeric value indicating the variance between sampling time points (random effect).}
 
-\item{theta}{Numeric. Overdispersion parameter for the negative binomial model.}
+\item{theta}{A numeric value quantifying overdispersion parameter for the negative binomial distribution.}
 
-\item{use.random}{Logical.
-If \code{TRUE}, uses mosquito counts simulated with random effects;
-If \code{FALSE}, uses counts based on fixed effects only.}
+\item{use.random}{A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;}
 }
 \value{
-Named numeric vector containing the p-value from the likelihood ratio test.
+A named numeric vector:
+\describe{
+  \item{pvalue}{A p-value from likelihood ratio test comparing models with and without the interaction term}
+}
 }
 \description{
-Automates simulation and model comparison for long-term semi-field experiments testing two interventions.
-Fits two GLMMs (with and without the three-way interaction term) using either fixed-effect or random-effect mosquito counts.
+Returns the p-value by fitting a negative binomial GLMM to simulated mosquito count data.
+Uses simulated mosquito counts data from `sim.mosq.longsfe.comint()` and fits a negative binomial GLMM to extract the p-value associated with the intvn effect.
 }
 \examples{
 sim.pval.longsfe.comint(

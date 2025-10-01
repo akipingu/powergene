@@ -74,7 +74,7 @@ sim.scen.longsfe.comint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
   return(dat)
 }
 
-#' Simulate Mosquito Count Data for Long-Term Semi-Field Experiment Testing Single Intervention
+#' Simulate Mosquito Count Data for Long-Term Semi-Field Experiment Testing Combined Interventions
 #'
 #' Generates simulated mosquito count data under a short-term semi-field experimental design
 #' with fixed effects for interventions `intvn1` and `intvn2`, random effects for chambers and sampling time points variability, and a negative binomial distributed outcomes.
