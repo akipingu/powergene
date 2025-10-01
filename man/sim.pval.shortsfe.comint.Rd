@@ -16,32 +16,31 @@ sim.pval.shortsfe.comint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per Treatments combination.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{lambda}{Numeric. Mean mosquito count in control chambers.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn1.effect}{Numeric. Proportion reduction due to intervention 1.}
+\item{intvn1.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).}
 
-\item{intvn2.effect}{Numeric. Proportion reduction due to intervention 2.}
+\item{intvn2.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).}
 
-\item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
+\item{ixn.effect}{A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).}
 
-\item{chamber.var}{Numeric. Variance of random chamber effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{use.random}{Logical.
-If \code{TRUE}, uses mosquito counts simulated with random effects;
-If \code{FALSE}, uses counts based on fixed effects only.}
+\item{use.random}{A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;}
 }
 \value{
 A named numeric vector:
 \describe{
-  \item{pvalue}{p-value from likelihood ratio test comparing models with and without the interaction term}
+  \item{pvalue}{A p-value from likelihood ratio test comparing models with and without the interaction term}
 }
 }
 \description{
-Simulates mosquito count data under a factorial intervention design, fits two generalized linear mixed models (GLMMs),
-and extracts the p-value for the interaction term via likelihood ratio test. This function supports empirical power analysis
-by quantifying the statistical significance of combined intervention effects.
+Returns the p-value by fitting a Poisson GLMM to simulated mosquito count data.
+Uses simulated mosquito counts data from `sim.mosq.shortsfe.comint()` and fits a Poisson GLMM to extract the p-value associated with the intvn effect.
 }
 \examples{
 sim.pval.shortsfe.comint(

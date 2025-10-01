@@ -16,32 +16,43 @@ sim.mosq.shortsfe.comint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per Treatments combination.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{lambda}{Numeric. Mean mosquito count in control chambers.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn1.effect}{Numeric. Proportion reduction due to intervention 1.}
+\item{intvn1.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).}
 
-\item{intvn2.effect}{Numeric. Proportion reduction due to intervention 2.}
+\item{intvn2.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).}
 
-\item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
+\item{ixn.effect}{A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).}
 
-\item{chamber.var}{Numeric. Variance of random chamber effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{use.random}{Logical, NULL, or "ALL".
-If \code{TRUE}, returns mosquito counts simulated with random effects;
-If \code{FALSE}, returns counts based on fixed effects only;
-If \code{NULL}, returns expected counts from fixed effects (no sampling);
-If \code{"ALL"}, returns the full dataset with all mosquito count columns.}
+\item{use.random}{A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);
+If \code{"ALL"}, returns the full data set with all mosquito count columns based in all three options described above.}
 }
 \value{
-A data frame containing the original design plus mosquito counts and linear predictors.
-        Output depends on the value of \code{use.random}.
+A data frame with the following columns, depending on the \code{use.random} option:
+\describe{
+  \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+  \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+  \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+  \item{ixn}{Interventions interactions status (e.g., 0 = control or no intervention and 1 = there is interaction)}
+  \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
+  \item{lin.pred.fixed}{Linear predictor with fixed effects only}
+  \item{lin.pred.random}{Linear predictor with random chamber effects}
+  \item{mosquito.count.fixed.exp}{Simulted mosquito counts through exponetial function from fixed effects only (no sampling)}
+  \item{mosquito.count.fixed}{Simulated mosquito counts through sampling distribution based on fixed effects only}
+  \item{mosquito.count.random}{Simulated mosquito counts through sampling distribution accounting for random effects}
+}
 }
 \description{
-Generates simulated mosquito count data based on fixed effects (intervention levels),
-random chamber effects, and a Poisson response model. This function is designed to
-support empirical power analysis in semi-field experiments.
+Generates simulated mosquito count data under a short-term semi-field experimental design
+with fixed effects for interventions, `intvn1` and `intvn2`, random effects for chamber variability, and Poisson-distributed outcomes.
+Uses output from `sim.scen.shortsfe.comint()` to incorporate the table of experimental design scenarios.
 }
 \examples{
 sim.mosq.shortsfe.comint(

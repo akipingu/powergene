@@ -2,7 +2,7 @@
 % Please edit documentation in R/Power_Analysis_LongTermSFE_SingleIntervention.R
 \name{sim.plot.longsfe.sinint}
 \alias{sim.plot.longsfe.sinint}
-\title{Plot Mosquito Counts for Long-Term Semi-Field Experiment (Single Intervention)}
+\title{Plot Mosquito Counts for Long-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
 sim.plot.longsfe.sinint(
   n.ch.per.trt,
@@ -17,33 +17,33 @@ sim.plot.longsfe.sinint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment group.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{exp.length}{Integer. Total duration of the experiment in days.}
+\item{exp.length}{An integer indicating total duration of the experiment in days, e.g., 90 days.}
 
-\item{sampl.freq}{Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.}
+\item{sampl.freq}{A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.}
 
-\item{lambda}{Numeric. Baseline mosquito count rate.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn.effect}{Numeric. Effect size of the intervention.}
+\item{intvn.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention (e.g., ITN).}
 
-\item{chamber.var}{Numeric. Variance component for chamber-level random effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{time.var}{Numeric. Variance component for time-level random effects.}
+\item{time.var}{A numeric value indicating the variance between sampling time points (random effect).}
 
-\item{theta}{Numeric. Dispersion parameter for the negative binomial distribution.}
+\item{theta}{A numeric value quantifying overdispersion parameter for the negative binomial distribution.}
 
-\item{use.random}{Logical or NULL.
-If \code{TRUE}, plots mosquito counts simulated with random effects;
-If \code{FALSE}, plots counts based on fixed effects only;
-If \code{NULL}, plots expected counts from fixed effects (no sampling).}
+\item{use.random}{A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);}
 }
 \value{
 A `ggplot` object showing mosquito counts over time by treatment group.
 }
 \description{
-Generates a time series plot of mosquito counts based on either fixed effects only,
-random effects, or expected counts, using data simulated by `sim.mosq.longsfe.sinint`.
+Generates a time series plot of mosquito counts based on use.random with either fixed effects only,
+random effects, or fixed effects (no sampling distribution), using data simulated by `sim.mosq.longsfe.sinint`.
 }
 \examples{
 sim.plot.longsfe.sinint(

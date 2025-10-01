@@ -44,8 +44,8 @@ sim.scen.shortsfe.comint <- function(n.ch.per.trt) {
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
-#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
-#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
 #' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
 #' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
 #' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
@@ -128,8 +128,8 @@ sim.mosq.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
-#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
-#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
 #' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
 #' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
 #' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
@@ -213,8 +213,8 @@ sim.plot.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
-#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
-#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
 #' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
 #' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
 #' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
@@ -286,8 +286,8 @@ sim.pval.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
-#' @param intv1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
-#' @param intv2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).
 #' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).
 #' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
 #' @param nsim An integer indicating the total number of simulations.

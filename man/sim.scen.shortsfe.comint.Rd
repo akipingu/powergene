@@ -8,22 +8,22 @@
 sim.scen.shortsfe.comint(n.ch.per.trt)
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per Treatments combination (default = 4).}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 }
 \value{
 A data frame with columns:
 \describe{
-  \item{replicates}{Replicate number within each Treatments combination}
-  \item{intvn1}{intvn1a intervention level}
-  \item{intvn2}{intvn2 intervention level}
-  \item{ixn}{Interaction term: intvn1 × intvn2}
-  \item{chamber}{Unique chamber identifier}
+  \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+  \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+  \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+  \item{ixn}{Interventions interactions status (e.g., 0 = control or no intervention and 1 = there is interaction)}
+  \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
 }
 }
 \description{
 Constructs a data frame representing the factorial design of semi-field experiments
 testing intvn1 and intvn2 interventions. Each chamber is uniquely identified and assigned
-Treatments combinations, including interaction terms.
+treatments combinations, including interaction terms.
 }
 \examples{
 sim.scen.shortsfe.comint(n.ch.per.trt = 4)

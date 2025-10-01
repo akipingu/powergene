@@ -18,25 +18,25 @@ sim.power.shortsfe.comint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per Treatments level.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{lambda}{Numeric. Mean mosquito count in control chambers.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn1.effect}{Numeric. Proportion reduction due to intervention 1.}
+\item{intvn1.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).}
 
-\item{intvn2.effect}{Numeric. Proportion reduction due to intervention 2.}
+\item{intvn2.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).}
 
-\item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
+\item{ixn.effect}{A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).}
 
-\item{chamber.var}{Numeric. Variance of random chamber effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{nsim}{Integer. Number of simulation replicates.}
+\item{nsim}{An integer indicating the total number of simulations.}
 
-\item{n.cores}{Integer. Number of cores to use for parallel processing.}
+\item{n.cores}{An integer the number of cores to use for parallel processing.}
 
-\item{use.random}{Logical.
-If \code{TRUE}, uses mosquito counts simulated with random effects;
-If \code{FALSE}, uses counts based on fixed effects only.}
+\item{use.random}{A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects).
+If \code{TRUE}, returns power for expected mosquito counts simulated using sampling distribution with random effects;
+If \code{FALSE}, returns power for expected counts using sampling distribution based on fixed effects only.}
 }
 \value{
 A named numeric vector:

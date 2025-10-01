@@ -52,9 +52,9 @@ sim.scen.shortsfe.sinint <- function(n.ch.per.trt) {
 #'   \item{intvn}{Intervention status (e.g., 0 = control or no intervention and 1 = there is intervention)}
 #'   \item{chamber}{Unique chamber identifier as a factor (e.g., 0-1, 0-2 for the control chambers and 1-1, 1-2 for intervention chambers)}
 #'   \item{lin.pred.fixed}{Linear predictor with fixed effects only}
+#'   \item{lin.pred.random}{Linear predictor with random chamber effects}
 #'   \item{mosquito.count.fixed.exp}{Simulted mosquito counts through exponetial function from fixed effects only (no sampling)}
 #'   \item{mosquito.count.fixed}{Simulated mosquito counts through sampling distribution based on fixed effects only}
-#'   \item{lin.pred.random}{Linear predictor with random chamber effects}
 #'   \item{mosquito.count.random}{Simulated mosquito counts through sampling distribution accounting for random effects}
 #' }
 #'

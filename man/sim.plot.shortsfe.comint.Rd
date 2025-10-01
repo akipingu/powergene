@@ -17,27 +17,29 @@ sim.plot.shortsfe.comint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per Treatments combination.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{lambda}{Numeric. Mean mosquito count in control chambers.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn1.effect}{Numeric. Proportion reduction due to intervention 1.}
+\item{intvn1.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).}
 
-\item{intvn2.effect}{Numeric. Proportion reduction due to intervention 2.}
+\item{intvn2.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (e.g., PPFa).}
 
-\item{ixn.effect}{Numeric. Proportion reduction due to interaction between interventions.}
+\item{ixn.effect}{A numeric value representing the proportional reduction in mosquito count due to the interaction (e.g., ITN x PPFa).}
 
-\item{chamber.var}{Numeric. Variance of random chamber effects.}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{use.random}{Logical or NULL.
-If \code{TRUE}, plots mosquito counts simulated with random effects;
-If \code{FALSE}, plots counts based on fixed effects only;
-If \code{NULL}, plots expected counts from fixed effects (no sampling).}
+\item{use.random}{A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);}
 
-\item{jitter}{Logical. If \code{TRUE}, overlays individual chamber-level points.}
+\item{jitter}{A logical value indicating whether to overlay individual chamber-level points
+If \code{TRUE}, overlays individual chamber-level points.
+If \code{FALSE}, do not overlay individual chamber-level points.}
 }
 \value{
-A `ggplot` object showing mosquito counts by Treatments combination.
+A `ggplot` object showing expected mosquito counts by treatment group.
 }
 \description{
 Generates a boxplot of simulated mosquito counts grouped by intervention combinations.

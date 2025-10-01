@@ -2,7 +2,7 @@
 % Please edit documentation in R/Power_Analysis_LongTermSFE_SingleIntervention.R
 \name{sim.mosq.longsfe.sinint}
 \alias{sim.mosq.longsfe.sinint}
-\title{Simulate Mosquito Count Data for Long-Term Semi-Field Experiment (Single Intervention)}
+\title{Simulate Mosquito Count Data for Long-Term Semi-Field Experiment Testing Single Intervention}
 \usage{
 sim.mosq.longsfe.sinint(
   n.ch.per.trt,
@@ -17,34 +17,48 @@ sim.mosq.longsfe.sinint(
 )
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment group.}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{exp.length}{Integer. Total duration of the experiment in days.}
+\item{exp.length}{An integer indicating total duration of the experiment in days, e.g., 90 days.}
 
-\item{sampl.freq}{Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.}
+\item{sampl.freq}{A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.}
 
-\item{lambda}{Numeric. Expected number of mosquitoes sampled per chamber per time point in the absence of intervention.}
+\item{lambda}{A numeric value indicating the expected mean mosquito count in control chambers.}
 
-\item{intvn.effect}{Numeric. Proportion reduction in mosquito counts over time due to intervention (e.g., 0.8 for 80\% reduction).}
+\item{intvn.effect}{A numeric value representing the proportional reduction in mosquito count due to the intervention (e.g., ITN).}
 
-\item{chamber.var}{Numeric. Variance between chambers (random effect).}
+\item{chamber.var}{A numeric value specifying the variance of random chamber-level effects.}
 
-\item{time.var}{Numeric. Variance between time points (random effect).}
+\item{time.var}{A numeric value indicating the variance between sampling time points (random effect).}
 
-\item{theta}{Numeric. Dispersion parameter for the negative binomial distribution.}
+\item{theta}{A numeric value quantifying overdispersion parameter for the negative binomial distribution.}
 
-\item{use.random}{Logical, NULL, or "ALL".
-If \code{TRUE}, returns mosquito counts simulated with random effects;
-If \code{FALSE}, returns counts based on fixed effects only;
-If \code{NULL}, returns expected counts from fixed effects (no sampling);
-If \code{"ALL"}, returns the full dataset with all mosquito count columns.}
+\item{use.random}{A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);
+If \code{"ALL"}, returns the full data set with all mosquito count columns based in all three options described above.}
 }
 \value{
-A data frame containing the original design plus simulated mosquito counts and linear predictors.
-        Output depends on the value of \code{use.random}.
+A data frame with columns:
+\describe{
+  \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+  \item{intvn}{Intervention status (e.g., 0 = control or no intervention and 1 = there is intervention)}
+  \item{chamber}{Unique chamber identifier as a factor (e.g., 0-1, 0-2 for the control chambers and 1-1, 1-2 for intervention chambers)}
+  \item{time}{Time sequence scaled between 0 and 1, it is calculate by the ratio of sampling points by their total number}
+  \item{timef}{This is just the same as "time" but as a factor}
+  \item{intvn.time}{This is the interaction between an intervention and time, i.e., intvn x time}
+  \item{lin.pred.fixed}{Linear predictor with fixed effects only}
+  \item{lin.pred.random}{Linear predictor with random chamber effects}
+  \item{mosquito.count.fixed.exp}{Simulted mosquito counts through exponetial function from fixed effects only (no sampling)}
+  \item{mosquito.count.fixed}{Simulated mosquito counts through sampling distribution based on fixed effects only}
+  \item{mosquito.count.random}{Simulated mosquito counts through sampling distribution accounting for random effects}
+}
 }
 \description{
-Automates the simulation of mosquito count data under a semi-field experimental design testing a single intervention.
+Generates simulated mosquito count data under a short-term semi-field experimental design
+with fixed effects for intervention ('intvn'), random effects for chamber variability, and negative binomially distributed outcomes.
+Uses output from `sim.scen.longsfe.sinint()` to incorporate the table of experimental design scenarios.
 }
 \examples{
 sim.mosq.longsfe.sinint(

@@ -49,11 +49,11 @@ Parallel execution is supported via `n.cores`, but examples default to `n.cores 
 }
 \examples{
 sim.power.shortsfe.sinint(
-  nsim = 100,
   n.ch.per.trt = 4,
   lambda = 50,
   intvn.effect = 0.8,
   chamber.var = 0.1807,
+  nsim = 100,
   n.cores = 1,
   use.random = TRUE
 )

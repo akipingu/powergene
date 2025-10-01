@@ -7,17 +7,27 @@
 sim.scen.longsfe.sinint(n.ch.per.trt, exp.length, sampl.freq = "weekly")
 }
 \arguments{
-\item{n.ch.per.trt}{Integer. Number of chambers per treatment group (e.g., 4 compartments per group).}
+\item{n.ch.per.trt}{An integer specifying the number of chambers allocated per treatment group.}
 
-\item{exp.length}{Integer. Total duration of the experiment in days.}
+\item{exp.length}{An integer indicating total duration of the experiment in days, e.g., 90 days.}
 
-\item{sampl.freq}{Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.}
+\item{sampl.freq}{A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.}
 }
 \value{
-A data frame representing the experimental design, including chamber identity, time points, and intvn-time interaction.
+A data frame with columns:
+\describe{
+  \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+  \item{intvn}{Intervention status (e.g., 0 = control or no intervention and 1 = there is intervention)}
+  \item{chamber}{Unique chamber identifier as a factor (e.g., 0-1, 0-2 for the control chambers and 1-1, 1-2 for intervention chambers)}
+  \item{time}{Time sequence scaled between 0 and 1, it is calculate by the ratio of sampling points by their total number}
+  \item{timef}{This is just the same as "time" but as a factor}
+  \item{intvn.time}{This is the interaction between an intervention and time, i.e., intvn x time}
+}
 }
 \description{
-Generates a template data set for simulation-based power analysis under different experimental design scenarios.
+Constructs a design scenario table representing a short-term semi-field experiment
+with two treatment levels (or intervention status), i.e., control (no intervention) and intervention, and a specified number of chambers or compartment per treatment.
+Each chamber is uniquely identified by a treatment level and a replicate combination. An intervention here is shortly named as `intvn`.
 }
 \examples{
 sim.scen.longsfe.sinint(
