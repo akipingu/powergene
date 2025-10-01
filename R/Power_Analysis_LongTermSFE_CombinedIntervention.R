@@ -1,15 +1,25 @@
-#' Simulate Experimental Design Scenarios for Long-Term Semi-Filed Experiment Testing Combined Interventions
+#' Simulate Design Scenarios for Long-Term Semi-Filed Experiment Testing Combined Interventions
 #'
-#' Generates a structured data set representing experimental design scenarios
-#' for mosquito intervention studies involving two binary treatments: ITN and PPFa.
-#' Sampling frequency is converted to a time interval, and time is scaled between 0 and 1.
+#' Constructs a data frame representing the factorial design of semi-field experiments
+#' testing combined interventions. Each chamber is uniquely identified and assigned
+#' treatments combinations, including interaction terms. The intervention here are shortly named as `intvn1` and `intvn2`.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per treatment group.
-#' @param exp.length Integer. Total experiment duration in days.
-#' @param sampl.freq Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param exp.length An integer indicating total duration of the experiment in days, e.g., 90 days.
+#' @param sampl.freq A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.
 #'
-#' @return A \code{data.frame} with columns for replicate ID, intervention levels, time (numeric and factor),
-#' chamber ID, and interaction terms.
+#' @return A data frame with columns:
+#' \describe{
+#'   \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+#'   \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+#'   \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+#'   \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
+#'   \item{time}{Time sequence scaled between 0 and 1, it is calculate by the ratio of sampling points by their total number}
+#'   \item{timef}{This is just the same as "time" but as a factor}
+#'   \item{ixn.intvn1.time}{This is the interaction between an intvn1 and time, i.e., intvn1 x time}
+#'   \item{ixn.intvn2.time}{This is the interaction between an intvn2 and time, i.e., intvn2 x time}
+#'   \item{ixn.intvn1.intvn2.time}{This is the interaction between an intvn1, intvn2 and time, i.e., intvn1 x intvn2 x time}
+#' }
 #'
 #' @examples
 #' sim.scen.longsfe.comint(
@@ -51,47 +61,59 @@ sim.scen.longsfe.comint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
   dat$ixn.intvn1.time <- dat$intvn1 * dat$time # interaction between intvn1 and time
   dat$ixn.intvn2.time <- dat$intvn2 * dat$time # interaction between intvn2 and time
 
-  # create chambers/replicates ID e.g., 1-1-2 means chamber number 2 with both intvn1 and intvn2
+  # Create chambers/replicates ID e.g., 1-1-2 means chamber number 2 with both intvn1 and intvn2
   dat$chamber <- factor(paste(dat$intvn1, dat$intvn2, dat$replicates, sep = "-"))
 
   # Time as factor
   dat$timef <- factor(dat$time)
 
   # Reorder columns
-  dat <- dat[, c("replicates", "intvn1", "intvn2", "timef", "time", "chamber",
-                 "ixn.intvn1.intvn2.time", "ixn.intvn1.time", "ixn.intvn2.time")]
+  dat <- dat[, c("replicates", "intvn1", "intvn2", "chamber", "time", "timef",
+                  "ixn.intvn1.time", "ixn.intvn2.time", "ixn.intvn1.intvn2.time")]
 
   return(dat)
 }
 
-#' Simulate Mosquito Counts with Time-Varying Effects of Two Interventions
+#' Simulate Mosquito Count Data for Long-Term Semi-Field Experiment Testing Single Intervention
 #'
-#' Simulates mosquito count data under a factorial design with two interventions—
-#' \code{intvn1} (e.g., PPFa) and \code{intvn2} (e.g., ITN)—whose effects vary over time.
-#' The simulation incorporates fixed effects (derived from user-defined parameters), random effects,
-#' and interaction terms using a negative binomial distribution with a log-link function.
+#' Generates simulated mosquito count data under a short-term semi-field experimental design
+#' with fixed effects for interventions `intvn1` and `intvn2`, random effects for chambers and sampling time points variability, and a negative binomial distributed outcomes.
+#' Uses output from `sim.scen.longsfe.comint()` to incorporate the table of experimental design scenarios.
 #'
-#' Intervention effects should be specified as proportions of reduction (e.g., 0.8 means 80% reduction),
-#' and are internally transformed using \code{log(1 - intvn.effect)} to ensure positivity of the mean.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param exp.length An integer indicating total duration of the experiment in days, e.g., 90 days.
+#' @param sampl.freq A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction between interventions (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param time.var A numeric value indicating the variance between sampling time points (random effect).
+#' @param theta A numeric value quantifying overdispersion parameter for the negative binomial distribution.
+#' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+#' If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+#' If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+#' If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);
+#' If \code{"ALL"}, returns the full data set with all mosquito count columns based in all three options described above.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per treatment group.
-#' @param exp.length Integer. Total experiment duration in days.
-#' @param sampl.freq Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.
-#' @param lambda Numeric. Mean mosquito count in the control group.
-#' @param intvn1.effect Numeric. Proportion reduction due to intvn1 over time.
-#' @param intvn2.effect Numeric. Proportion reduction due to intvn2 over time.
-#' @param ixn.effect Numeric. Proportion reduction due to intvn1 × intvn2 interaction over time.
-#' @param chamber.var Numeric. Variance between chambers (random effect).
-#' @param time.var Numeric. Variance across time points (random effect).
-#' @param theta Numeric. Dispersion parameter for negative binomial distribution.
-#' @param use.random Logical, NULL, or "ALL".
-#' If \code{TRUE}, returns mosquito counts with random effects.
-#' If \code{FALSE}, returns counts with fixed effects only.
-#' If \code{NULL}, returns expected counts from fixed effects (no sampling).
-#' If \code{"ALL"}, returns the full dataset with all mosquito count columns.
-#'
-#' @return A data frame containing the original design plus simulated mosquito counts and linear predictors.
-#'         Output depends on the value of \code{use.random}.
+#' @return A data frame with columns:
+#' \describe{
+#'   \item{replicates}{Replicate number within each treatment group (e.g., for a total of 2 chambers per treatment means 1, 2 replicates per treatment)}
+#'   \item{intvn1}{Intervention status (e.g., 0 = control or no intervention 1 and 1 = there is intervention 1)}
+#'   \item{intvn2}{Intervention status (e.g., 0 = control or no intervention 2 and 1 = there is intervention 2)}
+#'   \item{chamber}{Unique chamber identifier as a factor (e.g., 0-0-1, 0-0-2 for the control chambers and 0-1-1, 1-0-1, 1-1-1 for intervention chambers)}
+#'   \item{time}{Time sequence scaled between 0 and 1, it is calculate by the ratio of sampling points by their total number}
+#'   \item{timef}{This is just the same as "time" but as a factor}
+#'   \item{ixn.intvn1.time}{This is the interaction between an intvn1 and time, i.e., intvn1 x time}
+#'   \item{ixn.intvn2.time}{This is the interaction between an intvn2 and time, i.e., intvn2 x time}
+#'   \item{ixn.intvn1.intvn2.time}{This is the interaction between an intvn1, intvn2 and time, i.e., intvn1 x intvn2 x time}
+#'   \item{lin.pred.fixed}{Linear predictor with fixed effects only}
+#'   \item{lin.pred.random}{Linear predictor with random chamber effects}
+#'   \item{mosquito.count.fixed.exp}{Simulted mosquito counts through exponetial function from fixed effects only (no sampling)}
+#'   \item{mosquito.count.fixed}{Simulated mosquito counts through sampling distribution based on fixed effects only}
+#'   \item{mosquito.count.random}{Simulated mosquito counts through sampling distribution accounting for random effects}
+#' }
+
 #'
 #' @examples
 #' sim.mosq.longsfe.comint(
@@ -168,25 +190,25 @@ sim.mosq.longsfe.comint <- function(n.ch.per.trt,
   }
 }
 
-#' Plot Mosquito Counts for Long-Term Semi-Field Experiment (Two Interventions)
+#' Plot Mosquito Counts for Long-Term Semi-Field Experiment Testing Combined Interventions
 #'
 #' Generates a time series plot of mosquito counts based on either fixed effects only,
-#' random effects, or expected counts, using data simulated by `sim.mosq.longsfe.comint`.
+#' random effects, or fixed effects (no sampling distribution), using data simulated by `sim.mosq.longsfe.comint`.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per treatment group.
-#' @param exp.length Integer. Total duration of the experiment in days.
-#' @param sampl.freq Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.
-#' @param lambda Numeric. Baseline mosquito count rate.
-#' @param intvn1.effect Numeric. Proportion reduction due to intervention 1.
-#' @param intvn2.effect Numeric. Proportion reduction due to intervention 2.
-#' @param ixn.effect Numeric. Proportion reduction due to interaction between interventions.
-#' @param chamber.var Numeric. Variance component for chamber-level random effects.
-#' @param time.var Numeric. Variance component for time-level random effects.
-#' @param theta Numeric. Dispersion parameter for the negative binomial distribution.
-#' @param use.random Logical or NULL.
-#' If \code{TRUE}, plots mosquito counts simulated with random effects.
-#' If \code{FALSE}, plots counts based on fixed effects only.
-#' If \code{NULL}, plots expected counts from fixed effects (no sampling).
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param exp.length An integer indicating total duration of the experiment in days, e.g., 90 days.
+#' @param sampl.freq A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction between interventions (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param time.var A numeric value indicating the variance between sampling time points (random effect).
+#' @param theta A numeric value quantifying overdispersion parameter for the negative binomial distribution.
+#' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+#' If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+#' If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
+#' If \code{NULL}, returns expected mosquito counts simulated through exponential function based on fixed effects (no sampling distribution);
 #'
 #' @return A `ggplot` object showing mosquito counts over time by treatment group.
 #'
@@ -273,26 +295,29 @@ sim.plot.longsfe.comint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
     ggplot2::theme_bw()
 }
 
-#' Extract p-value from GLMM for Simulated Mosquito Count Data (Two Interventions)
+#' Extract p-value from Simulated GLMM for Long-Term Semi-Field Experiment Testing Combined Interventions
 #'
-#' Automates simulation and model comparison for long-term semi-field experiments testing two interventions.
-#' Fits two GLMMs (with and without the three-way interaction term) using either fixed-effect or random-effect mosquito counts.
+#' Returns the p-value by fitting a negative binomial GLMM to simulated mosquito count data.
+#' Uses simulated mosquito counts data from `sim.mosq.longsfe.comint()` and fits a negative binomial GLMM to extract the p-value associated with the intvn effect.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per treatment group.
-#' @param exp.length Integer. Total duration of the experiment in days.
-#' @param sampl.freq Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.
-#' @param lambda Numeric. Baseline mosquito count rate.
-#' @param intvn1.effect Numeric. Proportion reduction due to intervention 1.
-#' @param intvn2.effect Numeric. Proportion reduction due to intervention 2.
-#' @param ixn.effect Numeric. Proportion reduction due to interaction between interventions.
-#' @param chamber.var Numeric. Variance component for chamber-level random effects.
-#' @param time.var Numeric. Variance component for time-level random effects.
-#' @param theta Numeric. Overdispersion parameter for the negative binomial model.
-#' @param use.random Logical.
-#' If \code{TRUE}, uses mosquito counts simulated with random effects;
-#' If \code{FALSE}, uses counts based on fixed effects only.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param exp.length An integer indicating total duration of the experiment in days, e.g., 90 days.
+#' @param sampl.freq A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction between interventions (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param time.var A numeric value indicating the variance between sampling time points (random effect).
+#' @param theta A numeric value quantifying overdispersion parameter for the negative binomial distribution.
+#' @param use.random A logical value indicating whether to return mosquito counts simulated through a sampling distribution (with random or fixed chamber effects) or all.
+#' If \code{TRUE}, returns expected mosquito counts simulated through sampling distribution with random effects;
+#' If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
 #'
-#' @return Named numeric vector containing the p-value from the likelihood ratio test.
+#' @return A named numeric vector:
+#' \describe{
+#'   \item{pvalue}{A p-value from likelihood ratio test comparing models with and without the interaction term}
+#' }
 #' @importFrom lme4 glmer.nb
 #' @importFrom stats anova
 #' @importFrom stats update
@@ -352,26 +377,26 @@ sim.pval.longsfe.comint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
   return(c(pvalue = pvalue))
 }
 
-#' Estimate Empirical Power for Long-Term Semi-Field Experiment Testing Two Interventions
+#' Estimate Empirical Power for Long-Term Semi-Field Experiment Testing Combined Interventions
 #'
-#' Runs repeated simulations and GLMM fits to estimate empirical power
-#' as the proportion of simulations with p-values below 0.05.
+#' Runs repeated simulations and negative binomial GLMM fits to estimate empirical power
+#' as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.longsfe.comint()`.
 #'
-#' @param n.ch.per.trt Integer. Number of chambers per treatment group.
-#' @param exp.length Integer. Total duration of the experiment in days.
-#' @param sampl.freq Character. Sampling frequency label: one of `"daily"`, `"weekly"`, `"biweekly"`, or `"monthly"`.
-#' @param lambda Numeric. Baseline mosquito count rate.
-#' @param intvn1.effect Numeric. Proportion reduction due to intervention 1.
-#' @param intvn2.effect Numeric. Proportion reduction due to intervention 2.
-#' @param ixn.effect Numeric. Proportion reduction due to interaction between interventions.
-#' @param chamber.var Numeric. Variance component for chamber-level random effects.
-#' @param time.var Numeric. Variance component for time-level random effects.
-#' @param theta Numeric. Dispersion parameter for the negative binomial distribution.
-#' @param nsim Integer. Number of simulation replicates.
-#' @param n.cores Integer. Number of cores to use for parallel processing.
-#' @param use.random Logical.
-#' If \code{TRUE}, uses mosquito counts simulated with random effects;
-#' If \code{FALSE}, uses counts based on fixed effects only.
+#' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
+#' @param exp.length An integer indicating total duration of the experiment in days, e.g., 90 days.
+#' @param sampl.freq A character for a sampling frequency label. Example, for 90 days experiment; `"daily"` means 90 sampling points, `"weekly"` means 12 sampling points, `"biweekly"` means 6 sampling points, or `"monthly"` means 3 sampling points.
+#' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.
+#' @param intvn1.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 1 (e.g., ITN).
+#' @param intvn2.effect A numeric value representing the proportional reduction in mosquito count due to the intervention 2 (PPFa).
+#' @param ixn.effect A numeric value representing the proportional reduction in mosquito count due to the interaction between interventions (e.g., ITN x PPFa).
+#' @param chamber.var A numeric value specifying the variance of random chamber-level effects.
+#' @param time.var A numeric value indicating the variance between sampling time points (random effect).
+#' @param theta A numeric value quantifying overdispersion parameter for the negative binomial distribution.
+#' @param nsim An integer indicating the total number of simulations.
+#' @param n.cores An integer the number of cores to use for parallel processing.
+#' @param use.random A logical value indicating whether to plot mosquito counts simulated using a sampling distribution (with random or fixed effects).
+#' If \code{TRUE}, returns power for expected mosquito counts simulated using sampling distribution with random effects;
+#' If \code{FALSE}, returns power for expected counts using sampling distribution based on fixed effects only.
 #'
 #' @return A named numeric vector:
 #' \describe{

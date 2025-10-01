@@ -1,8 +1,8 @@
 #' Simulate Design Scenarios for Short-Term Semi-Field Experiment Testing Combined Interventions
 #'
 #' Constructs a data frame representing the factorial design of semi-field experiments
-#' testing intvn1 and intvn2 interventions. Each chamber is uniquely identified and assigned
-#' treatments combinations, including interaction terms.
+#' testing combined interventions. Each chamber is uniquely identified and assigned
+#' treatments combinations, including interaction terms. The intervention here are shortly named as `intvn1` and `intvn2`.
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #'
@@ -281,8 +281,8 @@ sim.pval.shortsfe.comint <- function(n.ch.per.trt, lambda, intvn1.effect, intvn2
 
 #' Estimate Empirical Power for Short-Term Semi-Field Experiment Testing Combined Intervention
 #'
-#' Runs repeated simulations and GLMM fits to estimate empirical power
-#' as the proportion of simulations with p-values below 0.05.
+#' Runs repeated simulations and Poisson GLMM fits to estimate empirical power
+#' as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.shortsfe.comint()`.
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
 #' @param lambda A numeric value indicating the expected mean mosquito count in control chambers.

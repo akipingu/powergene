@@ -61,7 +61,7 @@ sim.scen.longsfe.sinint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
 #' Simulate Mosquito Count Data for Long-Term Semi-Field Experiment Testing Single Intervention
 #'
 #' Generates simulated mosquito count data under a short-term semi-field experimental design
-#' with fixed effects for intervention ('intvn'), random effects for chamber variability, and negative binomially distributed outcomes.
+#' with fixed effects for intervention ('intvn'), random effects for chambers and sampling time points variability, and a negative binomial distributed outcomes.
 #' Uses output from `sim.scen.longsfe.sinint()` to incorporate the table of experimental design scenarios.
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
@@ -250,7 +250,7 @@ sim.plot.longsfe.sinint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
     ggplot2::theme_bw()
 }
 
-#' Extract p-value from GLMM for Simulated Mosquito Count Data Testing Single Intervention
+#' Extract p-value from Simulated GLMM for Long-Term Semi-Field Experiment Testing Single Intervention
 #'
 #' Returns the p-value by fitting a negative binomial GLMM to simulated mosquito count data.
 #' Uses simulated mosquito counts data from `sim.mosq.longsfe.sinint()` and fits a negative binomial GLMM to extract the p-value associated with the intvn effect.
@@ -268,7 +268,10 @@ sim.plot.longsfe.sinint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
 #' If \code{FALSE}, returns expected mosquito counts simulated through sampling distribution based on fixed effects only;
 
 #'
-#' @return Named numeric vector containing the p-value from the likelihood ratio test.
+#' @return A named numeric vector:
+#' \describe{
+#'   \item{pvalue}{A p-value from likelihood ratio test comparing models with and without the interaction term}
+#' }
 #' @importFrom lme4 glmer.nb
 #' @importFrom stats anova
 #' @importFrom stats update
@@ -327,7 +330,7 @@ sim.pval.longsfe.sinint <- function(n.ch.per.trt, exp.length, sampl.freq = "week
 
 #' Estimate Empirical Power for Long-Term Semi-Field Experiment Testing Single Intervention
 #'
-#' Runs repeated simulations and a negative binomial GLMM fits to estimate empirical power
+#' Runs repeated simulations and negative binomial GLMM fits to estimate empirical power
 #' as the proportion of simulations with p-values below 0.05. These p-values are generated using the function called `sim.pval.longsfe.sinint()`.
 #'
 #' @param n.ch.per.trt An integer specifying the number of chambers allocated per treatment group.
