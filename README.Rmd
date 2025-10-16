@@ -97,7 +97,6 @@ sim.mosquitoes <- sim.mosq.shortsfe.sinint(
   chamber.var = 0.1807,
   use.random = "ALL"
 )
-?sim.mosq.shortsfe.sinint
 #output mosquito counts per each chamber per each treatment
 sim.mosquitoes <- sim.mosquitoes[, c(-4,-5,-6)]
 sim.mosquitoes
@@ -149,7 +148,7 @@ power.estimate <- sim.power.shortsfe.sinint(n.ch.per.trt = 4,
 round(power.estimate,2)
 ```
 
-VI. Now you use the function to estimate power for varied number of chambers per treatment, e.g., 2,4,6,8. 
+VI. Now you use the function to estimate power for varied number of chambers per treatment, e.g., 2,4,6,8. You can repeat this stage for all the power estimation functions in the package. Note that, this step is not necessary but we are showing it here to demonstrate the robustness of the package.
 
 ```{r}
 # Define treatment sizes
@@ -208,7 +207,7 @@ ggplot(power.df, aes(x = n.ch.per.trt, y = power)) +
   theme_bw()
 ```
 
-VIII. Now you can use the function to estimate power for varied number of chambers per treatment, e.g., 2,4,6,8 and varied effect size of an intervention.
+VIII. Now you can use the function to estimate power for varied number of chambers per treatment, e.g., 2,4,6,8 and varied effect size of an intervention. You can repeat this stage for all the power estimation functions in the package. Note that, this step is not necessary but we are showing it here to demonstrate the robustness of the package.
 
 ```{r}
 # Define parameter grids
@@ -270,4 +269,358 @@ ggplot(results, aes(x = n.ch.per.trt, y = power, color = factor(intvn.effect), g
 ```
 
 
+## Example II: Estimating power of a short-term SFE testing combined interventions
 
+Since we have demonstrated all steps for power estimation in Example I, in this example we will demonstrate only few steps. Note that, to estimate power you only need one function called "sim.power.shortsfe.comint()". However, for learning purpose we demonstrate how other functions work as shown below.
+
+Notes: In this case study, we considered number of chambers per treatment (“n.ch.per.trt”), which can be 4; number of recaptured mosquitoes (“lambda”), which can be 50; effect of intervention 1 alone “intvn1.effect”, which is 0.7; effect of intervention 2 alone “intvn2.effect”, which is 0.8; interaction effect between intvn1 and intvn2 (“ixn.effect”), which can be  0.5; inter-chamber variance (“chamber.var”), which can be 0.1807; and total number of simulations (“nsim”), which is 100 for demonstration, but we suggest at least 1000 simulation. 
+
+Notes: Some functions has options where you can simulate or plot mosquitoes and estimate p-values or power while utilizing the "use.random" input. You can simulate or plot mosquitoes and estimate p-values or power while taking into account random effects using "use.random = TRUE", fixed effect only  using "use.random = FALSE", exponential function using "use.random = NULL", or all options using 'use.random = "ALL"'. Note that, "use.random = NULL" and 'use.random = "ALL"' only works for simulating or plotting mosquitoes. This applies for all functions throughout the package, except those simulating scenario tables.
+
+I. Simulate scenario table for SFE testing combined interventions. For more information on each input below, type "?sim.scen.shortsfe.comint" in RStudio
+
+```{r}
+scen.table <- sim.scen.shortsfe.comint(n.ch.per.trt = 4)
+#print a scenario table
+#scen.table
+```
+
+
+II. Simulate mosquitoes counts/abundance for SFE testing combined interventions. For more information on each input below, type "?sim.mosq.shortsfe.comint" in RStudio. 
+
+```{r}
+# You can simulate mosquitoes accounting for random effects using "use.random = TRUE".
+# You can simulate mosquitoes accounting for  fixed effect using "use.random = FALSE".
+# You can simulate mosquitoes from exponential function using "use.random = NULL".
+# You can simulate mosquitoes for all options above using 'use.random = "ALL"'.
+sim.mosq.shortsfe.comint(
+  n.ch.per.trt = 4,
+  lambda = 50,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.5,
+  chamber.var = 0.1807,
+  use.random = "ALL"
+)
+```
+
+
+III. Plot mosquitoes counts/abundance for SFE testing combined interventions. For more information on each input below, type "?sim.plot.shortsfe.comint" in RStudio
+
+```{r}
+# Plot mosquitoes with random effects using "use.random = TRUE".
+# You can also plot with fixed effect using "use.random = FALSE".
+# You can also plot mosquito exponential function using "use.random = NULL".
+plot_mosquitoes <- sim.plot.shortsfe.comint(
+  n.ch.per.trt = 4,
+  lambda = 50,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.5,
+  chamber.var = 0.1807,
+  use.random = TRUE,
+  jitter = TRUE
+)
+```
+
+
+IV. Estimate p-values from mosquitoes counts/abundance data for SFE testing combined interventions. For more information on each input below, type "?sim.pval.shortsfe.comint" in RStudio
+
+```{r}
+# Estimate p-value, account for random effects using "use.random = TRUE".
+# Estimate p-value, account for fixed effect only using "use.random = FALSE".
+pvalue_est <- sim.pval.shortsfe.comint(
+  n.ch.per.trt = 4,
+  lambda = 50,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.5,
+  chamber.var = 0.1807,
+  use.random = TRUE
+)
+```
+
+
+V. Estimate power for SFE testing combined interventions. For more information on each input below, type "?sim.power.shortsfe.comint" in RStudio. If you computer has multiple cores, you can specify what amount of core you want to utilise using "n.cores"; if not, just use "n.cores = 1" as default. You may even decide to remove n.cores if you don't want to use it. 
+```{r}
+# Estimate p-value, account for random effects using "use.random = TRUE".
+# Estimate p-value, account for fixed effect only using "use.random = FALSE".
+power_est <- sim.power.shortsfe.comint(
+  n.ch.per.trt = 4,
+  lambda = 50,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.5,
+  chamber.var = 0.1807,
+  nsim = 100,
+  n.cores = 1,
+  use.random = TRUE
+)
+```
+
+
+
+
+## Example III: Estimating power of a long-term SFE testing single intervention
+
+Again, since we have demonstrated all steps for power estimation in Example I, in this example we will demonstrate only few steps. Note that, to estimate power for long-term SFE testing single intervention, you only need to apply one function called "sim.power.longsfe.sinint()". However, for learning purpose we demonstrate how other functions work as shown below.
+
+Notes: In this case, we consider number of chambers per treatment (“n.ch.per.trt”), e.g., 4; length of experiment ("exp.length"), which specify the length of experiment in days, e.g., a 3 months experiments has a length of 90 days; frequency of sampling ("sampl.freq”), which means how often will you be sampling adult mosquitoes, e.g., "weekly" sampling for a 3 months experiment means you sample adult mosquitoes only 12 times.; number of mosquitoes to be sampled (“lambda”), e.g., 10; intervention effect over time ("intvn.effect"), e.g., 0.8; inter-chamber variance (“chamber.var”), e.g., 0.1807; time variance (“time.var), e.g., 0.2266; dispersion parameter (“theta”), e.g., 10; and total number of simulations (“nsim”), e.g., 100 for demonstration, but we suggest using at least 1000 simulations. 
+
+I. Simulate scenario table for a long-term SFE testing single intervention. For more information on each input below, type "?sim.scen.longsfe.sinint" in RStudio.
+
+```{r}
+scen.table <- sim.scen.longsfe.sinint(
+n.ch.per.trt = 4,
+exp.length = 90,
+sampl.freq = "weekly"
+)
+#print a scenario table
+#scen.table
+```
+
+
+II. Simulate mosquitoes counts/abundance for a long-term SFE testing single intervention. For more information on each input below, type "?sim.mosq.longsfe.sinint" in RStudio
+
+```{r}
+# You can simulate mosquitoes accounting for random effects using "use.random = TRUE".
+# You can simulate mosquitoes accounting for  fixed effect using "use.random = FALSE".
+# You can simulate mosquitoes from exponential function using "use.random = NULL".
+# You can simulate mosquitoes for all options above using 'use.random = "ALL"'.
+sim_mosq <- sim.mosq.longsfe.sinint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = "ALL"
+)
+```
+
+
+III. Plot mosquitoes counts/abundance for long-term SFE testing single intervention. For more information on each input below, type "?sim.plot.longsfe.sinint" in RStudio
+
+```{r}
+# You can plot mosquitoes with random effects using "use.random = TRUE".
+plot_mosq1 <- sim.plot.longsfe.sinint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = TRUE
+)
+plot_mosq1
+
+# You can also plot with fixed effect using "use.random = FALSE".
+plot_mosq2 <- sim.plot.longsfe.sinint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = FALSE
+)
+plot_mosq2
+
+# You can also plot mosquito from exponential function using "use.random = NULL".
+plot_mosq3 <- sim.plot.longsfe.sinint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = NULL
+)
+plot_mosq3
+```
+
+
+IV. Estimate p-values from mosquitoes counts/abundance data for long-term SFE testing single intervention. For more information on each input below, type "?sim.pval.longsfe.sinint" in RStudio
+
+```{r}
+# Estimate p-value, account for random effects using "use.random = TRUE".
+# Estimate p-value, account for fixed effect only using "use.random = FALSE".
+pvalue_est <- sim.pval.longsfe.sinint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = TRUE
+)
+```
+
+
+V. Estimate power for long-term SFE testing single intervention. For more information on each input below, type "?sim.power.longsfe.sinint" in RStudio. If you computer has multiple cores, you can specify what amount of core you want to utilise using "n.cores"; if not, just use "n.cores = 1" as default. You may even decide to remove n.cores if you don't want to use it. 
+```{r}
+# Estimate p-value, account for random effects using "use.random = TRUE".
+# Estimate p-value, account for fixed effect only using "use.random = FALSE".
+power_est <- sim.power.longsfe.sinint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  nsim = 100,
+  n.cores = 1,
+  use.random = TRUE
+)
+```
+
+
+
+
+
+## Example IV: Estimating power of a long-term SFE testing combined interventions
+
+Again, since we have demonstrated all steps for power estimation in Example I, in this example we will demonstrate only few steps. Note that, to estimate power for long-term SFE testing combined interventions, you only need to apply one function called "sim.power.longsfe.comint()". However, for learning purpose we demonstrate how other functions work as shown below.
+
+Notes: In this case, we consider intervention 1 effect over time ("intvn1.effect"), e.g., 0.7; intervention 2 effect over time ("intvn2.effect"), e.g., 0.8; interaction between intervention 1 and 2 ("ixn.effect"), e.g., 0.5; inter-chamber variance (“chamber.var”), e.g., 0.1807; time variance (“time.var), e.g., 0.2266; dispersion parameter (“theta”), e.g., 10; and total number of simulations (“nsim”), e.g., 100 for demonstration, but we suggest using at least 1000 simulations. 
+
+I. Simulate scenario table for a long-term SFE testing combined interventions. For more information on each input below, type "?sim.scen.longsfe.comint" in RStudio.
+
+```{r}
+scen.table <- sim.scen.longsfe.comint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly"
+)
+#print a scenario table
+#scen.table
+```
+
+
+II. Simulate mosquitoes counts/abundance for a long-term SFE testing combined interventions. For more information on each input below, type "?sim.mosq.longsfe.comint" in RStudio
+
+```{r}
+# You can simulate mosquitoes accounting for random effects using "use.random = TRUE".
+# You can simulate mosquitoes accounting for  fixed effect using "use.random = FALSE".
+# You can simulate mosquitoes from exponential function using "use.random = NULL".
+# You can simulate mosquitoes for all options above using 'use.random = "ALL"'.
+sim_mosq <- sim.mosq.longsfe.comint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = "ALL"
+)
+```
+
+
+III. Plot mosquitoes counts/abundance for long-term SFE testing combined interventions. For more information on each input below, type "?sim.plot.longsfe.comint" in RStudio
+
+```{r}
+# Plot mosquitoes with random effects using "use.random = TRUE".
+plot_mosq1 <- sim.plot.longsfe.comint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = TRUE
+)
+plot_mosq1
+# You can also plot with fixed effect using "use.random = FALSE".
+plot_mosq2 <- sim.plot.longsfe.comint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = FALSE
+)
+plot_mosq2
+# You can also plot mosquito from exponential function using "use.random = NULL".
+plot_mosq3 <- sim.plot.longsfe.comint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = NULL
+)
+plot_mosq3
+```
+
+
+IV. Estimate p-values from mosquitoes counts/abundance data for long-term SFE testing combined interventions. For more information on each input below, type "?sim.pval.longsfe.comint" in RStudio
+
+```{r}
+# Estimate p-value, account for random effects using "use.random = TRUE".
+# Estimate p-value, account for fixed effect only using "use.random = FALSE".
+pvalue_est <- sim.pval.longsfe.comint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  use.random = TRUE
+)
+```
+
+
+V. Estimate power for long-term SFE testing combined interventions. For more information on each input below, type "?sim.power.longsfe.comint" in RStudio. If you computer has multiple cores, you can specify what amount of core you want to utilize using "n.cores"; if not, just use "n.cores = 1" as default. You may even decide to remove n.cores if you don't want to use it. 
+```{r}
+# Estimate p-value, account for random effects using "use.random = TRUE".
+# Estimate p-value, account for fixed effect only using "use.random = FALSE".
+power_est <- sim.power.longsfe.comint(
+  n.ch.per.trt = 4,
+  exp.length = 90,
+  sampl.freq = "weekly",
+  lambda = 10,
+  intvn1.effect = 0.7,
+  intvn2.effect = 0.8,
+  ixn.effect = 0.8,
+  chamber.var = 0.1807,
+  time.var = 0.2266,
+  theta = 10,
+  nsim = 100,
+  n.cores = 1,
+  use.random = TRUE
+)
+```
